@@ -14,6 +14,122 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+try:
+    import triton
+    import triton.language as tl
+
+    HAS_TRITON = True
+except ImportError:
+    HAS_TRITON = False
+
+
+if HAS_TRITON:
+
+    @triton.jit
+    def _ema_fwd_kernel(
+        Z_ptr,
+        P_ptr,
+        Out_ptr,
+        L,
+        D: tl.constexpr,
+        BLOCK_D: tl.constexpr,
+    ):
+        b = tl.program_id(0)
+        pid_d = tl.program_id(1)
+        offs_d = pid_d * BLOCK_D + tl.arange(0, BLOCK_D)
+        mask_d = offs_d < D
+
+        z_base = Z_ptr + b * L * D + offs_d
+        o_base = Out_ptr + b * L * D + offs_d
+        p_base = P_ptr + b * L
+
+        state = tl.zeros([BLOCK_D], dtype=tl.float32)
+        for t in range(L):
+            p_t = tl.load(p_base + t).to(tl.float32)
+            z_t = tl.load(z_base + t * D, mask=mask_d, other=0.0).to(tl.float32)
+            state = p_t * z_t + (1.0 - p_t) * state
+            tl.store(o_base + t * D, state.to(Out_ptr.dtype.element_ty), mask=mask_d)
+
+    @triton.jit
+    def _ema_bwd_kernel(
+        Z_ptr,
+        P_ptr,
+        Out_ptr,
+        GradOut_ptr,
+        GradZ_ptr,
+        GradPPart_ptr,
+        n_tiles_d,
+        L,
+        D: tl.constexpr,
+        BLOCK_D: tl.constexpr,
+    ):
+        b = tl.program_id(0)
+        pid_d = tl.program_id(1)
+        offs_d = pid_d * BLOCK_D + tl.arange(0, BLOCK_D)
+        mask_d = offs_d < D
+
+        z_base = Z_ptr + b * L * D + offs_d
+        o_base = Out_ptr + b * L * D + offs_d
+        go_base = GradOut_ptr + b * L * D + offs_d
+        gz_base = GradZ_ptr + b * L * D + offs_d
+        p_base = P_ptr + b * L
+        gp_base = GradPPart_ptr + (b * n_tiles_d + pid_d) * L
+
+        grad_state = tl.zeros([BLOCK_D], dtype=tl.float32)
+        p_next = 0.0
+        for step in range(L):
+            t = L - 1 - step
+            go_t = tl.load(go_base + t * D, mask=mask_d, other=0.0).to(tl.float32)
+            p_t = tl.load(p_base + t).to(tl.float32)
+            z_t = tl.load(z_base + t * D, mask=mask_d, other=0.0).to(tl.float32)
+            out_prev = tl.load(
+                o_base + (t - 1) * D, mask=mask_d & (t > 0), other=0.0
+            ).to(tl.float32)
+
+            grad_state = go_t + (1.0 - p_next) * grad_state
+            gz_t = p_t * grad_state
+            gp_t = tl.sum(grad_state * (z_t - out_prev), axis=0)
+
+            tl.store(gz_base + t * D, gz_t.to(GradZ_ptr.dtype.element_ty), mask=mask_d)
+            tl.store(gp_base + t, gp_t)
+            p_next = p_t
+
+
+class _TritonEMAScan(torch.autograd.Function):
+    @staticmethod
+    def forward(ctx, z: torch.Tensor, p: torch.Tensor) -> torch.Tensor:
+        z_c = z.contiguous()
+        p_c = p.squeeze(-1).contiguous()
+        B, L, D = z_c.shape
+        out = torch.empty_like(z_c)
+        if L == 0:
+            ctx.save_for_backward(z_c, p_c, out)
+            return out
+        BLOCK_D = min(128, triton.next_power_of_2(D))
+        grid = (B, triton.cdiv(D, BLOCK_D))
+        _ema_fwd_kernel[grid](z_c, p_c, out, L, D=D, BLOCK_D=BLOCK_D)
+        ctx.save_for_backward(z_c, p_c, out)
+        ctx.BLOCK_D = BLOCK_D
+        return out
+
+    @staticmethod
+    def backward(ctx, grad_out: torch.Tensor):
+        z_c, p_c, out = ctx.saved_tensors
+        B, L, D = z_c.shape
+        if L == 0:
+            return torch.zeros_like(z_c), torch.zeros_like(p_c).unsqueeze(-1)
+        grad_out_c = grad_out.contiguous()
+        grad_z = torch.empty_like(z_c)
+        BLOCK_D = ctx.BLOCK_D
+        n_tiles_d = triton.cdiv(D, BLOCK_D)
+        grad_p_part = torch.empty((B, n_tiles_d, L), device=z_c.device, dtype=torch.float32)
+        grid = (B, n_tiles_d)
+        _ema_bwd_kernel[grid](
+            z_c, p_c, out, grad_out_c, grad_z, grad_p_part, n_tiles_d, L, D=D, BLOCK_D=BLOCK_D
+        )
+        grad_p = grad_p_part.sum(dim=1).unsqueeze(-1).to(p_c.dtype)
+        return grad_z, grad_p
+
 
 class STE(torch.autograd.Function):
     """Forward: returns 1.0. Backward: passes gradient straight through to input probability."""
@@ -45,6 +161,9 @@ def parallel_ema_scan(z: torch.Tensor, p: torch.Tensor) -> torch.Tensor:
     B, M, D = z.shape
     if M == 0:
         return z
+
+    if HAS_TRITON and z.is_cuda:
+        return _TritonEMAScan.apply(z, p)
 
     a = 1.0 - p          # (B, M, 1) decay factor
     b = p * z            # (B, M, D) weighted input

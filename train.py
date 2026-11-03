@@ -190,5 +190,8 @@ def main():
                 torch.save(ckpt, os.path.join(args.save_dir, "best.pt"))
 
 
+    del train_iter, train_loader
+
+
 if __name__ == "__main__":
     main()

@@ -146,7 +146,7 @@ class CausalSSMBlock(nn.Module):
         p_forget = torch.sigmoid(forget_logits.float()).mean(dim=-1, keepdim=True)
         if mask is not None:
             p_forget = p_forget * mask.unsqueeze(-1).float()
-        rec_out = parallel_ema_scan(u_conv.float(), p_forget).to(x.dtype)
+        rec_out = parallel_ema_scan(u_conv, p_forget).to(x.dtype)
 
         # 3. Output gating & residual
         x = x + self.out_proj(rec_out * F.silu(gate))
