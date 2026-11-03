@@ -65,6 +65,7 @@ def main():
     parser.add_argument("--eval-every", type=int, default=200, help="Print sample generation + chunk boundaries every N steps")
     parser.add_argument("--prompt", type=str, default="In computer science and artificial intelligence, ", help="Prompt for live sample generation")
     parser.add_argument("--save-dir", type=str, default="checkpoints")
+    parser.add_argument("--resume", type=str, default=None, help="Path to checkpoint (.pt) to resume from")
     args = parser.parse_args()
 
     os.makedirs(args.save_dir, exist_ok=True)
@@ -99,19 +100,33 @@ def main():
     param_groups = model.get_param_groups(base_lr=args.lr, weight_decay=args.weight_decay)
     optimizer = torch.optim.AdamW(param_groups, betas=(0.9, 0.95), eps=1e-8)
 
+    start_step = 1
+    best_bpb = float("inf")
+    skip_docs = 0
+    if args.resume is not None and os.path.exists(args.resume):
+        ckpt = torch.load(args.resume, map_location=device, weights_only=False)
+        model.load_state_dict(ckpt["model_state_dict"])
+        if "optimizer_state_dict" in ckpt:
+            optimizer.load_state_dict(ckpt["optimizer_state_dict"])
+        start_step = int(ckpt.get("step", 0)) + 1
+        best_bpb = float(ckpt.get("bpb", float("inf")))
+        # Estimate ~30 docs per step (131KB / ~4KB per FineWeb doc) so we stream fresh documents
+        skip_docs = (start_step - 1) * 30
+        print(f"Resumed from {args.resume} at step {start_step - 1} (BPB: {best_bpb:.4f}, skipping ~{skip_docs} docs)")
+
     train_loader = build_byte_dataloader(
         dataset_name=args.dataset,
         seq_len=args.seq_len,
         batch_size=args.batch_size,
         local_file=args.local_file,
+        skip_docs=skip_docs,
     )
     train_iter = iter(train_loader)
 
-    best_bpb = float("inf")
     t0 = time.time()
     bytes_processed = 0
 
-    for step in range(1, args.max_steps + 1):
+    for step in range(start_step, args.max_steps + 1):
         model.train()
         optimizer.zero_grad(set_to_none=True)
 
@@ -182,6 +197,7 @@ def main():
                 "step": step,
                 "config": config,
                 "model_state_dict": model.state_dict(),
+                "optimizer_state_dict": optimizer.state_dict(),
                 "bpb": accum_bpb,
             }
             torch.save(ckpt, os.path.join(args.save_dir, "latest.pt"))

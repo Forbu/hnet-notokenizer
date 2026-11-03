@@ -88,4 +88,11 @@ def build_byte_dataloader(
         local_file=local_file,
         skip_docs=skip_docs,
     )
-    return DataLoader(ds, batch_size=batch_size, pin_memory=torch.cuda.is_available())
+    use_workers = local_file is None and torch.cuda.is_available()
+    return DataLoader(
+        ds,
+        batch_size=batch_size,
+        pin_memory=torch.cuda.is_available(),
+        num_workers=1 if use_workers else 0,
+        prefetch_factor=8 if use_workers else None,
+    )
