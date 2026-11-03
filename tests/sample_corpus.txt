@@ -1,0 +1,4 @@
+In computer science and artificial intelligence, hierarchical networks learn directly from raw bytes without a static tokenizer.
+Instead of Byte Pair Encoding (BPE), an H-Net dynamically chunks characters into words, words into phrases, and phrases into concepts.
+During autoregressive generation, the outer encoder and decoder step on every byte, while the inner causal transformer only steps when the router detects a semantic boundary.
+Once upon a time, there was a little robot who learned to read books letter by letter and discovered words all on its own.
