@@ -36,12 +36,16 @@ def get_Config(preset: str) -> HNetConfig:
     raise ValueError(f"Unknown preset: {preset}")
 
 
-def get_lr_scale(step: int, max_steps: int, warmup_steps: int) -> float:
-    """Warmup + Cosine Decay schedule."""
+def get_lr_scale(step: int, max_steps: int, warmup_steps: int, resume_start_step: int = 1) -> float:
+    """Warmup + Cosine Decay schedule (with smooth 500-step re-warmup when resuming onto a longer horizon)."""
     if step < warmup_steps:
         return float(step + 1) / float(max(1, warmup_steps))
     progress = float(step - warmup_steps) / float(max(1, max_steps - warmup_steps))
-    return 0.1 + 0.9 * 0.5 * (1.0 + math.cos(math.pi * min(progress, 1.0)))
+    cosine_scale = 0.1 + 0.9 * 0.5 * (1.0 + math.cos(math.pi * min(progress, 1.0)))
+    if resume_start_step > 1 and (step - resume_start_step) < 500:
+        ramp = float(step - resume_start_step + 1) / 500.0
+        return 0.1 + (cosine_scale - 0.1) * ramp
+    return cosine_scale
 
 
 def main():
@@ -125,13 +129,14 @@ def main():
 
     t0 = time.time()
     bytes_processed = 0
+    ema_bpb = best_bpb if best_bpb < float("inf") else None
 
     for step in range(start_step, args.max_steps + 1):
         model.train()
         optimizer.zero_grad(set_to_none=True)
 
         # Update learning rate with per-stage multipliers
-        lr_scale = get_lr_scale(step - 1, args.max_steps, args.warmup_steps)
+        lr_scale = get_lr_scale(step - 1, args.max_steps, args.warmup_steps, resume_start_step=start_step)
         for pg in optimizer.param_groups:
             pg["lr"] = args.lr * pg["lr_mult"] * lr_scale
 
@@ -169,25 +174,27 @@ def main():
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
         optimizer.step()
 
-        if step == 1 or step % 10 == 0:
+        ema_bpb = accum_bpb if ema_bpb is None else (0.95 * ema_bpb + 0.05 * accum_bpb)
+
+        if step == start_step or step % 20 == 0:
             dt = time.time() - t0
             bps = bytes_processed / max(dt, 1e-5)
             comp_str = " * ".join(f"S{i}:{r:.2f}x" for i, r in enumerate(comp_ratios))
             total_comp = math.prod(comp_ratios)
             print(
-                f"Step {step:5d}/{args.max_steps} | BPB: {accum_bpb:.4f} | CE: {accum_loss:.4f} | "
+                f"Step {step:6d}/{args.max_steps} | BPB: {accum_bpb:.4f} (EMA: {ema_bpb:.4f}) | CE: {accum_loss:.4f} | "
                 f"Aux: {accum_aux:.4f} | Chunks: [{comp_str} => {total_comp:.2f}B/chunk] | "
-                f"Speed: {bps / 1e3:.1f} KB/s"
+                f"LR: {args.lr * lr_scale:.2e} | Speed: {bps / 1e3:.1f} KB/s"
             )
             t0 = time.time()
             bytes_processed = 0
 
         if step % args.eval_every == 0 or step == args.max_steps:
             text, chunk_view, gen_stats = model.generate(
-                prompt=args.prompt, max_new_bytes=120, temperature=0.8, top_k=40
+                prompt=args.prompt, max_new_bytes=160, temperature=0.75, top_k=40
             )
             print("-" * 80)
-            print(f"[Sample @ Step {step}] (Core Compression: {gen_stats['bytes_per_chunk']:.2f} B/chunk | "
+            print(f"[Sample @ Step {step}] (EMA BPB: {ema_bpb:.4f} | Core Compression: {gen_stats['bytes_per_chunk']:.2f} B/chunk | "
                   f"Core Transformer Skipped: {gen_stats['main_net_skip_pct']:.1f}% of bytes)")
             print(f"Text   : {text!r}")
             print(f"Chunks :\n{chunk_view}")
@@ -198,12 +205,14 @@ def main():
                 "config": config,
                 "model_state_dict": model.state_dict(),
                 "optimizer_state_dict": optimizer.state_dict(),
-                "bpb": accum_bpb,
+                "bpb": ema_bpb,
             }
             torch.save(ckpt, os.path.join(args.save_dir, "latest.pt"))
-            if accum_bpb < best_bpb:
-                best_bpb = accum_bpb
+            if ema_bpb < best_bpb:
+                best_bpb = ema_bpb
                 torch.save(ckpt, os.path.join(args.save_dir, "best.pt"))
+            if step % 10000 == 0:
+                torch.save(ckpt, os.path.join(args.save_dir, f"step_{step}.pt"))
 
 
     del train_iter, train_loader

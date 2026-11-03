@@ -45,24 +45,38 @@ class StreamingByteDataset(IterableDataset):
                     yield b
 
         from datasets import load_dataset
+        import time
 
         if self.dataset_name in DATASET_ALIASES:
             hf_path, hf_name, text_col = DATASET_ALIASES[self.dataset_name]
         else:
             hf_path, hf_name, text_col = self.dataset_name, None, "text"
 
-        ds = load_dataset(hf_path, name=hf_name, split=self.split, streaming=True)
-        if self.skip_docs > 0:
-            ds = ds.skip(self.skip_docs)
+        docs_seen = self.skip_docs
+        backoff = 5.0
+        while True:
+            try:
+                ds = load_dataset(hf_path, name=hf_name, split=self.split, streaming=True)
+                if docs_seen > 0:
+                    ds = ds.skip(docs_seen)
 
-        for row in ds:
-            text = row.get(text_col, "")
-            if not text:
-                continue
-            raw = text.encode("utf-8", errors="ignore")
-            for b in raw:
-                yield b
-            yield 10  # '\n' document separator byte
+                for row in ds:
+                    docs_seen += 1
+                    backoff = 5.0
+                    text = row.get(text_col, "")
+                    if not text:
+                        continue
+                    raw = text.encode("utf-8", errors="ignore")
+                    for b in raw:
+                        yield b
+                    yield 10  # '\n' document separator byte
+
+                # If stream finishes an epoch, wrap around to beginning
+                docs_seen = 0
+            except Exception as e:
+                print(f"[StreamingByteDataset] Network/stream error after {docs_seen} docs: {e!r}. Retrying in {backoff:.0f}s...", flush=True)
+                time.sleep(backoff)
+                backoff = min(backoff * 1.5, 60.0)
 
     def __iter__(self) -> Iterator[tuple[torch.Tensor, torch.Tensor]]:
         buffer = bytearray()
