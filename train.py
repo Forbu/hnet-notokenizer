@@ -27,10 +27,12 @@ from hnet.model import ByteHNetLM
 def get_Config(preset: str) -> HNetConfig:
     if preset == "small_1stage":
         return HNetConfig.small_1stage()
+    elif preset == "hnet_1stage_l12":
+        return HNetConfig.hnet_1stage_l12()
+    elif preset == "hnet_1stage_l16":
+        return HNetConfig.hnet_1stage_l16()
     elif preset == "medium_2stage_h100":
         return HNetConfig.medium_2stage_h100()
-    elif preset == "large_2stage_h100":
-        return HNetConfig.large_2stage_h100()
     raise ValueError(f"Unknown preset: {preset}")
 
 
@@ -47,8 +49,8 @@ def main():
     parser.add_argument(
         "--preset",
         type=str,
-        default="medium_2stage_h100",
-        choices=["small_1stage", "medium_2stage_h100", "large_2stage_h100"],
+        default="hnet_1stage_l12",
+        choices=["small_1stage", "hnet_1stage_l12", "hnet_1stage_l16", "medium_2stage_h100"],
     )
     parser.add_argument("--dataset", type=str, default="fineweb-edu", help="fineweb-edu or tinystories")
     parser.add_argument("--local-file", type=str, default=None, help="Optional local UTF-8 text file for offline test")

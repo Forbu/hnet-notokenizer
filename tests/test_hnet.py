@@ -35,10 +35,12 @@ def test_end_to_end_gradients_and_generation():
     torch.manual_seed(42)
     cfg = HNetConfig(
         d_model=[64, 96, 128],
-        n_encoder_layers=[2, 2],
-        n_decoder_layers=[2, 2],
-        n_main_layers=2,
-        head_dim=32,
+        encoder_layout=["m2", "T1m1"],
+        decoder_layout=["m2", "m1T1"],
+        main_layout="T2",
+        head_dim=[32, 32, 32],
+        rotary_emb_dim=[16, 16, 16],
+        window_size=[63, 63, -1],
         target_compression=[3.0, 2.0],
     )
     model = ByteHNetLM(cfg)

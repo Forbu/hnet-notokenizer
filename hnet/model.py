@@ -68,16 +68,22 @@ class HNetStage(nn.Module):
         if self.is_innermost:
             self.main_network = IsotropicStack(
                 d_model=self.d_model,
-                n_layers=config.n_main_layers,
-                block_type="transformer",
-                head_dim=config.head_dim,
+                layout=config.main_layout,
+                head_dim=config.head_dim[stage_idx],
+                rotary_emb_dim=config.rotary_emb_dim[stage_idx],
+                window_size=config.window_size[stage_idx],
+                conv_kernel_size=config.conv_kernel_size,
+                mlp_expansion=config.mlp_expansion,
             )
         else:
             self.encoder = IsotropicStack(
                 d_model=self.d_model,
-                n_layers=config.n_encoder_layers[stage_idx],
-                block_type="ssm",
+                layout=config.encoder_layout[stage_idx],
+                head_dim=config.head_dim[stage_idx],
+                rotary_emb_dim=config.rotary_emb_dim[stage_idx],
+                window_size=config.window_size[stage_idx],
                 conv_kernel_size=config.conv_kernel_size,
+                mlp_expansion=config.mlp_expansion,
             )
             self.routing_module = RoutingModule(self.d_model)
             self.chunk_layer = ChunkLayer()
@@ -85,9 +91,12 @@ class HNetStage(nn.Module):
             self.dechunk_layer = DeChunkLayer(self.d_model)
             self.decoder = IsotropicStack(
                 d_model=self.d_model,
-                n_layers=config.n_decoder_layers[stage_idx],
-                block_type="ssm",
+                layout=config.decoder_layout[stage_idx],
+                head_dim=config.head_dim[stage_idx],
+                rotary_emb_dim=config.rotary_emb_dim[stage_idx],
+                window_size=config.window_size[stage_idx],
                 conv_kernel_size=config.conv_kernel_size,
+                mlp_expansion=config.mlp_expansion,
             )
 
             # Zero-initialized fp32 residual projection (crucial for initial gradient flow)
@@ -106,6 +115,32 @@ class HNetStage(nn.Module):
             for mod in (self.encoder, self.routing_module, self.dechunk_layer, self.decoder, self.residual_proj):
                 for p in mod.parameters():
                     p._stage_idx = stage_idx
+
+    def _init_weights(self, initializer_range: float = 0.02, parent_residuals: int = 0) -> None:
+        """
+        Depth-scaled initialization matching `HNet._init_weights` in `goombalab/hnet`:
+        Scales residual output projections (`out_proj` and `fc2`) by 1 / sqrt(n_residuals),
+        where `n_residuals` accumulates from outer Encoder+Decoder stages into inner stages.
+        """
+        n_residuals = parent_residuals
+        if self.is_innermost:
+            n_residuals += self.main_network.height
+            for name, m in self.main_network.named_modules():
+                if isinstance(m, nn.Linear) and not getattr(m.weight, "_no_reinit", False):
+                    std = initializer_range / (n_residuals ** 0.5) if ("out_proj" in name or "fc2" in name) else initializer_range
+                    nn.init.normal_(m.weight, mean=0.0, std=std)
+                    if m.bias is not None:
+                        nn.init.zeros_(m.bias)
+        else:
+            n_residuals += self.encoder.height + self.decoder.height
+            for sub in (self.encoder, self.decoder):
+                for name, m in sub.named_modules():
+                    if isinstance(m, nn.Linear) and not getattr(m.weight, "_no_reinit", False):
+                        std = initializer_range / (n_residuals ** 0.5) if ("out_proj" in name or "fc2" in name) else initializer_range
+                        nn.init.normal_(m.weight, mean=0.0, std=std)
+                        if m.bias is not None:
+                            nn.init.zeros_(m.bias)
+            self.main_network._init_weights(initializer_range, n_residuals)
 
     def init_state(self, batch_size: int, device: torch.device, dtype: torch.dtype) -> HNetStageState:
         if self.is_innermost:
@@ -222,13 +257,12 @@ class ByteHNetLM(nn.Module):
             p._stage_idx = 0
 
     def _init_weights(self, init_std: float = 0.02):
-        for name, m in self.named_modules():
-            if isinstance(m, nn.Linear) and not getattr(m.weight, "_no_reinit", False):
-                nn.init.normal_(m.weight, mean=0.0, std=init_std)
-                if m.bias is not None:
-                    nn.init.zeros_(m.bias)
-            elif isinstance(m, nn.Embedding):
-                nn.init.normal_(m.weight, mean=0.0, std=init_std)
+        nn.init.normal_(self.byte_embedding.weight, mean=0.0, std=init_std)
+        nn.init.normal_(self.lm_head.weight, mean=0.0, std=init_std)
+        for m in self.modules():
+            if isinstance(m, nn.Conv1d) and m.bias is not None:
+                nn.init.zeros_(m.bias)
+        self.backbone._init_weights(initializer_range=init_std, parent_residuals=0)
 
     def get_param_groups(self, base_lr: float, weight_decay: float = 0.1) -> List[Dict]:
         """
