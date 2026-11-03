@@ -330,7 +330,21 @@ class ByteHNetLM(nn.Module):
         state = self.backbone.init_state(batch_size=1, device=device, dtype=dtype)
         all_bytes: List[int] = []
         stage0_boundaries: List[bool] = []
-        inner_steps_taken = 0
+        stage1_boundaries: List[bool] = []
+        s0_steps_taken = 0
+        core_steps_taken = 0
+
+        def _record_step(b_val: int, routes: List[RoutingOutput]):
+            nonlocal s0_steps_taken, core_steps_taken
+            is_s0 = bool(routes[0].boundary_mask.item())
+            is_s1 = bool(routes[-1].boundary_mask.item()) if (is_s0 and len(routes) > 1) else is_s0
+            all_bytes.append(b_val)
+            stage0_boundaries.append(is_s0)
+            stage1_boundaries.append(is_s1)
+            if is_s0:
+                s0_steps_taken += 1
+            if is_s1:
+                core_steps_taken += 1
 
         # 1. Prefill prompt byte-by-byte through `step` so recurrent + KV states are exact
         last_logits = None
@@ -339,12 +353,7 @@ class ByteHNetLM(nn.Module):
             emb = self.byte_embedding(inp)
             out_h, routes = self.backbone.step(emb, state)
             last_logits = self.lm_head(out_h[:, -1, :])
-
-            is_boundary = bool(routes[0].boundary_mask.item())
-            all_bytes.append(b_val)
-            stage0_boundaries.append(is_boundary)
-            if is_boundary:
-                inner_steps_taken += 1
+            _record_step(b_val, routes)
 
         # 2. Autoregressively sample new bytes
         for _ in range(max_new_bytes):
@@ -359,33 +368,34 @@ class ByteHNetLM(nn.Module):
             emb = self.byte_embedding(inp)
             out_h, routes = self.backbone.step(emb, state)
             last_logits = self.lm_head(out_h[:, -1, :])
-
-            is_boundary = bool(routes[0].boundary_mask.item())
-            all_bytes.append(next_byte)
-            stage0_boundaries.append(is_boundary)
-            if is_boundary:
-                inner_steps_taken += 1
+            _record_step(next_byte, routes)
 
         full_text = bytes(all_bytes).decode("utf-8", errors="replace")
 
-        # Format visual chunk boundaries: insert '|' wherever Stage 0 triggered a new chunk
-        pieces: List[str] = []
-        current_chunk: List[int] = []
-        for idx, (b_val, is_b) in enumerate(zip(all_bytes, stage0_boundaries)):
-            if is_b and idx > 0:
+        def _format_boundaries(boundaries: List[bool], sep: str = "|") -> str:
+            pieces: List[str] = []
+            current_chunk: List[int] = []
+            for idx, (b_val, is_b) in enumerate(zip(all_bytes, boundaries)):
+                if is_b and idx > 0:
+                    pieces.append(bytes(current_chunk).decode("utf-8", errors="replace"))
+                    current_chunk = [b_val]
+                else:
+                    current_chunk.append(b_val)
+            if current_chunk:
                 pieces.append(bytes(current_chunk).decode("utf-8", errors="replace"))
-                current_chunk = [b_val]
-            else:
-                current_chunk.append(b_val)
-        if current_chunk:
-            pieces.append(bytes(current_chunk).decode("utf-8", errors="replace"))
-        chunked_view = "|".join(pieces)
+            return sep.join(pieces)
+
+        s0_view = _format_boundaries(stage0_boundaries, sep="|")
+        s1_view = _format_boundaries(stage1_boundaries, sep=" || ")
+        chunked_view = s0_view if self.config.num_stages == 1 else f"S0: {s0_view}\nS1: {s1_view}"
 
         total_steps = len(all_bytes)
         stats = {
             "total_bytes": total_steps,
-            "stage0_chunks": inner_steps_taken,
-            "bytes_per_chunk": total_steps / max(inner_steps_taken, 1),
-            "main_net_skip_pct": 100.0 * (1.0 - inner_steps_taken / max(total_steps, 1)),
+            "stage0_chunks": s0_steps_taken,
+            "core_chunks": core_steps_taken,
+            "bytes_per_chunk": total_steps / max(core_steps_taken, 1),
+            "s0_bytes_per_chunk": total_steps / max(s0_steps_taken, 1),
+            "main_net_skip_pct": 100.0 * (1.0 - core_steps_taken / max(total_steps, 1)),
         }
         return full_text, chunked_view, stats
