@@ -54,14 +54,22 @@ class StreamingByteDataset(IterableDataset):
 
         docs_seen = self.skip_docs
         backoff = 5.0
+        shard_offset = docs_seen // 100000
+        local_skip = docs_seen % 5000
         while True:
             try:
-                ds = load_dataset(hf_path, name=hf_name, split=self.split, streaming=True)
-                if docs_seen > 0:
-                    ds = ds.skip(docs_seen)
+                base_ds = load_dataset(hf_path, name=hf_name, split=self.split, streaming=True)
+                n_shards = getattr(base_ds, "n_shards", 1) or 1
+                if n_shards > 1:
+                    ds = base_ds.shard(num_shards=n_shards, index=shard_offset % n_shards)
+                else:
+                    ds = base_ds
+                if local_skip > 0:
+                    ds = ds.skip(local_skip)
 
                 for row in ds:
                     docs_seen += 1
+                    local_skip += 1
                     backoff = 5.0
                     text = row.get(text_col, "")
                     if not text:
@@ -71,8 +79,9 @@ class StreamingByteDataset(IterableDataset):
                         yield b
                     yield 10  # '\n' document separator byte
 
-                # If stream finishes an epoch, wrap around to beginning
-                docs_seen = 0
+                # Advance to next shard when current shard finishes
+                shard_offset += 1
+                local_skip = 0
             except Exception as e:
                 print(f"[StreamingByteDataset] Network/stream error after {docs_seen} docs: {e!r}. Retrying in {backoff:.0f}s...", flush=True)
                 time.sleep(backoff)
