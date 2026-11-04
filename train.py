@@ -37,15 +37,11 @@ def get_Config(preset: str) -> HNetConfig:
 
 
 def get_lr_scale(step: int, max_steps: int, warmup_steps: int, resume_start_step: int = 1) -> float:
-    """Warmup + Cosine Decay schedule (with smooth 500-step re-warmup when resuming onto a longer horizon)."""
+    """Warmup + Cosine Decay schedule."""
     if step < warmup_steps:
         return float(step + 1) / float(max(1, warmup_steps))
     progress = float(step - warmup_steps) / float(max(1, max_steps - warmup_steps))
-    cosine_scale = 0.1 + 0.9 * 0.5 * (1.0 + math.cos(math.pi * min(progress, 1.0)))
-    if resume_start_step > 1 and (step - resume_start_step) < 500:
-        ramp = float(step - resume_start_step + 1) / 500.0
-        return 0.1 + (cosine_scale - 0.1) * ramp
-    return cosine_scale
+    return 0.1 + 0.9 * 0.5 * (1.0 + math.cos(math.pi * min(progress, 1.0)))
 
 
 def main():
@@ -170,6 +166,7 @@ def main():
             accum_aux += out["aux_loss"].item() / args.grad_accum
             for i, r in enumerate(out["compression_ratios"]):
                 comp_ratios[i] += r / args.grad_accum
+            del out, loss
 
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
         optimizer.step()
@@ -213,6 +210,9 @@ def main():
                 torch.save(ckpt, os.path.join(args.save_dir, "best.pt"))
             if step % 10000 == 0:
                 torch.save(ckpt, os.path.join(args.save_dir, f"step_{step}.pt"))
+            del ckpt
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
 
 
     del train_iter, train_loader
