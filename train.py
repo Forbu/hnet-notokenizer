@@ -17,6 +17,9 @@ import math
 import os
 import time
 
+# Prevent CUDA caching allocator fragmentation across variable-length dynamic chunk batches
+os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
+
 import torch
 
 from hnet.config import HNetConfig
@@ -55,13 +58,20 @@ def main():
     parser.add_argument("--dataset", type=str, default="fineweb-edu", help="fineweb-edu or tinystories")
     parser.add_argument("--local-file", type=str, default=None, help="Optional local UTF-8 text file for offline test")
     parser.add_argument("--seq-len", type=int, default=1024, help="Sequence length in bytes")
-    parser.add_argument("--batch-size", type=int, default=16, help="Micro-batch size per step")
-    parser.add_argument("--grad-accum", type=int, default=2, help="Gradient accumulation steps")
+    parser.add_argument("--batch-size", type=int, default=16, help="Micro-batch size per GPU forward pass")
+    parser.add_argument("--grad-accum", type=int, default=2, help="Gradient accumulation micro-steps per optimizer step")
+    parser.add_argument(
+        "--total-batch-bytes",
+        type=int,
+        default=None,
+        help="Optional target effective batch size in bytes/step (overrides --grad-accum as ceil(total_batch_bytes / (batch_size * seq_len)))",
+    )
     parser.add_argument("--max-steps", type=int, default=5000, help="Total optimizer steps")
     parser.add_argument("--warmup-steps", type=int, default=200, help="LR warmup steps")
     parser.add_argument("--lr", type=float, default=3e-4, help="Base learning rate (scaled per stage)")
     parser.add_argument("--aux-weight", type=float, default=0.20, help="Auxiliary compression ratio loss weight")
     parser.add_argument("--weight-decay", type=float, default=0.1)
+    parser.add_argument("--log-every", type=int, default=20, help="Print training metrics every N optimizer steps")
     parser.add_argument("--eval-every", type=int, default=200, help="Print sample generation + chunk boundaries every N steps")
     parser.add_argument("--prompt", type=str, default="In computer science and artificial intelligence, ", help="Prompt for live sample generation")
     parser.add_argument("--save-dir", type=str, default="checkpoints")
@@ -86,6 +96,11 @@ def main():
         use_amp = False
         amp_dtype = torch.float32
 
+    micro_batch_bytes = args.batch_size * args.seq_len
+    if args.total_batch_bytes is not None:
+        args.grad_accum = max(1, math.ceil(args.total_batch_bytes / micro_batch_bytes))
+    effective_batch_bytes = micro_batch_bytes * args.grad_accum
+
     config = get_Config(args.preset)
     config.aux_loss_weight = args.aux_weight
     model = ByteHNetLM(config).to(device)
@@ -94,6 +109,10 @@ def main():
     print("=" * 80)
     print(f"ByteHNetLM ({args.preset}) | Stages: {config.num_stages} | Total Params: {total_params / 1e6:.2f}M")
     print(f"Dimensions: {config.d_model} | Target Compression: {config.target_compression}")
+    print(
+        f"Batch Size: {effective_batch_bytes / 1e3:.1f} KB/step "
+        f"(micro-batch={args.batch_size}x{args.seq_len} [{micro_batch_bytes / 1e3:.1f} KB] x grad_accum={args.grad_accum})"
+    )
     print(f"Device: {device} | Mixed Precision: {use_amp} ({amp_dtype})")
     print("=" * 80)
 
@@ -102,6 +121,7 @@ def main():
 
     start_step = 1
     best_bpb = float("inf")
+    total_bytes_trained = 0
     skip_docs = 0
     if args.resume is not None and os.path.exists(args.resume):
         ckpt = torch.load(args.resume, map_location=device, weights_only=False)
@@ -110,9 +130,13 @@ def main():
             optimizer.load_state_dict(ckpt["optimizer_state_dict"])
         start_step = int(ckpt.get("step", 0)) + 1
         best_bpb = float(ckpt.get("bpb", float("inf")))
-        # Estimate ~30 docs per step (131KB / ~4KB per FineWeb doc) so we stream fresh documents
-        skip_docs = (start_step - 1) * 30
-        print(f"Resumed from {args.resume} at step {start_step - 1} (BPB: {best_bpb:.4f}, skipping ~{skip_docs} docs)")
+        total_bytes_trained = int(ckpt.get("total_bytes_trained", (start_step - 1) * effective_batch_bytes))
+        # Estimate ~4.3KB per FineWeb-Edu document so we stream fresh documents regardless of grad_accum
+        skip_docs = int(total_bytes_trained // 4300)
+        print(
+            f"Resumed from {args.resume} at step {start_step - 1} "
+            f"(BPB: {best_bpb:.4f}, trained: {total_bytes_trained / 1e9:.2f}B bytes, skipping ~{skip_docs} docs)"
+        )
 
     train_loader = build_byte_dataloader(
         dataset_name=args.dataset,
@@ -150,7 +174,9 @@ def main():
 
             x = x.to(device, non_blocking=torch.cuda.is_available())
             y = y.to(device, non_blocking=torch.cuda.is_available())
-            bytes_processed += x.numel()
+            n_bytes = x.numel()
+            bytes_processed += n_bytes
+            total_bytes_trained += n_bytes
 
             if use_amp:
                 with torch.amp.autocast(device_type="cuda", dtype=amp_dtype):
@@ -173,14 +199,14 @@ def main():
 
         ema_bpb = accum_bpb if ema_bpb is None else (0.95 * ema_bpb + 0.05 * accum_bpb)
 
-        if step == start_step or step % 20 == 0:
+        if step == start_step or step % args.log_every == 0:
             dt = time.time() - t0
             bps = bytes_processed / max(dt, 1e-5)
             comp_str = " * ".join(f"S{i}:{r:.2f}x" for i, r in enumerate(comp_ratios))
             total_comp = math.prod(comp_ratios)
             print(
-                f"Step {step:6d}/{args.max_steps} | BPB: {accum_bpb:.4f} (EMA: {ema_bpb:.4f}) | CE: {accum_loss:.4f} | "
-                f"Aux: {accum_aux:.4f} | Chunks: [{comp_str} => {total_comp:.2f}B/chunk] | "
+                f"Step {step:6d}/{args.max_steps} ({total_bytes_trained / 1e9:5.2f}B) | BPB: {accum_bpb:.4f} (EMA: {ema_bpb:.4f}) | "
+                f"CE: {accum_loss:.4f} | Aux: {accum_aux:.4f} | Chunks: [{comp_str} => {total_comp:.2f}B/chunk] | "
                 f"LR: {args.lr * lr_scale:.2e} | Speed: {bps / 1e3:.1f} KB/s"
             )
             t0 = time.time()
@@ -191,7 +217,7 @@ def main():
                 prompt=args.prompt, max_new_bytes=160, temperature=0.75, top_k=40
             )
             print("-" * 80)
-            print(f"[Sample @ Step {step}] (EMA BPB: {ema_bpb:.4f} | Core Compression: {gen_stats['bytes_per_chunk']:.2f} B/chunk | "
+            print(f"[Sample @ Step {step} | {total_bytes_trained / 1e9:.2f}B bytes] (EMA BPB: {ema_bpb:.4f} | Core Compression: {gen_stats['bytes_per_chunk']:.2f} B/chunk | "
                   f"Core Transformer Skipped: {gen_stats['main_net_skip_pct']:.1f}% of bytes)")
             print(f"Text   : {text!r}")
             print(f"Chunks :\n{chunk_view}")
@@ -199,6 +225,9 @@ def main():
 
             ckpt = {
                 "step": step,
+                "total_bytes_trained": total_bytes_trained,
+                "grad_accum": args.grad_accum,
+                "effective_batch_bytes": effective_batch_bytes,
                 "config": config,
                 "model_state_dict": model.state_dict(),
                 "optimizer_state_dict": optimizer.state_dict(),
