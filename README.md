@@ -67,8 +67,90 @@ python train.py \
 ### 3. Generate Text & Inspect Dynamic Chunk Boundaries
 ```bash
 python generate.py \
-  --checkpoint checkpoints_fineweb_1stage/best.pt \
-  --prompt "The history of the Roman Empire began when " \
-  --max-new-bytes 220 \
-  --temperature 0.75
+  --checkpoint checkpoints/step_110000_ema1.05.pt \
+  --prompt "During the Industrial Revolution, the invention of the steam engine " \
+  --max-new-bytes 280 \
+  --temperature 0.65
 ```
+
+---
+
+## 13-Hour FineWeb-Edu Training Run (`110,000` Steps / `14.42 GB` Raw UTF-8 Bytes)
+
+We trained **`hnet_1stage_l12`** (**151.24M parameters**, layout `["m4", ["T12"], "m4"]`, $D = [512, 896]$, target compression $N = 4.57$) from scratch on **FineWeb-Edu (`sample-10BT`)** directly on raw UTF-8 bytes without any tokenizer.
+
+### Training Setup
+* **Hardware:** 1× NVIDIA RTX PRO 6000 Blackwell (`96 GB` VRAM, `bfloat16` mixed precision + fused Triton EMA scan).
+* **Batch Size:** `64 × 2048 = 131,072 bytes/step` (`~265 KB/s` steady throughput).
+* **Total Horizon:** **110,000 steps** (~13 hours), processing **14.42 GB of raw UTF-8 text** (**~3.15 billion BPE-token equivalents**, full Chinchilla compute-optimal scale for a 151M parameter model).
+* **Logs & Local Weights:**
+  * Full training logs: `logs/train_5k.log` and `logs/train_13h.log`
+  * Exported `bfloat16` inference checkpoints (`289 MB` each):
+    * `checkpoints/best_step102000_ema1.00.pt` (`Step 102,000`, `EMA BPB: 1.0076`)
+    * `checkpoints/step_110000_ema1.05.pt` (`Step 110,000`, `EMA BPB: 1.0542`)
+
+### 110,000-Step Scaling Curve
+
+| Step | Raw Text Processed | Batch BPB | Smoothed EMA BPB | Cross-Entropy (nats) | Empirical Compression | Learning Rate |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **1** | 0.13 MB | `8.0554` | `8.0554` | `5.5836` | `2.22 B/chunk` | `3.00e-06` |
+| **5,000** | 0.66 GB | `1.5866` | `1.5866` | `1.0997` | `4.43 B/chunk` | `3.00e-05` |
+| **10,000** | 1.31 GB | `1.4813` | `1.4334` | `1.0267` | `3.50 B/chunk` | `2.95e-04` |
+| **20,000** | 2.62 GB | `1.1645` | `1.1800` | `0.8071` | `3.72 B/chunk` | `2.79e-04` |
+| **30,000** | 3.93 GB | `1.1074` | `1.1751` | `0.7676` | `3.63 B/chunk` | `2.54e-04` |
+| **40,000** | 5.24 GB | `1.1300` | `1.1434` | `0.7832` | `3.53 B/chunk` | `2.22e-04` |
+| **50,000** | 6.55 GB | `1.0748` | `1.0972` | `0.7450` | `3.76 B/chunk` | `1.85e-04` |
+| **60,000** | 7.86 GB | `1.0785` | `1.1069` | `0.7475` | `3.91 B/chunk` | `1.46e-04` |
+| **70,000** | 9.18 GB | `1.0244` | `1.0871` | `0.7101` | `4.22 B/chunk` | `1.09e-04` |
+| **80,000** | 10.49 GB | `1.0363` | `1.0685` | `0.7183` | `4.14 B/chunk` | `7.68e-05` |
+| **90,000** | 11.80 GB | `1.0163` | `1.0877` | `0.7045` | `4.13 B/chunk` | `5.15e-05` |
+| **100,000** | 13.11 GB | `0.9756` | `1.0430` | `0.6762` | `4.40 B/chunk` | `3.55e-05` |
+| **106,760** | 13.99 GB | **`0.9118`** *(min)* | `1.0214` | `0.6320` | `4.33 B/chunk` | `3.06e-05` |
+| **110,000** | **14.42 GB** | **`1.0088`** | **`1.0542`** | `0.6992` | **`4.16 B/chunk`** | `3.00e-05` |
+
+#### Observed Two-Phase Router Learning Dynamics
+1. **Subword Discovery Phase (Steps 10k–40k):** The cosine-dissimilarity router temporarily tightens empirical compression to `~3.5–3.7 bytes/chunk` while the outer Mamba-style encoder/decoder (`m4`) learns common morphological prefixes, suffixes, and stems.
+2. **Whole-Word & Phrase Consolidation Phase (Steps 50k–110k):** Once word representations solidify in the outer SSM stacks, the router smoothly expands its chunks back up to **`4.16–4.45 bytes/chunk`** during training (**`4.5–6.1 bytes/chunk` during generation**), driving Bits-Per-Byte below `1.00` on individual batches (`0.9118 BPB` min) and `~1.00–1.05` EMA BPB.
+
+---
+
+### Generated Samples & Emergent Dynamic Chunking (`Step 110,000`)
+
+In every sample below, `|` denotes a learned boundary where `boundary_mask == True` ($p_t > 0.5$). On all bytes between `|` markers (~78%–84% of byte steps), the 12-layer Main Transformer is **completely skipped during autoregressive generation**.
+
+#### 1. Computer Science & AI (`5.50 bytes/chunk` — Main Transformer skipped on `81.8%` of bytes)
+* **Generated Text:**
+  > `In computer science and artificial intelligence, linear algebra is a computational framework that allows the software to determine the limits at which a program can perform a specific algorithm. One important `
+* **Learned Dynamic Chunks (`|`):**
+  ```text
+  In |computer |s|cience |a|nd artificial| |intelligence, |linear| |al|gebra |is |a| computational |fr|amework |th|at all|ows |the sof|tware |to |determine |the limits |a|t |whi|ch a| program |ca|n perform |a| specific |al|gorithm. |On|e important 
+  ```
+
+#### 2. History (`6.11 bytes/chunk` — Main Transformer skipped on `83.6%` of bytes)
+* **Generated Text:**
+  > `During the Industrial Revolution, the invention of the steam engine and invention of the motorcycle was the first step to industrial economic growth. The industrial revolution was an era of great technological advancement and the rise of the professional structure which enabled the growth of the industrial middle class. The factors that led to th`
+* **Learned Dynamic Chunks (`|`):**
+  ```text
+  During| |the |Industrial| |Revolution, |the invention |of |the ste|am |engine |a|nd invention |of |the motor|cycle |was |the fir|st step |to |industrial |economic |growth. |The industrial| |revolution |was |a|n |e|ra |of |great |technological| |advancement |a|nd the rise |of |the professional |structure |whi|ch enabled |the |growth |of |the industrial| |mi|ddle |cl|ass. |The factors |th|at led |to |th
+  ```
+  *Single chunks include whole words and multi-word phrases up to 18 bytes long:* `|the invention |`, `|industrial |economic |growth. |`, `|The industrial| |revolution |`, `|technological| |advancement |`, `|nd the rise |`, `|the professional |`, `|structure |`, `|ch enabled |`.
+
+#### 3. Molecular Biology — Adaptive Acronym vs. Word Chunking (`4.50 bytes/chunk` — `77.8%` skipped)
+* **Generated Text:**
+  > `In molecular biology, DNA replication is the process by which a specific cell-to-cell conversion takes place. The complex molecules like DNA make up a large part of the cell walls of all plant living organisms.`
+  > `Although there are many different forms of DNA, the process of replicating DNA has always been fascinating in its own way. In fact,`
+* **Learned Dynamic Chunks (`|`):**
+  ```text
+  In |mo|lecular |bi|ology, |D|N|A |replication |is |the process |by |whi|ch a| specific |cell|-|to-|cell |conversion |t|akes |place. |The complex |mo|lecules |like| |D|N|A |make |up |a| large |part |of |the cell |wa|lls |of |all |plant |living |o|r|ganisms.|
+  |Although |ther|e are |man|y different |for|ms |of |D|N|A, |the process |of |replicating |D|N|A |ha|s always |been |fascinating |in |i|t|s own |way. |In |fact,
+  ```
+  *Notice how the router allocates compute proportionally to information density:* Every time the acronym **`DNA`** appears, the router switches to **1-byte-per-character** (`|D|N|A |`), while immediately grouping surrounding words into single chunks (`|replication |`, `|the process |`, `|cell|-|to-|cell |`, `|conversion |`, `|replicating |`, `|fascinating |`). Same behavior on `(NLP)` (`|Natural| |language |processing| |(|N|L|P|) |`).
+
+#### 4. Unseen Snake-Case Identifier (`hyper_flux_capacitor_v2`, `5.09 bytes/chunk` — `80.4%` skipped)
+* **Generated Text:**
+  > `When configuring the hyper_flux_capacitor_v2, engineers noticed that the hyper_flux_capacitor_v2 was the first to move around the sensor. However, since the sensor would be moved around the field, the experiment continued to move around the field and the station sensitivity would also increase. The sensor consisted of three shafts with a number of pillars inside each. The se`
+* **Learned Dynamic Chunks (`|`):**
+  ```text
+  When |configuring |the h|yper|_|flu|x|_|capacitor|_|v|2, |engineers |noticed| |th|at the h|yper|_|flu|x|_|capacitor|_|v|2 |was |the fir|st to| |move |around |the sensor. |Ho|wever, |sin|ce |the sensor |wou|ld be |moved |around |the field, |the experiment |continued |to |move |around |the field |a|nd the station |sensitivity |wou|ld also |increase. |The sensor |consisted |of |th|ree |sh|a|fts |with |a| number |of |pi|llars |inside| |ea|ch. |The se
+  ```
+

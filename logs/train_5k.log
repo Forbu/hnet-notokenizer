@@ -1,0 +1,570 @@
+================================================================================
+ByteHNetLM (hnet_1stage_l12) | Stages: 1 | Total Params: 151.24M
+Dimensions: [512, 896] | Target Compression: [4.57]
+Device: cuda | Mixed Precision: True (torch.bfloat16)
+================================================================================
+Resumed from checkpoints_fineweb_1stage/latest.pt at step 500 (BPB: 1.9315, skipping ~15000 docs)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Step   510/5000 | BPB: 2.0303 | CE: 1.4073 | Aux: 1.0023 | Chunks: [S0:4.52x => 4.52B/chunk] | Speed: 123.0 KB/s
+Step   520/5000 | BPB: 2.0982 | CE: 1.4544 | Aux: 1.0033 | Chunks: [S0:4.50x => 4.50B/chunk] | Speed: 314.8 KB/s
+Step   530/5000 | BPB: 1.9322 | CE: 1.3393 | Aux: 0.9974 | Chunks: [S0:4.62x => 4.62B/chunk] | Speed: 322.8 KB/s
+Step   540/5000 | BPB: 1.9835 | CE: 1.3748 | Aux: 1.0016 | Chunks: [S0:4.54x => 4.54B/chunk] | Speed: 306.1 KB/s
+Step   550/5000 | BPB: 2.0393 | CE: 1.4135 | Aux: 1.0004 | Chunks: [S0:4.56x => 4.56B/chunk] | Speed: 309.6 KB/s
+Step   560/5000 | BPB: 1.9729 | CE: 1.3675 | Aux: 1.0017 | Chunks: [S0:4.54x => 4.54B/chunk] | Speed: 313.6 KB/s
+Step   570/5000 | BPB: 2.0408 | CE: 1.4146 | Aux: 1.0033 | Chunks: [S0:4.50x => 4.50B/chunk] | Speed: 311.8 KB/s
+Step   580/5000 | BPB: 2.0060 | CE: 1.3905 | Aux: 0.9979 | Chunks: [S0:4.62x => 4.62B/chunk] | Speed: 303.8 KB/s
+Step   590/5000 | BPB: 1.9671 | CE: 1.3635 | Aux: 0.9938 | Chunks: [S0:4.70x => 4.70B/chunk] | Speed: 316.5 KB/s
+Step   600/5000 | BPB: 1.9054 | CE: 1.3207 | Aux: 0.9982 | Chunks: [S0:4.61x => 4.61B/chunk] | Speed: 313.0 KB/s
+Step   610/5000 | BPB: 2.0071 | CE: 1.3912 | Aux: 0.9934 | Chunks: [S0:4.71x => 4.71B/chunk] | Speed: 314.4 KB/s
+Step   620/5000 | BPB: 1.9788 | CE: 1.3716 | Aux: 0.9948 | Chunks: [S0:4.68x => 4.68B/chunk] | Speed: 305.2 KB/s
+Step   630/5000 | BPB: 1.8841 | CE: 1.3060 | Aux: 0.9942 | Chunks: [S0:4.69x => 4.69B/chunk] | Speed: 311.2 KB/s
+Step   640/5000 | BPB: 1.8800 | CE: 1.3031 | Aux: 1.0065 | Chunks: [S0:4.44x => 4.44B/chunk] | Speed: 307.6 KB/s
+Step   650/5000 | BPB: 1.9472 | CE: 1.3497 | Aux: 0.9928 | Chunks: [S0:4.73x => 4.73B/chunk] | Speed: 310.5 KB/s
+Step   660/5000 | BPB: 2.0498 | CE: 1.4208 | Aux: 1.0008 | Chunks: [S0:4.55x => 4.55B/chunk] | Speed: 313.8 KB/s
+Step   670/5000 | BPB: 1.8915 | CE: 1.3111 | Aux: 1.0018 | Chunks: [S0:4.53x => 4.53B/chunk] | Speed: 308.3 KB/s
+Step   680/5000 | BPB: 1.7623 | CE: 1.2216 | Aux: 1.0066 | Chunks: [S0:4.44x => 4.44B/chunk] | Speed: 306.9 KB/s
+Step   690/5000 | BPB: 2.1032 | CE: 1.4579 | Aux: 1.0206 | Chunks: [S0:4.19x => 4.19B/chunk] | Speed: 305.1 KB/s
+Step   700/5000 | BPB: 1.9886 | CE: 1.3784 | Aux: 0.9925 | Chunks: [S0:4.74x => 4.74B/chunk] | Speed: 311.2 KB/s
+Step   710/5000 | BPB: 1.8832 | CE: 1.3053 | Aux: 1.0014 | Chunks: [S0:4.54x => 4.54B/chunk] | Speed: 314.2 KB/s
+Step   720/5000 | BPB: 1.9849 | CE: 1.3758 | Aux: 0.9958 | Chunks: [S0:4.66x => 4.66B/chunk] | Speed: 311.4 KB/s
+Step   730/5000 | BPB: 1.9423 | CE: 1.3463 | Aux: 1.0078 | Chunks: [S0:4.41x => 4.41B/chunk] | Speed: 311.4 KB/s
+Step   740/5000 | BPB: 1.8973 | CE: 1.3151 | Aux: 0.9946 | Chunks: [S0:4.69x => 4.69B/chunk] | Speed: 308.4 KB/s
+Step   750/5000 | BPB: 1.9946 | CE: 1.3825 | Aux: 0.9998 | Chunks: [S0:4.57x => 4.57B/chunk] | Speed: 308.8 KB/s
+--------------------------------------------------------------------------------
+[Sample @ Step 750] (Core Compression: 4.97 B/chunk | Core Transformer Skipped: 79.9% of bytes)
+Text   : 'In computer science and artificial intelligence, SDC. From the late concentration and half of the opportunities between the way to take the car meals and the radical nam'
+Chunks :
+In co|m|puter scie|nce a|nd art|i|ficial in|telligen|ce, S|DC. From |the late conc|en|tr|ation a|nd h|al|f of |the |opport|un|i|ties| |b|et|wee|n |the way |to t|ake |the car meals| a|nd the radic|al nam
+--------------------------------------------------------------------------------
+Step   760/5000 | BPB: 1.9335 | CE: 1.3402 | Aux: 0.9969 | Chunks: [S0:4.64x => 4.64B/chunk] | Speed: 194.3 KB/s
+Step   770/5000 | BPB: 1.9198 | CE: 1.3307 | Aux: 0.9925 | Chunks: [S0:4.74x => 4.74B/chunk] | Speed: 309.3 KB/s
+Step   780/5000 | BPB: 1.8201 | CE: 1.2616 | Aux: 0.9997 | Chunks: [S0:4.58x => 4.58B/chunk] | Speed: 313.0 KB/s
+Step   790/5000 | BPB: 1.9701 | CE: 1.3656 | Aux: 0.9888 | Chunks: [S0:4.84x => 4.84B/chunk] | Speed: 307.5 KB/s
+Step   800/5000 | BPB: 1.7961 | CE: 1.2450 | Aux: 1.0084 | Chunks: [S0:4.40x => 4.40B/chunk] | Speed: 313.5 KB/s
+Step   810/5000 | BPB: 2.0068 | CE: 1.3910 | Aux: 0.9884 | Chunks: [S0:4.85x => 4.85B/chunk] | Speed: 312.4 KB/s
+Step   820/5000 | BPB: 1.8636 | CE: 1.2917 | Aux: 1.0034 | Chunks: [S0:4.50x => 4.50B/chunk] | Speed: 308.3 KB/s
+Step   830/5000 | BPB: 1.9690 | CE: 1.3648 | Aux: 0.9971 | Chunks: [S0:4.63x => 4.63B/chunk] | Speed: 305.5 KB/s
+Step   840/5000 | BPB: 1.7994 | CE: 1.2473 | Aux: 1.0056 | Chunks: [S0:4.45x => 4.45B/chunk] | Speed: 311.4 KB/s
+Step   850/5000 | BPB: 1.9107 | CE: 1.3244 | Aux: 1.0021 | Chunks: [S0:4.52x => 4.52B/chunk] | Speed: 308.8 KB/s
+Step   860/5000 | BPB: 1.9565 | CE: 1.3561 | Aux: 0.9991 | Chunks: [S0:4.59x => 4.59B/chunk] | Speed: 312.3 KB/s
+Step   870/5000 | BPB: 2.0152 | CE: 1.3968 | Aux: 0.9965 | Chunks: [S0:4.65x => 4.65B/chunk] | Speed: 306.4 KB/s
+Step   880/5000 | BPB: 1.9353 | CE: 1.3415 | Aux: 0.9942 | Chunks: [S0:4.70x => 4.70B/chunk] | Speed: 307.2 KB/s
+Step   890/5000 | BPB: 1.9077 | CE: 1.3223 | Aux: 0.9999 | Chunks: [S0:4.57x => 4.57B/chunk] | Speed: 308.6 KB/s
+Step   900/5000 | BPB: 1.9356 | CE: 1.3416 | Aux: 0.9998 | Chunks: [S0:4.57x => 4.57B/chunk] | Speed: 305.7 KB/s
+Step   910/5000 | BPB: 1.9377 | CE: 1.3431 | Aux: 0.9991 | Chunks: [S0:4.59x => 4.59B/chunk] | Speed: 306.5 KB/s
+Step   920/5000 | BPB: 1.8875 | CE: 1.3083 | Aux: 1.0015 | Chunks: [S0:4.54x => 4.54B/chunk] | Speed: 309.3 KB/s
+Step   930/5000 | BPB: 1.9216 | CE: 1.3319 | Aux: 1.0025 | Chunks: [S0:4.52x => 4.52B/chunk] | Speed: 306.4 KB/s
+Step   940/5000 | BPB: 1.9511 | CE: 1.3524 | Aux: 0.9937 | Chunks: [S0:4.72x => 4.72B/chunk] | Speed: 310.9 KB/s
+Step   950/5000 | BPB: 1.9169 | CE: 1.3287 | Aux: 1.0061 | Chunks: [S0:4.44x => 4.44B/chunk] | Speed: 297.9 KB/s
+Step   960/5000 | BPB: 2.1340 | CE: 1.4791 | Aux: 1.0013 | Chunks: [S0:4.54x => 4.54B/chunk] | Speed: 312.2 KB/s
+Step   970/5000 | BPB: 1.9121 | CE: 1.3254 | Aux: 1.0037 | Chunks: [S0:4.49x => 4.49B/chunk] | Speed: 307.4 KB/s
+Step   980/5000 | BPB: 1.8864 | CE: 1.3076 | Aux: 0.9935 | Chunks: [S0:4.72x => 4.72B/chunk] | Speed: 303.8 KB/s
+Step   990/5000 | BPB: 2.0498 | CE: 1.4208 | Aux: 0.9989 | Chunks: [S0:4.59x => 4.59B/chunk] | Speed: 296.8 KB/s
+Step  1000/5000 | BPB: 1.8456 | CE: 1.2793 | Aux: 0.9981 | Chunks: [S0:4.61x => 4.61B/chunk] | Speed: 303.1 KB/s
+--------------------------------------------------------------------------------
+[Sample @ Step 1000] (Core Compression: 3.93 B/chunk | Core Transformer Skipped: 74.6% of bytes)
+Text   : 'In computer science and artificial intelligence, such as hospitals, dated in the specific energy lay children as multiply at all single points on the world applications '
+Chunks :
+In co|m|puter s|c|i|ence a|n|d art|i|f|icial intel|l|i|ge|n|ce, suc|h a|s hos|pitals, da|t|e|d in |the spe|cif|ic en|er|gy l|ay child|r|en as mu|l|ti|p|ly a|t all s|ing|le p|oints on the wo|r|l|d a|ppl|ications 
+--------------------------------------------------------------------------------
+Step  1010/5000 | BPB: 1.8800 | CE: 1.3031 | Aux: 0.9988 | Chunks: [S0:4.60x => 4.60B/chunk] | Speed: 165.1 KB/s
+Step  1020/5000 | BPB: 1.9088 | CE: 1.3231 | Aux: 1.0048 | Chunks: [S0:4.47x => 4.47B/chunk] | Speed: 305.1 KB/s
+Step  1030/5000 | BPB: 1.9919 | CE: 1.3807 | Aux: 0.9957 | Chunks: [S0:4.67x => 4.67B/chunk] | Speed: 308.4 KB/s
+Step  1040/5000 | BPB: 1.9384 | CE: 1.3436 | Aux: 1.0011 | Chunks: [S0:4.55x => 4.55B/chunk] | Speed: 307.3 KB/s
+Step  1050/5000 | BPB: 1.8455 | CE: 1.2792 | Aux: 0.9890 | Chunks: [S0:4.84x => 4.84B/chunk] | Speed: 309.4 KB/s
+Step  1060/5000 | BPB: 1.9250 | CE: 1.3343 | Aux: 1.0054 | Chunks: [S0:4.45x => 4.45B/chunk] | Speed: 305.1 KB/s
+Step  1070/5000 | BPB: 1.9055 | CE: 1.3208 | Aux: 0.9921 | Chunks: [S0:4.77x => 4.77B/chunk] | Speed: 308.0 KB/s
+Step  1080/5000 | BPB: 1.6502 | CE: 1.1439 | Aux: 0.9908 | Chunks: [S0:4.79x => 4.79B/chunk] | Speed: 306.5 KB/s
+Step  1090/5000 | BPB: 1.8915 | CE: 1.3111 | Aux: 1.0025 | Chunks: [S0:4.51x => 4.51B/chunk] | Speed: 306.1 KB/s
+Step  1100/5000 | BPB: 1.8605 | CE: 1.2896 | Aux: 0.9940 | Chunks: [S0:4.71x => 4.71B/chunk] | Speed: 298.2 KB/s
+Step  1110/5000 | BPB: 2.0305 | CE: 1.4075 | Aux: 1.0050 | Chunks: [S0:4.46x => 4.46B/chunk] | Speed: 309.4 KB/s
+Step  1120/5000 | BPB: 1.8989 | CE: 1.3162 | Aux: 0.9997 | Chunks: [S0:4.58x => 4.58B/chunk] | Speed: 303.2 KB/s
+Step  1130/5000 | BPB: 1.8339 | CE: 1.2711 | Aux: 1.0001 | Chunks: [S0:4.57x => 4.57B/chunk] | Speed: 309.7 KB/s
+Step  1140/5000 | BPB: 1.8478 | CE: 1.2808 | Aux: 0.9983 | Chunks: [S0:4.61x => 4.61B/chunk] | Speed: 306.6 KB/s
+Step  1150/5000 | BPB: 1.7682 | CE: 1.2257 | Aux: 1.0029 | Chunks: [S0:4.50x => 4.50B/chunk] | Speed: 310.3 KB/s
+Step  1160/5000 | BPB: 1.8942 | CE: 1.3130 | Aux: 0.9994 | Chunks: [S0:4.58x => 4.58B/chunk] | Speed: 294.4 KB/s
+Step  1170/5000 | BPB: 1.8166 | CE: 1.2591 | Aux: 1.0001 | Chunks: [S0:4.57x => 4.57B/chunk] | Speed: 310.4 KB/s
+Step  1180/5000 | BPB: 1.7673 | CE: 1.2250 | Aux: 0.9932 | Chunks: [S0:4.74x => 4.74B/chunk] | Speed: 306.9 KB/s
+Step  1190/5000 | BPB: 1.8393 | CE: 1.2749 | Aux: 1.0010 | Chunks: [S0:4.55x => 4.55B/chunk] | Speed: 306.5 KB/s
+Step  1200/5000 | BPB: 2.0797 | CE: 1.4416 | Aux: 0.9970 | Chunks: [S0:4.64x => 4.64B/chunk] | Speed: 299.7 KB/s
+Step  1210/5000 | BPB: 1.8332 | CE: 1.2707 | Aux: 1.0065 | Chunks: [S0:4.43x => 4.43B/chunk] | Speed: 307.6 KB/s
+Step  1220/5000 | BPB: 1.8534 | CE: 1.2847 | Aux: 1.0023 | Chunks: [S0:4.52x => 4.52B/chunk] | Speed: 307.3 KB/s
+Step  1230/5000 | BPB: 1.7725 | CE: 1.2286 | Aux: 1.0008 | Chunks: [S0:4.55x => 4.55B/chunk] | Speed: 302.4 KB/s
+Step  1240/5000 | BPB: 1.8841 | CE: 1.3059 | Aux: 0.9957 | Chunks: [S0:4.67x => 4.67B/chunk] | Speed: 308.4 KB/s
+Step  1250/5000 | BPB: 1.8320 | CE: 1.2698 | Aux: 0.9943 | Chunks: [S0:4.71x => 4.71B/chunk] | Speed: 303.5 KB/s
+--------------------------------------------------------------------------------
+[Sample @ Step 1250] (Core Compression: 3.76 B/chunk | Core Transformer Skipped: 73.4% of bytes)
+Text   : 'In computer science and artificial intelligence, students completely still accessed by the EUCDERT Medical County, and Climate Data and higher system.\nThe U.S. Dose Cohe'
+Chunks :
+In co|m|puter s|c|i|ence a|nd art|i|fi|cial intellige|n|ce, st|ude|nts co|m|pl|et|el|y |still a|cce|ssed |by |the |E|UCDERT |Medic|al| Co|u|nty, a|nd |Cl|imate Da|t|a a|nd hi|gher |s|ystem.
+|The |U.|S. Do|se| Cohe
+--------------------------------------------------------------------------------
+Step  1260/5000 | BPB: 1.7053 | CE: 1.1820 | Aux: 0.9964 | Chunks: [S0:4.66x => 4.66B/chunk] | Speed: 166.7 KB/s
+[W1103 15:03:40.907836933 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 402653184 bytes (free: 148176896, total: 101973491712).
+Step  1270/5000 | BPB: 1.8067 | CE: 1.2523 | Aux: 0.9931 | Chunks: [S0:4.74x => 4.74B/chunk] | Speed: 282.7 KB/s
+Step  1280/5000 | BPB: 1.8876 | CE: 1.3084 | Aux: 0.9978 | Chunks: [S0:4.62x => 4.62B/chunk] | Speed: 310.9 KB/s
+Step  1290/5000 | BPB: 1.8012 | CE: 1.2485 | Aux: 0.9938 | Chunks: [S0:4.72x => 4.72B/chunk] | Speed: 303.5 KB/s
+Step  1300/5000 | BPB: 1.8039 | CE: 1.2503 | Aux: 1.0035 | Chunks: [S0:4.49x => 4.49B/chunk] | Speed: 303.9 KB/s
+Step  1310/5000 | BPB: 1.9399 | CE: 1.3447 | Aux: 1.0067 | Chunks: [S0:4.42x => 4.42B/chunk] | Speed: 304.6 KB/s
+Step  1320/5000 | BPB: 1.8791 | CE: 1.3025 | Aux: 0.9963 | Chunks: [S0:4.66x => 4.66B/chunk] | Speed: 306.8 KB/s
+Step  1330/5000 | BPB: 1.7438 | CE: 1.2087 | Aux: 0.9938 | Chunks: [S0:4.72x => 4.72B/chunk] | Speed: 304.6 KB/s
+Step  1340/5000 | BPB: 1.7944 | CE: 1.2438 | Aux: 0.9924 | Chunks: [S0:4.76x => 4.76B/chunk] | Speed: 303.8 KB/s
+Step  1350/5000 | BPB: 1.8027 | CE: 1.2495 | Aux: 0.9999 | Chunks: [S0:4.57x => 4.57B/chunk] | Speed: 302.4 KB/s
+Step  1360/5000 | BPB: 1.7673 | CE: 1.2250 | Aux: 0.9968 | Chunks: [S0:4.64x => 4.64B/chunk] | Speed: 301.1 KB/s
+Step  1370/5000 | BPB: 1.8034 | CE: 1.2500 | Aux: 1.0028 | Chunks: [S0:4.51x => 4.51B/chunk] | Speed: 308.7 KB/s
+Step  1380/5000 | BPB: 1.7616 | CE: 1.2210 | Aux: 0.9935 | Chunks: [S0:4.73x => 4.73B/chunk] | Speed: 304.0 KB/s
+Step  1390/5000 | BPB: 1.7353 | CE: 1.2028 | Aux: 0.9992 | Chunks: [S0:4.59x => 4.59B/chunk] | Speed: 310.2 KB/s
+Step  1400/5000 | BPB: 1.7374 | CE: 1.2043 | Aux: 0.9997 | Chunks: [S0:4.58x => 4.58B/chunk] | Speed: 304.9 KB/s
+Step  1410/5000 | BPB: 1.6892 | CE: 1.1708 | Aux: 0.9999 | Chunks: [S0:4.57x => 4.57B/chunk] | Speed: 310.0 KB/s
+Step  1420/5000 | BPB: 1.7619 | CE: 1.2213 | Aux: 0.9904 | Chunks: [S0:4.81x => 4.81B/chunk] | Speed: 298.5 KB/s
+Step  1430/5000 | BPB: 1.7502 | CE: 1.2132 | Aux: 0.9977 | Chunks: [S0:4.62x => 4.62B/chunk] | Speed: 305.9 KB/s
+Step  1440/5000 | BPB: 1.9477 | CE: 1.3500 | Aux: 1.0020 | Chunks: [S0:4.52x => 4.52B/chunk] | Speed: 306.1 KB/s
+Step  1450/5000 | BPB: 1.7807 | CE: 1.2343 | Aux: 0.9982 | Chunks: [S0:4.61x => 4.61B/chunk] | Speed: 305.4 KB/s
+Step  1460/5000 | BPB: 1.7998 | CE: 1.2475 | Aux: 0.9959 | Chunks: [S0:4.67x => 4.67B/chunk] | Speed: 303.3 KB/s
+Step  1470/5000 | BPB: 1.7680 | CE: 1.2255 | Aux: 0.9958 | Chunks: [S0:4.67x => 4.67B/chunk] | Speed: 306.9 KB/s
+Step  1480/5000 | BPB: 1.7540 | CE: 1.2158 | Aux: 1.0034 | Chunks: [S0:4.50x => 4.50B/chunk] | Speed: 298.9 KB/s
+Step  1490/5000 | BPB: 1.9718 | CE: 1.3668 | Aux: 1.0201 | Chunks: [S0:4.18x => 4.18B/chunk] | Speed: 302.1 KB/s
+Step  1500/5000 | BPB: 1.7488 | CE: 1.2121 | Aux: 1.0016 | Chunks: [S0:4.53x => 4.53B/chunk] | Speed: 307.0 KB/s
+--------------------------------------------------------------------------------
+[Sample @ Step 1500] (Core Compression: 7.68 B/chunk | Core Transformer Skipped: 87.0% of bytes)
+Text   : 'In computer science and artificial intelligence, and other medical emergency, care traditions of the differences in political inclusion. This court draws the scheme to t'
+Chunks :
+In co|mputer s|cience a|nd art|if|icial intelligence, a|nd o|ther medical emergency, care |traditions of |the di|fferences in polit|ical inc|lusion. |Thi|s co|u|rt d|r|a|ws |the s|cheme to t
+--------------------------------------------------------------------------------
+Step  1510/5000 | BPB: 1.8070 | CE: 1.2525 | Aux: 0.9961 | Chunks: [S0:4.66x => 4.66B/chunk] | Speed: 164.9 KB/s
+Step  1520/5000 | BPB: 1.7657 | CE: 1.2239 | Aux: 0.9978 | Chunks: [S0:4.62x => 4.62B/chunk] | Speed: 311.1 KB/s
+Step  1530/5000 | BPB: 1.6474 | CE: 1.1419 | Aux: 1.0008 | Chunks: [S0:4.55x => 4.55B/chunk] | Speed: 310.6 KB/s
+Step  1540/5000 | BPB: 1.8625 | CE: 1.2910 | Aux: 1.0037 | Chunks: [S0:4.49x => 4.49B/chunk] | Speed: 308.9 KB/s
+Step  1550/5000 | BPB: 1.7646 | CE: 1.2231 | Aux: 0.9970 | Chunks: [S0:4.64x => 4.64B/chunk] | Speed: 305.1 KB/s
+Step  1560/5000 | BPB: 1.7121 | CE: 1.1867 | Aux: 0.9989 | Chunks: [S0:4.60x => 4.60B/chunk] | Speed: 302.2 KB/s
+Step  1570/5000 | BPB: 1.7343 | CE: 1.2021 | Aux: 0.9967 | Chunks: [S0:4.65x => 4.65B/chunk] | Speed: 301.2 KB/s
+Step  1580/5000 | BPB: 1.6752 | CE: 1.1612 | Aux: 1.0008 | Chunks: [S0:4.55x => 4.55B/chunk] | Speed: 307.6 KB/s
+Step  1590/5000 | BPB: 1.8015 | CE: 1.2487 | Aux: 1.0024 | Chunks: [S0:4.52x => 4.52B/chunk] | Speed: 299.0 KB/s
+Step  1600/5000 | BPB: 1.8001 | CE: 1.2478 | Aux: 0.9931 | Chunks: [S0:4.74x => 4.74B/chunk] | Speed: 303.5 KB/s
+Step  1610/5000 | BPB: 1.9059 | CE: 1.3211 | Aux: 0.9948 | Chunks: [S0:4.70x => 4.70B/chunk] | Speed: 297.1 KB/s
+Step  1620/5000 | BPB: 1.7028 | CE: 1.1803 | Aux: 1.0028 | Chunks: [S0:4.51x => 4.51B/chunk] | Speed: 301.6 KB/s
+Step  1630/5000 | BPB: 1.6022 | CE: 1.1105 | Aux: 0.9942 | Chunks: [S0:4.71x => 4.71B/chunk] | Speed: 302.4 KB/s
+Step  1640/5000 | BPB: 1.8666 | CE: 1.2938 | Aux: 1.0020 | Chunks: [S0:4.53x => 4.53B/chunk] | Speed: 304.0 KB/s
+Step  1650/5000 | BPB: 1.8345 | CE: 1.2716 | Aux: 1.0008 | Chunks: [S0:4.55x => 4.55B/chunk] | Speed: 309.8 KB/s
+Step  1660/5000 | BPB: 1.7250 | CE: 1.1957 | Aux: 1.0054 | Chunks: [S0:4.45x => 4.45B/chunk] | Speed: 309.7 KB/s
+Step  1670/5000 | BPB: 1.6828 | CE: 1.1665 | Aux: 0.9878 | Chunks: [S0:4.87x => 4.87B/chunk] | Speed: 301.3 KB/s
+Step  1680/5000 | BPB: 1.7787 | CE: 1.2329 | Aux: 1.0072 | Chunks: [S0:4.42x => 4.42B/chunk] | Speed: 307.1 KB/s
+Step  1690/5000 | BPB: 1.8656 | CE: 1.2931 | Aux: 0.9899 | Chunks: [S0:4.82x => 4.82B/chunk] | Speed: 298.2 KB/s
+Step  1700/5000 | BPB: 1.6756 | CE: 1.1614 | Aux: 0.9980 | Chunks: [S0:4.62x => 4.62B/chunk] | Speed: 305.2 KB/s
+Step  1710/5000 | BPB: 1.7350 | CE: 1.2026 | Aux: 0.9979 | Chunks: [S0:4.62x => 4.62B/chunk] | Speed: 306.2 KB/s
+Step  1720/5000 | BPB: 1.6989 | CE: 1.1776 | Aux: 0.9950 | Chunks: [S0:4.69x => 4.69B/chunk] | Speed: 310.8 KB/s
+Step  1730/5000 | BPB: 1.7443 | CE: 1.2091 | Aux: 1.0012 | Chunks: [S0:4.54x => 4.54B/chunk] | Speed: 303.2 KB/s
+Step  1740/5000 | BPB: 1.7962 | CE: 1.2451 | Aux: 0.9896 | Chunks: [S0:4.83x => 4.83B/chunk] | Speed: 300.9 KB/s
+Step  1750/5000 | BPB: 1.7585 | CE: 1.2189 | Aux: 1.0016 | Chunks: [S0:4.53x => 4.53B/chunk] | Speed: 307.0 KB/s
+--------------------------------------------------------------------------------
+[Sample @ Step 1750] (Core Compression: 4.57 B/chunk | Core Transformer Skipped: 78.1% of bytes)
+Text   : 'In computer science and artificial intelligence, but read about our designs and capability to keep translation because deputies have been paid that social safety relevan'
+Chunks :
+In |computer |s|ci|ence a|nd artificial intelli|gen|ce, |b|u|t r|ead abo|ut |o|ur des|igns a|nd cap|ability to ke|e|p |transl|ation |b|e|ca|use depu|ties h|a|ve bee|n pa|id |that |s|oci|al s|afe|ty relevan
+--------------------------------------------------------------------------------
+Step  1760/5000 | BPB: 1.7788 | CE: 1.2330 | Aux: 1.0063 | Chunks: [S0:4.43x => 4.43B/chunk] | Speed: 215.1 KB/s
+Step  1770/5000 | BPB: 2.1666 | CE: 1.5018 | Aux: 1.0109 | Chunks: [S0:4.34x => 4.34B/chunk] | Speed: 301.1 KB/s
+Step  1780/5000 | BPB: 1.7403 | CE: 1.2063 | Aux: 1.0020 | Chunks: [S0:4.53x => 4.53B/chunk] | Speed: 303.1 KB/s
+Step  1790/5000 | BPB: 1.7576 | CE: 1.2182 | Aux: 1.0000 | Chunks: [S0:4.57x => 4.57B/chunk] | Speed: 305.9 KB/s
+Step  1800/5000 | BPB: 1.8760 | CE: 1.3004 | Aux: 0.9981 | Chunks: [S0:4.61x => 4.61B/chunk] | Speed: 296.2 KB/s
+Step  1810/5000 | BPB: 1.8198 | CE: 1.2614 | Aux: 1.0078 | Chunks: [S0:4.41x => 4.41B/chunk] | Speed: 306.3 KB/s
+Step  1820/5000 | BPB: 1.8535 | CE: 1.2847 | Aux: 0.9976 | Chunks: [S0:4.62x => 4.62B/chunk] | Speed: 298.8 KB/s
+Step  1830/5000 | BPB: 1.8160 | CE: 1.2587 | Aux: 1.0053 | Chunks: [S0:4.45x => 4.45B/chunk] | Speed: 302.2 KB/s
+Step  1840/5000 | BPB: 1.8746 | CE: 1.2994 | Aux: 1.0009 | Chunks: [S0:4.55x => 4.55B/chunk] | Speed: 304.1 KB/s
+Step  1850/5000 | BPB: 1.8373 | CE: 1.2735 | Aux: 1.0029 | Chunks: [S0:4.51x => 4.51B/chunk] | Speed: 303.9 KB/s
+Step  1860/5000 | BPB: 1.7455 | CE: 1.2099 | Aux: 0.9990 | Chunks: [S0:4.59x => 4.59B/chunk] | Speed: 304.0 KB/s
+Step  1870/5000 | BPB: 1.7604 | CE: 1.2202 | Aux: 0.9918 | Chunks: [S0:4.77x => 4.77B/chunk] | Speed: 292.3 KB/s
+Step  1880/5000 | BPB: 1.7895 | CE: 1.2404 | Aux: 0.9954 | Chunks: [S0:4.68x => 4.68B/chunk] | Speed: 308.6 KB/s
+Step  1890/5000 | BPB: 1.7916 | CE: 1.2418 | Aux: 1.0002 | Chunks: [S0:4.57x => 4.57B/chunk] | Speed: 310.8 KB/s
+Step  1900/5000 | BPB: 1.7490 | CE: 1.2123 | Aux: 1.0035 | Chunks: [S0:4.49x => 4.49B/chunk] | Speed: 298.5 KB/s
+Step  1910/5000 | BPB: 1.7488 | CE: 1.2122 | Aux: 0.9950 | Chunks: [S0:4.69x => 4.69B/chunk] | Speed: 306.6 KB/s
+Step  1920/5000 | BPB: 1.7671 | CE: 1.2248 | Aux: 0.9998 | Chunks: [S0:4.57x => 4.57B/chunk] | Speed: 306.7 KB/s
+Step  1930/5000 | BPB: 1.8033 | CE: 1.2500 | Aux: 0.9988 | Chunks: [S0:4.60x => 4.60B/chunk] | Speed: 305.5 KB/s
+Step  1940/5000 | BPB: 1.8254 | CE: 1.2653 | Aux: 0.9949 | Chunks: [S0:4.69x => 4.69B/chunk] | Speed: 308.8 KB/s
+Step  1950/5000 | BPB: 1.7410 | CE: 1.2068 | Aux: 0.9953 | Chunks: [S0:4.68x => 4.68B/chunk] | Speed: 297.4 KB/s
+Step  1960/5000 | BPB: 1.7862 | CE: 1.2381 | Aux: 0.9981 | Chunks: [S0:4.61x => 4.61B/chunk] | Speed: 306.6 KB/s
+Step  1970/5000 | BPB: 1.6378 | CE: 1.1352 | Aux: 1.0006 | Chunks: [S0:4.56x => 4.56B/chunk] | Speed: 291.6 KB/s
+Step  1980/5000 | BPB: 1.7727 | CE: 1.2287 | Aux: 1.0005 | Chunks: [S0:4.56x => 4.56B/chunk] | Speed: 305.7 KB/s
+Step  1990/5000 | BPB: 1.7404 | CE: 1.2064 | Aux: 1.0001 | Chunks: [S0:4.57x => 4.57B/chunk] | Speed: 303.1 KB/s
+Step  2000/5000 | BPB: 1.7140 | CE: 1.1881 | Aux: 0.9993 | Chunks: [S0:4.59x => 4.59B/chunk] | Speed: 302.1 KB/s
+--------------------------------------------------------------------------------
+[Sample @ Step 2000] (Core Compression: 5.83 B/chunk | Core Transformer Skipped: 82.8% of bytes)
+Text   : 'In computer science and artificial intelligence, means that concerning the programme of early and are the expression that the states are invaluable at the time of the or'
+Chunks :
+In |co|mputer s|cience a|nd artificial intelligence, |mean|s |that |concerni|ng |the programme of ear|l|y a|nd ar|e |the |e|xpression th|at |the stat|es ar|e |invaluable a|t |the t|ime |of |the o|r
+--------------------------------------------------------------------------------
+Step  2010/5000 | BPB: 1.7366 | CE: 1.2037 | Aux: 0.9969 | Chunks: [S0:4.64x => 4.64B/chunk] | Speed: 174.2 KB/s
+Step  2020/5000 | BPB: 1.7379 | CE: 1.2046 | Aux: 0.9994 | Chunks: [S0:4.58x => 4.58B/chunk] | Speed: 299.1 KB/s
+Step  2030/5000 | BPB: 1.7679 | CE: 1.2254 | Aux: 0.9999 | Chunks: [S0:4.57x => 4.57B/chunk] | Speed: 303.4 KB/s
+Step  2040/5000 | BPB: 1.7474 | CE: 1.2112 | Aux: 0.9959 | Chunks: [S0:4.66x => 4.66B/chunk] | Speed: 301.0 KB/s
+Step  2050/5000 | BPB: 1.7619 | CE: 1.2213 | Aux: 1.0018 | Chunks: [S0:4.53x => 4.53B/chunk] | Speed: 304.5 KB/s
+Step  2060/5000 | BPB: 1.7316 | CE: 1.2003 | Aux: 0.9969 | Chunks: [S0:4.64x => 4.64B/chunk] | Speed: 305.5 KB/s
+Step  2070/5000 | BPB: 1.7613 | CE: 1.2209 | Aux: 1.0087 | Chunks: [S0:4.39x => 4.39B/chunk] | Speed: 297.0 KB/s
+Step  2080/5000 | BPB: 1.7263 | CE: 1.1966 | Aux: 0.9955 | Chunks: [S0:4.68x => 4.68B/chunk] | Speed: 302.3 KB/s
+Step  2090/5000 | BPB: 1.8572 | CE: 1.2873 | Aux: 0.9967 | Chunks: [S0:4.65x => 4.65B/chunk] | Speed: 304.3 KB/s
+Step  2100/5000 | BPB: 1.7150 | CE: 1.1888 | Aux: 1.0086 | Chunks: [S0:4.39x => 4.39B/chunk] | Speed: 301.9 KB/s
+Step  2110/5000 | BPB: 1.8120 | CE: 1.2560 | Aux: 0.9986 | Chunks: [S0:4.60x => 4.60B/chunk] | Speed: 304.1 KB/s
+Step  2120/5000 | BPB: 1.6691 | CE: 1.1570 | Aux: 0.9996 | Chunks: [S0:4.58x => 4.58B/chunk] | Speed: 302.9 KB/s
+Step  2130/5000 | BPB: 1.7318 | CE: 1.2004 | Aux: 1.0031 | Chunks: [S0:4.50x => 4.50B/chunk] | Speed: 304.5 KB/s
+Step  2140/5000 | BPB: 1.7785 | CE: 1.2328 | Aux: 1.0014 | Chunks: [S0:4.54x => 4.54B/chunk] | Speed: 305.5 KB/s
+Step  2150/5000 | BPB: 1.7444 | CE: 1.2092 | Aux: 0.9987 | Chunks: [S0:4.60x => 4.60B/chunk] | Speed: 301.3 KB/s
+Step  2160/5000 | BPB: 1.7099 | CE: 1.1852 | Aux: 1.0078 | Chunks: [S0:4.40x => 4.40B/chunk] | Speed: 303.4 KB/s
+Step  2170/5000 | BPB: 1.7726 | CE: 1.2286 | Aux: 0.9992 | Chunks: [S0:4.59x => 4.59B/chunk] | Speed: 295.5 KB/s
+Step  2180/5000 | BPB: 1.7833 | CE: 1.2361 | Aux: 1.0061 | Chunks: [S0:4.44x => 4.44B/chunk] | Speed: 301.5 KB/s
+Step  2190/5000 | BPB: 1.6446 | CE: 1.1400 | Aux: 1.0023 | Chunks: [S0:4.52x => 4.52B/chunk] | Speed: 302.2 KB/s
+Step  2200/5000 | BPB: 1.8019 | CE: 1.2490 | Aux: 1.0086 | Chunks: [S0:4.39x => 4.39B/chunk] | Speed: 304.6 KB/s
+Step  2210/5000 | BPB: 1.8185 | CE: 1.2605 | Aux: 1.0033 | Chunks: [S0:4.50x => 4.50B/chunk] | Speed: 301.1 KB/s
+Step  2220/5000 | BPB: 1.6680 | CE: 1.1562 | Aux: 0.9968 | Chunks: [S0:4.65x => 4.65B/chunk] | Speed: 298.3 KB/s
+Step  2230/5000 | BPB: 1.7477 | CE: 1.2114 | Aux: 1.0003 | Chunks: [S0:4.56x => 4.56B/chunk] | Speed: 305.5 KB/s
+Step  2240/5000 | BPB: 1.7882 | CE: 1.2395 | Aux: 1.0053 | Chunks: [S0:4.45x => 4.45B/chunk] | Speed: 303.2 KB/s
+Step  2250/5000 | BPB: 1.7001 | CE: 1.1784 | Aux: 0.9966 | Chunks: [S0:4.65x => 4.65B/chunk] | Speed: 304.5 KB/s
+--------------------------------------------------------------------------------
+[Sample @ Step 2250] (Core Compression: 4.69 B/chunk | Core Transformer Skipped: 78.7% of bytes)
+Text   : 'In computer science and artificial intelligence, the mobility and end their activity is very well known as the majority of the standard techniques. The belief that the E'
+Chunks :
+In |computer s|cience a|nd art|ificial intelligence, |the mo|b|ility a|nd end |the|ir activity is v|er|y| |well| |k|no|w|n| |a|s |the ma|jor|i|ty |of |the stand|ard te|ch|niques. |The belief th|at |the |E
+--------------------------------------------------------------------------------
+Step  2260/5000 | BPB: 1.7152 | CE: 1.1889 | Aux: 0.9958 | Chunks: [S0:4.67x => 4.67B/chunk] | Speed: 164.9 KB/s
+Step  2270/5000 | BPB: 1.7970 | CE: 1.2456 | Aux: 1.0092 | Chunks: [S0:4.37x => 4.37B/chunk] | Speed: 300.4 KB/s
+Step  2280/5000 | BPB: 1.9706 | CE: 1.3659 | Aux: 0.9971 | Chunks: [S0:4.63x => 4.63B/chunk] | Speed: 304.0 KB/s
+Step  2290/5000 | BPB: 1.7428 | CE: 1.2080 | Aux: 0.9975 | Chunks: [S0:4.63x => 4.63B/chunk] | Speed: 304.5 KB/s
+Step  2300/5000 | BPB: 1.7268 | CE: 1.1969 | Aux: 1.0016 | Chunks: [S0:4.54x => 4.54B/chunk] | Speed: 302.6 KB/s
+Step  2310/5000 | BPB: 1.6261 | CE: 1.1271 | Aux: 0.9934 | Chunks: [S0:4.73x => 4.73B/chunk] | Speed: 302.8 KB/s
+Step  2320/5000 | BPB: 1.7172 | CE: 1.1903 | Aux: 0.9962 | Chunks: [S0:4.66x => 4.66B/chunk] | Speed: 303.5 KB/s
+Step  2330/5000 | BPB: 1.6892 | CE: 1.1709 | Aux: 1.0001 | Chunks: [S0:4.57x => 4.57B/chunk] | Speed: 294.6 KB/s
+Step  2340/5000 | BPB: 1.7336 | CE: 1.2016 | Aux: 1.0065 | Chunks: [S0:4.43x => 4.43B/chunk] | Speed: 303.3 KB/s
+Step  2350/5000 | BPB: 1.7117 | CE: 1.1864 | Aux: 0.9989 | Chunks: [S0:4.59x => 4.59B/chunk] | Speed: 309.8 KB/s
+Step  2360/5000 | BPB: 1.8169 | CE: 1.2594 | Aux: 1.0106 | Chunks: [S0:4.34x => 4.34B/chunk] | Speed: 300.9 KB/s
+Step  2370/5000 | BPB: 1.8957 | CE: 1.3140 | Aux: 1.0003 | Chunks: [S0:4.56x => 4.56B/chunk] | Speed: 295.1 KB/s
+Step  2380/5000 | BPB: 1.8759 | CE: 1.3003 | Aux: 1.0029 | Chunks: [S0:4.50x => 4.50B/chunk] | Speed: 300.9 KB/s
+Step  2390/5000 | BPB: 1.7114 | CE: 1.1863 | Aux: 1.0028 | Chunks: [S0:4.51x => 4.51B/chunk] | Speed: 302.4 KB/s
+Step  2400/5000 | BPB: 1.6851 | CE: 1.1680 | Aux: 1.0023 | Chunks: [S0:4.52x => 4.52B/chunk] | Speed: 297.4 KB/s
+Step  2410/5000 | BPB: 1.6542 | CE: 1.1466 | Aux: 1.0096 | Chunks: [S0:4.37x => 4.37B/chunk] | Speed: 306.3 KB/s
+Step  2420/5000 | BPB: 1.6505 | CE: 1.1440 | Aux: 0.9970 | Chunks: [S0:4.64x => 4.64B/chunk] | Speed: 304.2 KB/s
+Step  2430/5000 | BPB: 1.6885 | CE: 1.1704 | Aux: 0.9962 | Chunks: [S0:4.66x => 4.66B/chunk] | Speed: 305.4 KB/s
+Step  2440/5000 | BPB: 1.8052 | CE: 1.2513 | Aux: 1.0019 | Chunks: [S0:4.53x => 4.53B/chunk] | Speed: 308.9 KB/s
+Step  2450/5000 | BPB: 1.6496 | CE: 1.1434 | Aux: 1.0041 | Chunks: [S0:4.48x => 4.48B/chunk] | Speed: 301.6 KB/s
+Step  2460/5000 | BPB: 1.6934 | CE: 1.1738 | Aux: 1.0070 | Chunks: [S0:4.42x => 4.42B/chunk] | Speed: 299.7 KB/s
+Step  2470/5000 | BPB: 1.6982 | CE: 1.1771 | Aux: 0.9964 | Chunks: [S0:4.65x => 4.65B/chunk] | Speed: 274.9 KB/s
+Step  2480/5000 | BPB: 1.7783 | CE: 1.2326 | Aux: 0.9984 | Chunks: [S0:4.61x => 4.61B/chunk] | Speed: 300.4 KB/s
+Step  2490/5000 | BPB: 1.6365 | CE: 1.1343 | Aux: 1.0027 | Chunks: [S0:4.51x => 4.51B/chunk] | Speed: 304.0 KB/s
+Step  2500/5000 | BPB: 1.6416 | CE: 1.1378 | Aux: 1.0029 | Chunks: [S0:4.51x => 4.51B/chunk] | Speed: 304.9 KB/s
+--------------------------------------------------------------------------------
+[Sample @ Step 2500] (Core Compression: 7.68 B/chunk | Core Transformer Skipped: 87.0% of bytes)
+Text   : 'In computer science and artificial intelligence, pages, and financial political activists that are implementing their own classrooms or buildings as you can assist in th'
+Chunks :
+In |computer s|cience a|nd art|ificial intelligence, |pages, a|nd financial polit|ical activists th|at ar|e |i|mplementing |their own class|rooms o|r buildings a|s yo|u ca|n a|ss|ist |in |th
+--------------------------------------------------------------------------------
+Step  2510/5000 | BPB: 1.6425 | CE: 1.1385 | Aux: 1.0020 | Chunks: [S0:4.53x => 4.53B/chunk] | Speed: 165.5 KB/s
+Step  2520/5000 | BPB: 1.6419 | CE: 1.1381 | Aux: 1.0026 | Chunks: [S0:4.51x => 4.51B/chunk] | Speed: 302.5 KB/s
+Step  2530/5000 | BPB: 1.7615 | CE: 1.2210 | Aux: 0.9979 | Chunks: [S0:4.62x => 4.62B/chunk] | Speed: 285.3 KB/s
+Step  2540/5000 | BPB: 1.6693 | CE: 1.1570 | Aux: 0.9951 | Chunks: [S0:4.68x => 4.68B/chunk] | Speed: 298.7 KB/s
+Step  2550/5000 | BPB: 1.6533 | CE: 1.1460 | Aux: 1.0033 | Chunks: [S0:4.50x => 4.50B/chunk] | Speed: 304.3 KB/s
+Step  2560/5000 | BPB: 1.6115 | CE: 1.1170 | Aux: 0.9990 | Chunks: [S0:4.59x => 4.59B/chunk] | Speed: 299.3 KB/s
+Step  2570/5000 | BPB: 1.6215 | CE: 1.1239 | Aux: 0.9996 | Chunks: [S0:4.58x => 4.58B/chunk] | Speed: 302.9 KB/s
+Step  2580/5000 | BPB: 1.7692 | CE: 1.2263 | Aux: 1.0097 | Chunks: [S0:4.36x => 4.36B/chunk] | Speed: 289.8 KB/s
+Step  2590/5000 | BPB: 1.6738 | CE: 1.1602 | Aux: 1.0078 | Chunks: [S0:4.40x => 4.40B/chunk] | Speed: 302.9 KB/s
+Step  2600/5000 | BPB: 1.7310 | CE: 1.1999 | Aux: 1.0001 | Chunks: [S0:4.57x => 4.57B/chunk] | Speed: 301.3 KB/s
+Step  2610/5000 | BPB: 1.7351 | CE: 1.2027 | Aux: 1.0020 | Chunks: [S0:4.53x => 4.53B/chunk] | Speed: 301.3 KB/s
+Step  2620/5000 | BPB: 1.6546 | CE: 1.1469 | Aux: 0.9967 | Chunks: [S0:4.65x => 4.65B/chunk] | Speed: 296.3 KB/s
+Step  2630/5000 | BPB: 1.7151 | CE: 1.1888 | Aux: 0.9939 | Chunks: [S0:4.72x => 4.72B/chunk] | Speed: 306.5 KB/s
+Step  2640/5000 | BPB: 2.0210 | CE: 1.4008 | Aux: 1.0187 | Chunks: [S0:4.19x => 4.19B/chunk] | Speed: 293.6 KB/s
+Step  2650/5000 | BPB: 1.7071 | CE: 1.1833 | Aux: 1.0025 | Chunks: [S0:4.51x => 4.51B/chunk] | Speed: 303.6 KB/s
+Step  2660/5000 | BPB: 1.6988 | CE: 1.1776 | Aux: 0.9989 | Chunks: [S0:4.59x => 4.59B/chunk] | Speed: 291.7 KB/s
+Step  2670/5000 | BPB: 1.6652 | CE: 1.1542 | Aux: 0.9974 | Chunks: [S0:4.63x => 4.63B/chunk] | Speed: 299.7 KB/s
+Step  2680/5000 | BPB: 1.6596 | CE: 1.1504 | Aux: 0.9971 | Chunks: [S0:4.64x => 4.64B/chunk] | Speed: 296.1 KB/s
+Step  2690/5000 | BPB: 1.7281 | CE: 1.1978 | Aux: 1.0019 | Chunks: [S0:4.53x => 4.53B/chunk] | Speed: 300.6 KB/s
+Step  2700/5000 | BPB: 1.7032 | CE: 1.1806 | Aux: 1.0010 | Chunks: [S0:4.55x => 4.55B/chunk] | Speed: 293.5 KB/s
+Step  2710/5000 | BPB: 1.7010 | CE: 1.1790 | Aux: 1.0017 | Chunks: [S0:4.53x => 4.53B/chunk] | Speed: 299.4 KB/s
+Step  2720/5000 | BPB: 1.7166 | CE: 1.1899 | Aux: 1.0120 | Chunks: [S0:4.32x => 4.32B/chunk] | Speed: 299.4 KB/s
+Step  2730/5000 | BPB: 1.7351 | CE: 1.2027 | Aux: 0.9987 | Chunks: [S0:4.60x => 4.60B/chunk] | Speed: 299.4 KB/s
+Step  2740/5000 | BPB: 1.8867 | CE: 1.3077 | Aux: 1.0093 | Chunks: [S0:4.37x => 4.37B/chunk] | Speed: 298.4 KB/s
+Step  2750/5000 | BPB: 1.7076 | CE: 1.1836 | Aux: 1.0077 | Chunks: [S0:4.41x => 4.41B/chunk] | Speed: 299.1 KB/s
+--------------------------------------------------------------------------------
+[Sample @ Step 2750] (Core Compression: 6.26 B/chunk | Core Transformer Skipped: 84.0% of bytes)
+Text   : 'In computer science and artificial intelligence, he received a variety of the examples of the game, either using computing collective subsistence interface and a portion'
+Chunks :
+In |computer s|cience a|nd art|ificial in|telligence, |h|e rec|eived |a| var|iety| |of the examples |of |the game, |ei|the|r usin|g |computing |collective subsistence in|te|rf|ace a|nd a| portion
+--------------------------------------------------------------------------------
+Step  2760/5000 | BPB: 1.7228 | CE: 1.1942 | Aux: 1.0062 | Chunks: [S0:4.44x => 4.44B/chunk] | Speed: 213.0 KB/s
+Step  2770/5000 | BPB: 1.6404 | CE: 1.1370 | Aux: 0.9914 | Chunks: [S0:4.78x => 4.78B/chunk] | Speed: 295.7 KB/s
+Step  2780/5000 | BPB: 1.6254 | CE: 1.1266 | Aux: 0.9989 | Chunks: [S0:4.60x => 4.60B/chunk] | Speed: 300.8 KB/s
+Step  2790/5000 | BPB: 1.6528 | CE: 1.1456 | Aux: 0.9908 | Chunks: [S0:4.80x => 4.80B/chunk] | Speed: 302.4 KB/s
+Step  2800/5000 | BPB: 1.7681 | CE: 1.2255 | Aux: 0.9985 | Chunks: [S0:4.61x => 4.61B/chunk] | Speed: 297.0 KB/s
+Step  2810/5000 | BPB: 1.7729 | CE: 1.2289 | Aux: 1.0010 | Chunks: [S0:4.55x => 4.55B/chunk] | Speed: 298.0 KB/s
+Step  2820/5000 | BPB: 1.6535 | CE: 1.1461 | Aux: 1.0027 | Chunks: [S0:4.51x => 4.51B/chunk] | Speed: 302.9 KB/s
+Step  2830/5000 | BPB: 1.6300 | CE: 1.1298 | Aux: 1.0056 | Chunks: [S0:4.45x => 4.45B/chunk] | Speed: 295.8 KB/s
+Step  2840/5000 | BPB: 1.6489 | CE: 1.1429 | Aux: 0.9976 | Chunks: [S0:4.63x => 4.63B/chunk] | Speed: 300.5 KB/s
+Step  2850/5000 | BPB: 1.6962 | CE: 1.1757 | Aux: 0.9983 | Chunks: [S0:4.61x => 4.61B/chunk] | Speed: 300.7 KB/s
+Step  2860/5000 | BPB: 1.7416 | CE: 1.2072 | Aux: 1.0021 | Chunks: [S0:4.52x => 4.52B/chunk] | Speed: 300.2 KB/s
+Step  2870/5000 | BPB: 1.6828 | CE: 1.1664 | Aux: 0.9932 | Chunks: [S0:4.73x => 4.73B/chunk] | Speed: 293.6 KB/s
+Step  2880/5000 | BPB: 1.7236 | CE: 1.1947 | Aux: 1.0002 | Chunks: [S0:4.57x => 4.57B/chunk] | Speed: 293.5 KB/s
+Step  2890/5000 | BPB: 1.6830 | CE: 1.1666 | Aux: 0.9949 | Chunks: [S0:4.70x => 4.70B/chunk] | Speed: 300.7 KB/s
+Step  2900/5000 | BPB: 1.6035 | CE: 1.1114 | Aux: 0.9952 | Chunks: [S0:4.68x => 4.68B/chunk] | Speed: 299.2 KB/s
+Step  2910/5000 | BPB: 1.6109 | CE: 1.1166 | Aux: 1.0026 | Chunks: [S0:4.51x => 4.51B/chunk] | Speed: 295.6 KB/s
+Step  2920/5000 | BPB: 1.6520 | CE: 1.1451 | Aux: 1.0053 | Chunks: [S0:4.45x => 4.45B/chunk] | Speed: 289.3 KB/s
+Step  2930/5000 | BPB: 1.6260 | CE: 1.1270 | Aux: 1.0019 | Chunks: [S0:4.53x => 4.53B/chunk] | Speed: 299.1 KB/s
+Step  2940/5000 | BPB: 1.6303 | CE: 1.1300 | Aux: 1.0040 | Chunks: [S0:4.48x => 4.48B/chunk] | Speed: 299.4 KB/s
+Step  2950/5000 | BPB: 1.6444 | CE: 1.1398 | Aux: 0.9974 | Chunks: [S0:4.63x => 4.63B/chunk] | Speed: 297.7 KB/s
+Step  2960/5000 | BPB: 1.7234 | CE: 1.1946 | Aux: 1.0280 | Chunks: [S0:4.04x => 4.04B/chunk] | Speed: 294.5 KB/s
+Step  2970/5000 | BPB: 1.6249 | CE: 1.1263 | Aux: 0.9987 | Chunks: [S0:4.60x => 4.60B/chunk] | Speed: 301.6 KB/s
+Step  2980/5000 | BPB: 1.6054 | CE: 1.1128 | Aux: 0.9970 | Chunks: [S0:4.64x => 4.64B/chunk] | Speed: 290.6 KB/s
+Step  2990/5000 | BPB: 1.6741 | CE: 1.1604 | Aux: 1.0018 | Chunks: [S0:4.53x => 4.53B/chunk] | Speed: 292.7 KB/s
+Step  3000/5000 | BPB: 1.7487 | CE: 1.2121 | Aux: 0.9982 | Chunks: [S0:4.61x => 4.61B/chunk] | Speed: 282.7 KB/s
+--------------------------------------------------------------------------------
+[Sample @ Step 3000] (Core Compression: 6.76 B/chunk | Core Transformer Skipped: 85.2% of bytes)
+Text   : 'In computer science and artificial intelligence, including digital research and to the timely auditory fitness, with any primary education results for art to inspect in '
+Chunks :
+In |computer |s|cience a|nd art|ificial intell|igence, |in|cluding |digital research a|nd to |the t|ime|l|y a|ud|itory fitness, |w|i|th |an|y primary education results |for |art to inspect |in 
+--------------------------------------------------------------------------------
+Step  3010/5000 | BPB: 1.7086 | CE: 1.1843 | Aux: 0.9978 | Chunks: [S0:4.62x => 4.62B/chunk] | Speed: 206.7 KB/s
+Step  3020/5000 | BPB: 1.6484 | CE: 1.1426 | Aux: 0.9949 | Chunks: [S0:4.69x => 4.69B/chunk] | Speed: 298.7 KB/s
+Step  3030/5000 | BPB: 1.7594 | CE: 1.2195 | Aux: 1.0067 | Chunks: [S0:4.42x => 4.42B/chunk] | Speed: 302.2 KB/s
+Step  3040/5000 | BPB: 1.6704 | CE: 1.1578 | Aux: 1.0048 | Chunks: [S0:4.46x => 4.46B/chunk] | Speed: 298.3 KB/s
+Step  3050/5000 | BPB: 1.6171 | CE: 1.1209 | Aux: 1.0005 | Chunks: [S0:4.56x => 4.56B/chunk] | Speed: 300.5 KB/s
+Step  3060/5000 | BPB: 1.8093 | CE: 1.2541 | Aux: 1.0180 | Chunks: [S0:4.20x => 4.20B/chunk] | Speed: 293.6 KB/s
+Step  3070/5000 | BPB: 1.6188 | CE: 1.1221 | Aux: 1.0011 | Chunks: [S0:4.54x => 4.54B/chunk] | Speed: 297.3 KB/s
+Step  3080/5000 | BPB: 1.6637 | CE: 1.1532 | Aux: 1.0007 | Chunks: [S0:4.55x => 4.55B/chunk] | Speed: 302.6 KB/s
+Step  3090/5000 | BPB: 1.6807 | CE: 1.1650 | Aux: 1.0013 | Chunks: [S0:4.54x => 4.54B/chunk] | Speed: 301.7 KB/s
+Step  3100/5000 | BPB: 1.5783 | CE: 1.0940 | Aux: 0.9999 | Chunks: [S0:4.57x => 4.57B/chunk] | Speed: 298.0 KB/s
+Step  3110/5000 | BPB: 1.6620 | CE: 1.1520 | Aux: 1.0012 | Chunks: [S0:4.54x => 4.54B/chunk] | Speed: 298.1 KB/s
+Step  3120/5000 | BPB: 1.5949 | CE: 1.1055 | Aux: 1.0085 | Chunks: [S0:4.39x => 4.39B/chunk] | Speed: 295.5 KB/s
+Step  3130/5000 | BPB: 1.6094 | CE: 1.1156 | Aux: 0.9983 | Chunks: [S0:4.61x => 4.61B/chunk] | Speed: 300.5 KB/s
+Step  3140/5000 | BPB: 1.6465 | CE: 1.1413 | Aux: 1.0036 | Chunks: [S0:4.49x => 4.49B/chunk] | Speed: 288.3 KB/s
+Step  3150/5000 | BPB: 1.6238 | CE: 1.1255 | Aux: 1.0051 | Chunks: [S0:4.46x => 4.46B/chunk] | Speed: 296.7 KB/s
+Step  3160/5000 | BPB: 1.6033 | CE: 1.1113 | Aux: 0.9992 | Chunks: [S0:4.59x => 4.59B/chunk] | Speed: 298.1 KB/s
+Step  3170/5000 | BPB: 1.5600 | CE: 1.0813 | Aux: 1.0030 | Chunks: [S0:4.50x => 4.50B/chunk] | Speed: 300.5 KB/s
+Step  3180/5000 | BPB: 1.6187 | CE: 1.1220 | Aux: 1.0003 | Chunks: [S0:4.56x => 4.56B/chunk] | Speed: 298.5 KB/s
+Step  3190/5000 | BPB: 1.7176 | CE: 1.1906 | Aux: 1.0110 | Chunks: [S0:4.34x => 4.34B/chunk] | Speed: 297.1 KB/s
+Step  3200/5000 | BPB: 1.6457 | CE: 1.1407 | Aux: 1.0015 | Chunks: [S0:4.54x => 4.54B/chunk] | Speed: 292.8 KB/s
+Step  3210/5000 | BPB: 1.6361 | CE: 1.1341 | Aux: 0.9957 | Chunks: [S0:4.67x => 4.67B/chunk] | Speed: 294.1 KB/s
+Step  3220/5000 | BPB: 1.7053 | CE: 1.1820 | Aux: 1.0015 | Chunks: [S0:4.54x => 4.54B/chunk] | Speed: 291.2 KB/s
+Step  3230/5000 | BPB: 1.5800 | CE: 1.0952 | Aux: 0.9980 | Chunks: [S0:4.62x => 4.62B/chunk] | Speed: 295.4 KB/s
+Step  3240/5000 | BPB: 1.5917 | CE: 1.1033 | Aux: 0.9953 | Chunks: [S0:4.68x => 4.68B/chunk] | Speed: 298.2 KB/s
+Step  3250/5000 | BPB: 1.6236 | CE: 1.1254 | Aux: 0.9949 | Chunks: [S0:4.69x => 4.69B/chunk] | Speed: 301.7 KB/s
+--------------------------------------------------------------------------------
+[Sample @ Step 3250] (Core Compression: 6.04 B/chunk | Core Transformer Skipped: 83.4% of bytes)
+Text   : 'In computer science and artificial intelligence, the source of sexual negative emotional power and international public facility. The school students speak with an overv'
+Chunks :
+In |computer |s|cience a|nd ar|tificial in|telligence, |the sou|rce |of |sex|u|a|l negative emotional power a|nd in|ter|national publ|ic facility. |The s|ch|ool students spe|ak |w|i|th |an |ove|rv
+--------------------------------------------------------------------------------
+Step  3260/5000 | BPB: 1.5954 | CE: 1.1058 | Aux: 0.9922 | Chunks: [S0:4.76x => 4.76B/chunk] | Speed: 164.7 KB/s
+Step  3270/5000 | BPB: 1.6075 | CE: 1.1142 | Aux: 1.0000 | Chunks: [S0:4.57x => 4.57B/chunk] | Speed: 295.1 KB/s
+Step  3280/5000 | BPB: 1.5612 | CE: 1.0822 | Aux: 1.0057 | Chunks: [S0:4.44x => 4.44B/chunk] | Speed: 273.3 KB/s
+Step  3290/5000 | BPB: 1.5500 | CE: 1.0744 | Aux: 1.0084 | Chunks: [S0:4.39x => 4.39B/chunk] | Speed: 292.2 KB/s
+[W1103 15:18:46.637980784 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 469762048 bytes (free: 380960768, total: 101973491712).
+Step  3300/5000 | BPB: 1.6253 | CE: 1.1266 | Aux: 1.0018 | Chunks: [S0:4.53x => 4.53B/chunk] | Speed: 273.4 KB/s
+Step  3310/5000 | BPB: 1.5624 | CE: 1.0830 | Aux: 1.0016 | Chunks: [S0:4.53x => 4.53B/chunk] | Speed: 298.5 KB/s
+Step  3320/5000 | BPB: 1.6030 | CE: 1.1111 | Aux: 1.0020 | Chunks: [S0:4.52x => 4.52B/chunk] | Speed: 296.2 KB/s
+Step  3330/5000 | BPB: 1.5969 | CE: 1.1069 | Aux: 0.9944 | Chunks: [S0:4.71x => 4.71B/chunk] | Speed: 298.3 KB/s
+Step  3340/5000 | BPB: 1.6142 | CE: 1.1189 | Aux: 1.0016 | Chunks: [S0:4.53x => 4.53B/chunk] | Speed: 294.0 KB/s
+Step  3350/5000 | BPB: 1.5632 | CE: 1.0835 | Aux: 1.0019 | Chunks: [S0:4.53x => 4.53B/chunk] | Speed: 300.6 KB/s
+Step  3360/5000 | BPB: 1.6085 | CE: 1.1149 | Aux: 0.9992 | Chunks: [S0:4.59x => 4.59B/chunk] | Speed: 302.4 KB/s
+Step  3370/5000 | BPB: 1.5850 | CE: 1.0987 | Aux: 0.9993 | Chunks: [S0:4.59x => 4.59B/chunk] | Speed: 303.3 KB/s
+Step  3380/5000 | BPB: 1.5235 | CE: 1.0560 | Aux: 1.0000 | Chunks: [S0:4.57x => 4.57B/chunk] | Speed: 299.0 KB/s
+Step  3390/5000 | BPB: 1.5803 | CE: 1.0954 | Aux: 1.0041 | Chunks: [S0:4.48x => 4.48B/chunk] | Speed: 303.0 KB/s
+Step  3400/5000 | BPB: 1.6406 | CE: 1.1372 | Aux: 1.0066 | Chunks: [S0:4.43x => 4.43B/chunk] | Speed: 300.1 KB/s
+Step  3410/5000 | BPB: 1.7383 | CE: 1.2049 | Aux: 1.0000 | Chunks: [S0:4.57x => 4.57B/chunk] | Speed: 304.0 KB/s
+Step  3420/5000 | BPB: 1.5680 | CE: 1.0869 | Aux: 1.0016 | Chunks: [S0:4.53x => 4.53B/chunk] | Speed: 299.6 KB/s
+Step  3430/5000 | BPB: 1.5662 | CE: 1.0856 | Aux: 0.9991 | Chunks: [S0:4.59x => 4.59B/chunk] | Speed: 304.4 KB/s
+Step  3440/5000 | BPB: 1.5758 | CE: 1.0922 | Aux: 0.9937 | Chunks: [S0:4.72x => 4.72B/chunk] | Speed: 297.5 KB/s
+Step  3450/5000 | BPB: 1.5949 | CE: 1.1055 | Aux: 1.0008 | Chunks: [S0:4.55x => 4.55B/chunk] | Speed: 293.8 KB/s
+Step  3460/5000 | BPB: 1.6011 | CE: 1.1098 | Aux: 1.0011 | Chunks: [S0:4.54x => 4.54B/chunk] | Speed: 303.4 KB/s
+Step  3470/5000 | BPB: 1.6564 | CE: 1.1481 | Aux: 1.0028 | Chunks: [S0:4.51x => 4.51B/chunk] | Speed: 302.8 KB/s
+Step  3480/5000 | BPB: 1.6719 | CE: 1.1588 | Aux: 1.0033 | Chunks: [S0:4.50x => 4.50B/chunk] | Speed: 298.2 KB/s
+Step  3490/5000 | BPB: 1.6773 | CE: 1.1626 | Aux: 1.0041 | Chunks: [S0:4.48x => 4.48B/chunk] | Speed: 297.5 KB/s
+Step  3500/5000 | BPB: 1.6545 | CE: 1.1468 | Aux: 1.0023 | Chunks: [S0:4.52x => 4.52B/chunk] | Speed: 305.1 KB/s
+--------------------------------------------------------------------------------
+[Sample @ Step 3500] (Core Compression: 5.12 B/chunk | Core Transformer Skipped: 80.5% of bytes)
+Text   : 'In computer science and artificial intelligence, and his facets of The Doge and the Equipment Management System in December 2009 and 1966 to develop programs for both th'
+Chunks :
+In |computer |s|cience a|nd ar|tificial intelligence, a|nd hi|s face|ts |of |The |Doge a|nd the |E|quipment |Man|a|gement System| in |D|ece|mber| 2009 a|nd |1966 |to de|velop |programs |for |b|o|t|h th
+--------------------------------------------------------------------------------
+Step  3510/5000 | BPB: 1.7921 | CE: 1.2422 | Aux: 1.0078 | Chunks: [S0:4.40x => 4.40B/chunk] | Speed: 198.5 KB/s
+Step  3520/5000 | BPB: 1.6300 | CE: 1.1298 | Aux: 1.0029 | Chunks: [S0:4.50x => 4.50B/chunk] | Speed: 302.2 KB/s
+Step  3530/5000 | BPB: 1.6202 | CE: 1.1230 | Aux: 0.9985 | Chunks: [S0:4.61x => 4.61B/chunk] | Speed: 304.5 KB/s
+Step  3540/5000 | BPB: 1.6958 | CE: 1.1755 | Aux: 1.0039 | Chunks: [S0:4.48x => 4.48B/chunk] | Speed: 292.7 KB/s
+Step  3550/5000 | BPB: 1.6223 | CE: 1.1245 | Aux: 0.9959 | Chunks: [S0:4.67x => 4.67B/chunk] | Speed: 297.3 KB/s
+Step  3560/5000 | BPB: 1.6221 | CE: 1.1243 | Aux: 1.0047 | Chunks: [S0:4.46x => 4.46B/chunk] | Speed: 303.9 KB/s
+Step  3570/5000 | BPB: 1.6751 | CE: 1.1611 | Aux: 1.0064 | Chunks: [S0:4.43x => 4.43B/chunk] | Speed: 298.2 KB/s
+Step  3580/5000 | BPB: 1.6085 | CE: 1.1149 | Aux: 0.9963 | Chunks: [S0:4.66x => 4.66B/chunk] | Speed: 298.0 KB/s
+Step  3590/5000 | BPB: 1.7960 | CE: 1.2449 | Aux: 0.9998 | Chunks: [S0:4.57x => 4.57B/chunk] | Speed: 289.6 KB/s
+Step  3600/5000 | BPB: 1.6461 | CE: 1.1410 | Aux: 0.9960 | Chunks: [S0:4.67x => 4.67B/chunk] | Speed: 301.3 KB/s
+Step  3610/5000 | BPB: 1.7385 | CE: 1.2050 | Aux: 1.0043 | Chunks: [S0:4.47x => 4.47B/chunk] | Speed: 288.9 KB/s
+Step  3620/5000 | BPB: 1.7685 | CE: 1.2258 | Aux: 1.0043 | Chunks: [S0:4.47x => 4.47B/chunk] | Speed: 306.6 KB/s
+Step  3630/5000 | BPB: 1.6424 | CE: 1.1384 | Aux: 1.0040 | Chunks: [S0:4.48x => 4.48B/chunk] | Speed: 299.8 KB/s
+Step  3640/5000 | BPB: 1.6870 | CE: 1.1693 | Aux: 1.0110 | Chunks: [S0:4.33x => 4.33B/chunk] | Speed: 304.7 KB/s
+Step  3650/5000 | BPB: 1.6338 | CE: 1.1325 | Aux: 1.0115 | Chunks: [S0:4.32x => 4.32B/chunk] | Speed: 297.2 KB/s
+Step  3660/5000 | BPB: 1.7141 | CE: 1.1881 | Aux: 1.0120 | Chunks: [S0:4.31x => 4.31B/chunk] | Speed: 293.9 KB/s
+Step  3670/5000 | BPB: 1.6989 | CE: 1.1776 | Aux: 0.9995 | Chunks: [S0:4.58x => 4.58B/chunk] | Speed: 301.0 KB/s
+Step  3680/5000 | BPB: 1.6055 | CE: 1.1128 | Aux: 1.0015 | Chunks: [S0:4.54x => 4.54B/chunk] | Speed: 301.4 KB/s
+Step  3690/5000 | BPB: 1.5884 | CE: 1.1010 | Aux: 0.9995 | Chunks: [S0:4.58x => 4.58B/chunk] | Speed: 297.9 KB/s
+Step  3700/5000 | BPB: 1.6040 | CE: 1.1118 | Aux: 1.0031 | Chunks: [S0:4.50x => 4.50B/chunk] | Speed: 293.4 KB/s
+Step  3710/5000 | BPB: 1.6064 | CE: 1.1135 | Aux: 1.0021 | Chunks: [S0:4.52x => 4.52B/chunk] | Speed: 291.2 KB/s
+Step  3720/5000 | BPB: 1.6438 | CE: 1.1394 | Aux: 1.0032 | Chunks: [S0:4.50x => 4.50B/chunk] | Speed: 291.1 KB/s
+Step  3730/5000 | BPB: 1.5953 | CE: 1.1058 | Aux: 1.0058 | Chunks: [S0:4.44x => 4.44B/chunk] | Speed: 298.8 KB/s
+Step  3740/5000 | BPB: 1.6754 | CE: 1.1613 | Aux: 1.0079 | Chunks: [S0:4.39x => 4.39B/chunk] | Speed: 293.7 KB/s
+Step  3750/5000 | BPB: 1.5822 | CE: 1.0967 | Aux: 1.0007 | Chunks: [S0:4.55x => 4.55B/chunk] | Speed: 297.4 KB/s
+--------------------------------------------------------------------------------
+[Sample @ Step 3750] (Core Compression: 4.97 B/chunk | Core Transformer Skipped: 79.9% of bytes)
+Text   : 'In computer science and artificial intelligence, like the Water School Staff, the magnetic field returned to the Black Historical Society of New Ontario, and after the 1'
+Chunks :
+In |computer |s|cience a|nd ar|tificial intelligence, |li|ke |the |Water| Sc|h|ool| |Staff, |the ma|gnetic field ret|urned |to |the |Black Hi|s|torical| Society| |of |New| |Ontario, a|nd af|te|r |the |1
+--------------------------------------------------------------------------------
+Step  3760/5000 | BPB: 1.6504 | CE: 1.1439 | Aux: 1.0008 | Chunks: [S0:4.55x => 4.55B/chunk] | Speed: 161.1 KB/s
+Step  3770/5000 | BPB: 1.7390 | CE: 1.2054 | Aux: 1.0041 | Chunks: [S0:4.47x => 4.47B/chunk] | Speed: 297.7 KB/s
+Step  3780/5000 | BPB: 1.6171 | CE: 1.1209 | Aux: 0.9956 | Chunks: [S0:4.68x => 4.68B/chunk] | Speed: 292.9 KB/s
+Step  3790/5000 | BPB: 1.6342 | CE: 1.1327 | Aux: 1.0017 | Chunks: [S0:4.53x => 4.53B/chunk] | Speed: 293.7 KB/s
+Step  3800/5000 | BPB: 1.6450 | CE: 1.1402 | Aux: 1.0026 | Chunks: [S0:4.51x => 4.51B/chunk] | Speed: 292.0 KB/s
+Step  3810/5000 | BPB: 1.6008 | CE: 1.1096 | Aux: 1.0102 | Chunks: [S0:4.35x => 4.35B/chunk] | Speed: 290.9 KB/s
+Step  3820/5000 | BPB: 1.6273 | CE: 1.1280 | Aux: 1.0027 | Chunks: [S0:4.51x => 4.51B/chunk] | Speed: 299.0 KB/s
+Step  3830/5000 | BPB: 2.0255 | CE: 1.4040 | Aux: 0.9828 | Chunks: [S0:5.05x => 5.05B/chunk] | Speed: 298.4 KB/s
+Step  3840/5000 | BPB: 2.5213 | CE: 1.7476 | Aux: 1.3181 | Chunks: [S0:2.21x => 2.21B/chunk] | Speed: 265.1 KB/s
+Step  3850/5000 | BPB: 1.5652 | CE: 1.0849 | Aux: 1.0083 | Chunks: [S0:4.39x => 4.39B/chunk] | Speed: 291.5 KB/s
+Step  3860/5000 | BPB: 1.6734 | CE: 1.1599 | Aux: 1.0041 | Chunks: [S0:4.47x => 4.47B/chunk] | Speed: 295.1 KB/s
+Step  3870/5000 | BPB: 1.6300 | CE: 1.1298 | Aux: 1.0049 | Chunks: [S0:4.46x => 4.46B/chunk] | Speed: 293.1 KB/s
+Step  3880/5000 | BPB: 1.5851 | CE: 1.0987 | Aux: 0.9969 | Chunks: [S0:4.65x => 4.65B/chunk] | Speed: 290.8 KB/s
+Step  3890/5000 | BPB: 1.6027 | CE: 1.1109 | Aux: 0.9979 | Chunks: [S0:4.62x => 4.62B/chunk] | Speed: 292.2 KB/s
+Step  3900/5000 | BPB: 1.6855 | CE: 1.1683 | Aux: 1.0006 | Chunks: [S0:4.56x => 4.56B/chunk] | Speed: 296.6 KB/s
+Step  3910/5000 | BPB: 1.6307 | CE: 1.1303 | Aux: 1.0025 | Chunks: [S0:4.51x => 4.51B/chunk] | Speed: 295.1 KB/s
+Step  3920/5000 | BPB: 1.5684 | CE: 1.0871 | Aux: 0.9981 | Chunks: [S0:4.62x => 4.62B/chunk] | Speed: 288.3 KB/s
+Step  3930/5000 | BPB: 1.6502 | CE: 1.1438 | Aux: 1.0038 | Chunks: [S0:4.48x => 4.48B/chunk] | Speed: 297.1 KB/s
+Step  3940/5000 | BPB: 1.5399 | CE: 1.0674 | Aux: 1.0025 | Chunks: [S0:4.51x => 4.51B/chunk] | Speed: 296.8 KB/s
+Step  3950/5000 | BPB: 1.6306 | CE: 1.1302 | Aux: 1.0034 | Chunks: [S0:4.49x => 4.49B/chunk] | Speed: 291.9 KB/s
+Step  3960/5000 | BPB: 1.6033 | CE: 1.1113 | Aux: 0.9973 | Chunks: [S0:4.64x => 4.64B/chunk] | Speed: 298.3 KB/s
+Step  3970/5000 | BPB: 1.5465 | CE: 1.0719 | Aux: 1.0018 | Chunks: [S0:4.53x => 4.53B/chunk] | Speed: 291.5 KB/s
+Step  3980/5000 | BPB: 1.6674 | CE: 1.1557 | Aux: 1.0052 | Chunks: [S0:4.45x => 4.45B/chunk] | Speed: 286.7 KB/s
+Step  3990/5000 | BPB: 1.5352 | CE: 1.0641 | Aux: 1.0054 | Chunks: [S0:4.45x => 4.45B/chunk] | Speed: 298.8 KB/s
+Step  4000/5000 | BPB: 1.5781 | CE: 1.0938 | Aux: 1.0008 | Chunks: [S0:4.55x => 4.55B/chunk] | Speed: 292.1 KB/s
+--------------------------------------------------------------------------------
+[Sample @ Step 4000] (Core Compression: 5.28 B/chunk | Core Transformer Skipped: 81.1% of bytes)
+Text   : 'In computer science and artificial intelligence, as a result of fear research. We found that a healthy diet in the radioactive around the lab was discovered in nursing a'
+Chunks :
+In |computer |s|cience a|nd ar|tificial intelligence, a|s |a| r|esult| |of |fear |r|esearch. |W|e fo|und |th|at a| health|y diet in |the rad|io|active around |the l|ab |wa|s |discovered |in |nursing a
+--------------------------------------------------------------------------------
+Step  4010/5000 | BPB: 1.5852 | CE: 1.0987 | Aux: 0.9984 | Chunks: [S0:4.61x => 4.61B/chunk] | Speed: 163.8 KB/s
+Step  4020/5000 | BPB: 1.5751 | CE: 1.0918 | Aux: 1.0105 | Chunks: [S0:4.34x => 4.34B/chunk] | Speed: 293.8 KB/s
+Step  4030/5000 | BPB: 1.6133 | CE: 1.1182 | Aux: 1.0016 | Chunks: [S0:4.53x => 4.53B/chunk] | Speed: 295.7 KB/s
+Step  4040/5000 | BPB: 1.6023 | CE: 1.1106 | Aux: 1.0025 | Chunks: [S0:4.51x => 4.51B/chunk] | Speed: 279.9 KB/s
+Step  4050/5000 | BPB: 1.5578 | CE: 1.0798 | Aux: 0.9996 | Chunks: [S0:4.58x => 4.58B/chunk] | Speed: 296.8 KB/s
+Step  4060/5000 | BPB: 1.6216 | CE: 1.1240 | Aux: 1.0069 | Chunks: [S0:4.41x => 4.41B/chunk] | Speed: 289.1 KB/s
+Step  4070/5000 | BPB: 1.6164 | CE: 1.1204 | Aux: 1.0018 | Chunks: [S0:4.53x => 4.53B/chunk] | Speed: 295.5 KB/s
+Step  4080/5000 | BPB: 1.5817 | CE: 1.0964 | Aux: 1.0031 | Chunks: [S0:4.50x => 4.50B/chunk] | Speed: 291.5 KB/s
+Step  4090/5000 | BPB: 1.6158 | CE: 1.1200 | Aux: 1.0045 | Chunks: [S0:4.47x => 4.47B/chunk] | Speed: 294.6 KB/s
+Step  4100/5000 | BPB: 1.6529 | CE: 1.1457 | Aux: 0.9973 | Chunks: [S0:4.64x => 4.64B/chunk] | Speed: 291.7 KB/s
+Step  4110/5000 | BPB: 1.5705 | CE: 1.0886 | Aux: 0.9997 | Chunks: [S0:4.58x => 4.58B/chunk] | Speed: 294.9 KB/s
+Step  4120/5000 | BPB: 1.5390 | CE: 1.0668 | Aux: 0.9961 | Chunks: [S0:4.67x => 4.67B/chunk] | Speed: 299.0 KB/s
+Step  4130/5000 | BPB: 1.5278 | CE: 1.0590 | Aux: 1.0029 | Chunks: [S0:4.50x => 4.50B/chunk] | Speed: 297.6 KB/s
+Step  4140/5000 | BPB: 1.4965 | CE: 1.0373 | Aux: 1.0009 | Chunks: [S0:4.55x => 4.55B/chunk] | Speed: 296.5 KB/s
+Step  4150/5000 | BPB: 1.5610 | CE: 1.0820 | Aux: 1.0064 | Chunks: [S0:4.43x => 4.43B/chunk] | Speed: 294.8 KB/s
+Step  4160/5000 | BPB: 1.6275 | CE: 1.1281 | Aux: 1.0035 | Chunks: [S0:4.49x => 4.49B/chunk] | Speed: 293.6 KB/s
+Step  4170/5000 | BPB: 1.5491 | CE: 1.0738 | Aux: 1.0050 | Chunks: [S0:4.45x => 4.45B/chunk] | Speed: 288.6 KB/s
+Step  4180/5000 | BPB: 1.5433 | CE: 1.0697 | Aux: 1.0000 | Chunks: [S0:4.57x => 4.57B/chunk] | Speed: 298.0 KB/s
+Step  4190/5000 | BPB: 1.5582 | CE: 1.0800 | Aux: 1.0021 | Chunks: [S0:4.52x => 4.52B/chunk] | Speed: 298.2 KB/s
+Step  4200/5000 | BPB: 1.5590 | CE: 1.0806 | Aux: 0.9997 | Chunks: [S0:4.58x => 4.58B/chunk] | Speed: 296.3 KB/s
+Step  4210/5000 | BPB: 1.5266 | CE: 1.0581 | Aux: 0.9930 | Chunks: [S0:4.75x => 4.75B/chunk] | Speed: 294.8 KB/s
+Step  4220/5000 | BPB: 1.6340 | CE: 1.1326 | Aux: 1.0063 | Chunks: [S0:4.43x => 4.43B/chunk] | Speed: 288.5 KB/s
+Step  4230/5000 | BPB: 1.6852 | CE: 1.1681 | Aux: 0.9999 | Chunks: [S0:4.57x => 4.57B/chunk] | Speed: 293.9 KB/s
+Step  4240/5000 | BPB: 1.4906 | CE: 1.0332 | Aux: 1.0012 | Chunks: [S0:4.54x => 4.54B/chunk] | Speed: 297.1 KB/s
+Step  4250/5000 | BPB: 1.7363 | CE: 1.2035 | Aux: 1.0053 | Chunks: [S0:4.44x => 4.44B/chunk] | Speed: 295.9 KB/s
+--------------------------------------------------------------------------------
+[Sample @ Step 4250] (Core Compression: 3.76 B/chunk | Core Transformer Skipped: 73.4% of bytes)
+Text   : 'In computer science and artificial intelligence, confirms that people with friends own group have a few months or more than 40 years.\nAs we will participate in the respo'
+Chunks :
+In |computer |s|cience a|nd ar|t|ificial intelligence, |confi|rms |th|at |peop|le |w|i|th |fri|en|ds |own |group h|a|ve a| f|e|w mon|ths o|r m|ore th|an |40 y|ears.
+|A|s |w|e |w|i|ll pa|r|tic|ip|ate |in |the respo
+--------------------------------------------------------------------------------
+Step  4260/5000 | BPB: 1.5549 | CE: 1.0778 | Aux: 0.9969 | Chunks: [S0:4.65x => 4.65B/chunk] | Speed: 199.6 KB/s
+Step  4270/5000 | BPB: 1.5890 | CE: 1.1014 | Aux: 1.0052 | Chunks: [S0:4.45x => 4.45B/chunk] | Speed: 299.0 KB/s
+Step  4280/5000 | BPB: 1.5853 | CE: 1.0989 | Aux: 0.9994 | Chunks: [S0:4.59x => 4.59B/chunk] | Speed: 293.8 KB/s
+Step  4290/5000 | BPB: 1.5400 | CE: 1.0675 | Aux: 0.9996 | Chunks: [S0:4.58x => 4.58B/chunk] | Speed: 298.5 KB/s
+Step  4300/5000 | BPB: 1.5766 | CE: 1.0928 | Aux: 1.0034 | Chunks: [S0:4.49x => 4.49B/chunk] | Speed: 291.0 KB/s
+Step  4310/5000 | BPB: 1.5558 | CE: 1.0784 | Aux: 1.0069 | Chunks: [S0:4.41x => 4.41B/chunk] | Speed: 291.7 KB/s
+Step  4320/5000 | BPB: 1.6014 | CE: 1.1100 | Aux: 1.0055 | Chunks: [S0:4.45x => 4.45B/chunk] | Speed: 291.9 KB/s
+Step  4330/5000 | BPB: 1.5530 | CE: 1.0765 | Aux: 1.0021 | Chunks: [S0:4.52x => 4.52B/chunk] | Speed: 296.8 KB/s
+Step  4340/5000 | BPB: 1.5653 | CE: 1.0850 | Aux: 1.0016 | Chunks: [S0:4.53x => 4.53B/chunk] | Speed: 297.3 KB/s
+Step  4350/5000 | BPB: 1.5689 | CE: 1.0875 | Aux: 1.0059 | Chunks: [S0:4.43x => 4.43B/chunk] | Speed: 294.1 KB/s
+Step  4360/5000 | BPB: 1.6737 | CE: 1.1602 | Aux: 1.0132 | Chunks: [S0:4.28x => 4.28B/chunk] | Speed: 290.8 KB/s
+Step  4370/5000 | BPB: 1.6412 | CE: 1.1376 | Aux: 1.0024 | Chunks: [S0:4.51x => 4.51B/chunk] | Speed: 291.4 KB/s
+Step  4380/5000 | BPB: 1.6674 | CE: 1.1558 | Aux: 1.0046 | Chunks: [S0:4.46x => 4.46B/chunk] | Speed: 293.3 KB/s
+Step  4390/5000 | BPB: 1.7442 | CE: 1.2090 | Aux: 1.0039 | Chunks: [S0:4.48x => 4.48B/chunk] | Speed: 288.6 KB/s
+Step  4400/5000 | BPB: 1.6351 | CE: 1.1334 | Aux: 1.0051 | Chunks: [S0:4.45x => 4.45B/chunk] | Speed: 299.1 KB/s
+Step  4410/5000 | BPB: 1.6867 | CE: 1.1691 | Aux: 1.0020 | Chunks: [S0:4.52x => 4.52B/chunk] | Speed: 283.3 KB/s
+Step  4420/5000 | BPB: 1.6638 | CE: 1.1532 | Aux: 1.0033 | Chunks: [S0:4.49x => 4.49B/chunk] | Speed: 296.4 KB/s
+Step  4430/5000 | BPB: 1.5924 | CE: 1.1038 | Aux: 1.0000 | Chunks: [S0:4.57x => 4.57B/chunk] | Speed: 299.5 KB/s
+Step  4440/5000 | BPB: 1.5746 | CE: 1.0915 | Aux: 1.0073 | Chunks: [S0:4.40x => 4.40B/chunk] | Speed: 293.2 KB/s
+Step  4450/5000 | BPB: 1.6913 | CE: 1.1723 | Aux: 1.0010 | Chunks: [S0:4.55x => 4.55B/chunk] | Speed: 292.1 KB/s
+Step  4460/5000 | BPB: 1.6045 | CE: 1.1122 | Aux: 1.0028 | Chunks: [S0:4.50x => 4.50B/chunk] | Speed: 302.5 KB/s
+Step  4470/5000 | BPB: 1.5879 | CE: 1.1007 | Aux: 1.0045 | Chunks: [S0:4.47x => 4.47B/chunk] | Speed: 298.3 KB/s
+Step  4480/5000 | BPB: 1.6170 | CE: 1.1208 | Aux: 1.0044 | Chunks: [S0:4.47x => 4.47B/chunk] | Speed: 294.7 KB/s
+Step  4490/5000 | BPB: 1.5752 | CE: 1.0918 | Aux: 1.0158 | Chunks: [S0:4.24x => 4.24B/chunk] | Speed: 290.1 KB/s
+Step  4500/5000 | BPB: 1.5611 | CE: 1.0821 | Aux: 1.0016 | Chunks: [S0:4.53x => 4.53B/chunk] | Speed: 299.8 KB/s
+--------------------------------------------------------------------------------
+[Sample @ Step 4500] (Core Compression: 5.63 B/chunk | Core Transformer Skipped: 82.2% of bytes)
+Text   : 'In computer science and artificial intelligence, the section of the Dictionary of Discovery of Pure Administration to Research News. The activities of the Adams Undergro'
+Chunks :
+In |computer |s|cience a|nd ar|tificial intelligence, |the sec|t|ion |of |the |Dict|ionary |of |Discovery| |of |Pure Admini|st|ration to |Research |N|ews. |The activities |of |the |Ad|ams| Un|dergro
+--------------------------------------------------------------------------------
+Step  4510/5000 | BPB: 1.6122 | CE: 1.1175 | Aux: 1.0035 | Chunks: [S0:4.49x => 4.49B/chunk] | Speed: 162.6 KB/s
+Step  4520/5000 | BPB: 1.6053 | CE: 1.1127 | Aux: 0.9984 | Chunks: [S0:4.61x => 4.61B/chunk] | Speed: 295.1 KB/s
+Step  4530/5000 | BPB: 1.5992 | CE: 1.1085 | Aux: 1.0027 | Chunks: [S0:4.51x => 4.51B/chunk] | Speed: 295.3 KB/s
+Step  4540/5000 | BPB: 1.6093 | CE: 1.1155 | Aux: 1.0052 | Chunks: [S0:4.45x => 4.45B/chunk] | Speed: 290.0 KB/s
+Step  4550/5000 | BPB: 1.5572 | CE: 1.0794 | Aux: 1.0026 | Chunks: [S0:4.51x => 4.51B/chunk] | Speed: 290.5 KB/s
+Step  4560/5000 | BPB: 1.5801 | CE: 1.0953 | Aux: 1.0006 | Chunks: [S0:4.55x => 4.55B/chunk] | Speed: 295.2 KB/s
+Step  4570/5000 | BPB: 1.4853 | CE: 1.0295 | Aux: 0.9883 | Chunks: [S0:4.88x => 4.88B/chunk] | Speed: 294.0 KB/s
+Step  4580/5000 | BPB: 1.6261 | CE: 1.1271 | Aux: 1.0005 | Chunks: [S0:4.56x => 4.56B/chunk] | Speed: 291.7 KB/s
+Step  4590/5000 | BPB: 1.5483 | CE: 1.0732 | Aux: 1.0003 | Chunks: [S0:4.56x => 4.56B/chunk] | Speed: 293.6 KB/s
+Step  4600/5000 | BPB: 1.4781 | CE: 1.0245 | Aux: 0.9993 | Chunks: [S0:4.59x => 4.59B/chunk] | Speed: 295.4 KB/s
+Step  4610/5000 | BPB: 1.5432 | CE: 1.0697 | Aux: 0.9926 | Chunks: [S0:4.76x => 4.76B/chunk] | Speed: 293.4 KB/s
+Step  4620/5000 | BPB: 1.8264 | CE: 1.2660 | Aux: 1.0103 | Chunks: [S0:4.34x => 4.34B/chunk] | Speed: 288.3 KB/s
+Step  4630/5000 | BPB: 1.6377 | CE: 1.1351 | Aux: 1.0127 | Chunks: [S0:4.29x => 4.29B/chunk] | Speed: 294.7 KB/s
+Step  4640/5000 | BPB: 1.6010 | CE: 1.1097 | Aux: 1.0088 | Chunks: [S0:4.37x => 4.37B/chunk] | Speed: 293.4 KB/s
+Step  4650/5000 | BPB: 1.6836 | CE: 1.1670 | Aux: 1.0058 | Chunks: [S0:4.44x => 4.44B/chunk] | Speed: 296.6 KB/s
+Step  4660/5000 | BPB: 1.5591 | CE: 1.0807 | Aux: 1.0073 | Chunks: [S0:4.41x => 4.41B/chunk] | Speed: 295.9 KB/s
+Step  4670/5000 | BPB: 1.5744 | CE: 1.0913 | Aux: 1.0002 | Chunks: [S0:4.57x => 4.57B/chunk] | Speed: 297.1 KB/s
+Step  4680/5000 | BPB: 1.6535 | CE: 1.1461 | Aux: 1.0104 | Chunks: [S0:4.34x => 4.34B/chunk] | Speed: 288.1 KB/s
+Step  4690/5000 | BPB: 1.5996 | CE: 1.1087 | Aux: 1.0074 | Chunks: [S0:4.40x => 4.40B/chunk] | Speed: 296.8 KB/s
+Step  4700/5000 | BPB: 1.7118 | CE: 1.1865 | Aux: 1.0088 | Chunks: [S0:4.37x => 4.37B/chunk] | Speed: 291.8 KB/s
+Step  4710/5000 | BPB: 1.5673 | CE: 1.0864 | Aux: 1.0047 | Chunks: [S0:4.46x => 4.46B/chunk] | Speed: 295.9 KB/s
+Step  4720/5000 | BPB: 1.6345 | CE: 1.1329 | Aux: 1.0030 | Chunks: [S0:4.50x => 4.50B/chunk] | Speed: 297.0 KB/s
+Step  4730/5000 | BPB: 1.6702 | CE: 1.1577 | Aux: 1.0049 | Chunks: [S0:4.46x => 4.46B/chunk] | Speed: 298.5 KB/s
+Step  4740/5000 | BPB: 1.5538 | CE: 1.0770 | Aux: 1.0052 | Chunks: [S0:4.45x => 4.45B/chunk] | Speed: 285.7 KB/s
+Step  4750/5000 | BPB: 1.6186 | CE: 1.1220 | Aux: 1.0050 | Chunks: [S0:4.45x => 4.45B/chunk] | Speed: 275.1 KB/s
+--------------------------------------------------------------------------------
+[Sample @ Step 4750] (Core Compression: 4.97 B/chunk | Core Transformer Skipped: 79.9% of bytes)
+Text   : 'In computer science and artificial intelligence, at least 3 subject matters to overcome this verse in identifying discussion of the language details, beta-engagement, an'
+Chunks :
+In |computer |s|cience a|nd ar|tificial intelligence, |a|t |l|eas|t |3 s|ubject matters |to |overcome |thi|s ve|r|se in |identify|ing |dis|cussion |of |the l|angu|age |d|etails, |b|et|a-engagement, |a|n
+--------------------------------------------------------------------------------
+Step  4760/5000 | BPB: 1.5336 | CE: 1.0630 | Aux: 1.0059 | Chunks: [S0:4.43x => 4.43B/chunk] | Speed: 199.1 KB/s
+Step  4770/5000 | BPB: 1.5881 | CE: 1.1008 | Aux: 1.0068 | Chunks: [S0:4.41x => 4.41B/chunk] | Speed: 298.2 KB/s
+Step  4780/5000 | BPB: 1.6666 | CE: 1.1552 | Aux: 1.0010 | Chunks: [S0:4.55x => 4.55B/chunk] | Speed: 302.2 KB/s
+Step  4790/5000 | BPB: 1.5551 | CE: 1.0779 | Aux: 1.0052 | Chunks: [S0:4.45x => 4.45B/chunk] | Speed: 298.4 KB/s
+Step  4800/5000 | BPB: 1.6148 | CE: 1.1193 | Aux: 1.0034 | Chunks: [S0:4.49x => 4.49B/chunk] | Speed: 292.5 KB/s
+Step  4810/5000 | BPB: 1.6186 | CE: 1.1219 | Aux: 0.9977 | Chunks: [S0:4.63x => 4.63B/chunk] | Speed: 289.3 KB/s
+Step  4820/5000 | BPB: 1.5560 | CE: 1.0786 | Aux: 1.0033 | Chunks: [S0:4.49x => 4.49B/chunk] | Speed: 297.9 KB/s
+Step  4830/5000 | BPB: 1.4886 | CE: 1.0318 | Aux: 1.0037 | Chunks: [S0:4.48x => 4.48B/chunk] | Speed: 298.2 KB/s
+Step  4840/5000 | BPB: 1.5697 | CE: 1.0880 | Aux: 1.0037 | Chunks: [S0:4.48x => 4.48B/chunk] | Speed: 299.0 KB/s
+Step  4850/5000 | BPB: 1.5239 | CE: 1.0563 | Aux: 1.0045 | Chunks: [S0:4.46x => 4.46B/chunk] | Speed: 293.9 KB/s
+Step  4860/5000 | BPB: 1.5878 | CE: 1.1006 | Aux: 1.0008 | Chunks: [S0:4.55x => 4.55B/chunk] | Speed: 297.4 KB/s
+Step  4870/5000 | BPB: 1.5693 | CE: 1.0878 | Aux: 0.9986 | Chunks: [S0:4.61x => 4.61B/chunk] | Speed: 296.4 KB/s
+Step  4880/5000 | BPB: 1.5261 | CE: 1.0578 | Aux: 1.0013 | Chunks: [S0:4.54x => 4.54B/chunk] | Speed: 293.7 KB/s
+Step  4890/5000 | BPB: 1.6883 | CE: 1.1702 | Aux: 1.0007 | Chunks: [S0:4.55x => 4.55B/chunk] | Speed: 286.8 KB/s
+Step  4900/5000 | BPB: 1.5809 | CE: 1.0958 | Aux: 1.0046 | Chunks: [S0:4.46x => 4.46B/chunk] | Speed: 294.8 KB/s
+Step  4910/5000 | BPB: 1.5868 | CE: 1.0999 | Aux: 1.0028 | Chunks: [S0:4.50x => 4.50B/chunk] | Speed: 295.3 KB/s
+Step  4920/5000 | BPB: 1.6450 | CE: 1.1402 | Aux: 1.0059 | Chunks: [S0:4.43x => 4.43B/chunk] | Speed: 297.9 KB/s
+Step  4930/5000 | BPB: 1.6179 | CE: 1.1214 | Aux: 1.0041 | Chunks: [S0:4.47x => 4.47B/chunk] | Speed: 295.4 KB/s
+Step  4940/5000 | BPB: 1.5740 | CE: 1.0910 | Aux: 1.0013 | Chunks: [S0:4.54x => 4.54B/chunk] | Speed: 297.1 KB/s
+Step  4950/5000 | BPB: 1.5317 | CE: 1.0617 | Aux: 1.0043 | Chunks: [S0:4.47x => 4.47B/chunk] | Speed: 294.2 KB/s
+Step  4960/5000 | BPB: 1.5373 | CE: 1.0655 | Aux: 1.0045 | Chunks: [S0:4.47x => 4.47B/chunk] | Speed: 289.2 KB/s
+Step  4970/5000 | BPB: 1.5876 | CE: 1.1005 | Aux: 1.0011 | Chunks: [S0:4.54x => 4.54B/chunk] | Speed: 298.5 KB/s
+Step  4980/5000 | BPB: 1.5793 | CE: 1.0947 | Aux: 1.0064 | Chunks: [S0:4.42x => 4.42B/chunk] | Speed: 288.6 KB/s
+Step  4990/5000 | BPB: 1.5886 | CE: 1.1011 | Aux: 1.0029 | Chunks: [S0:4.50x => 4.50B/chunk] | Speed: 296.9 KB/s
+Step  5000/5000 | BPB: 1.5866 | CE: 1.0997 | Aux: 1.0063 | Chunks: [S0:4.43x => 4.43B/chunk] | Speed: 292.1 KB/s
+--------------------------------------------------------------------------------
+[Sample @ Step 5000] (Core Compression: 6.50 B/chunk | Core Transformer Skipped: 84.6% of bytes)
+Text   : 'In computer science and artificial intelligence, and even the note is doing what’s coming to conceptualize the country.\nThe anarchism localized women in the city has a'
+Chunks :
+In |computer |s|cience a|nd artificial in|telligence, |a|nd even the note is |doing |wha|t’s |com|ing| |to |conceptualize |the country.
+|The an|a|rch|ism localized |wom|en in |the city h|a|s a
+--------------------------------------------------------------------------------
