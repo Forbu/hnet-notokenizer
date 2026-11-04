@@ -99,10 +99,14 @@ class HNetStage(nn.Module):
                 mlp_expansion=config.mlp_expansion,
             )
 
-            # Zero-initialized fp32 residual projection (crucial for initial gradient flow)
+            # Scaled-identity fp32 residual projection: keeps local byte spelling pathway open
+            # from step 1 so the router places boundaries at word/chunk completions rather than
+            # 1-2 bytes into a word, while still weighting the Main Network path strongly.
             self.residual_proj = nn.Linear(self.d_model, self.d_model, dtype=torch.float32)
-            nn.init.zeros_(self.residual_proj.weight)
-            nn.init.zeros_(self.residual_proj.bias)
+            with torch.no_grad():
+                nn.init.eye_(self.residual_proj.weight)
+                self.residual_proj.weight.mul_(0.5)
+                nn.init.zeros_(self.residual_proj.bias)
             self.residual_proj.weight._no_reinit = True
 
         # Tag parameters with stage_idx for per-stage learning rate multipliers
@@ -409,12 +413,11 @@ class ByteHNetLM(nn.Module):
         def _format_boundaries(boundaries: List[bool], sep: str = "|") -> str:
             pieces: List[str] = []
             current_chunk: List[int] = []
-            for idx, (b_val, is_b) in enumerate(zip(all_bytes, boundaries)):
-                if is_b and idx > 0:
+            for b_val, is_b in zip(all_bytes, boundaries):
+                current_chunk.append(b_val)
+                if is_b:
                     pieces.append(bytes(current_chunk).decode("utf-8", errors="replace"))
-                    current_chunk = [b_val]
-                else:
-                    current_chunk.append(b_val)
+                    current_chunk = []
             if current_chunk:
                 pieces.append(bytes(current_chunk).decode("utf-8", errors="replace"))
             return sep.join(pieces)

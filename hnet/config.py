@@ -42,7 +42,7 @@ class HNetConfig:
     target_compression: List[float] = field(default_factory=lambda: [4.57])
 
     # Weight on the auxiliary ratio load-balancing loss
-    aux_loss_weight: float = 0.10
+    aux_loss_weight: float = 0.20
 
     # Per-stage learning rate multipliers (outer stages see ~4.57x more tokens per step)
     lr_multipliers: List[float] = field(default_factory=lambda: [2.5, 1.0])

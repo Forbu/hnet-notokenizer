@@ -189,7 +189,6 @@ class RoutingOutput:
 
 @dataclass
 class RoutingState:
-    has_seen_tokens: torch.Tensor    # (B,) bool
     last_hidden_state: torch.Tensor  # (B, D)
 
 
@@ -200,8 +199,10 @@ class DeChunkState:
 
 class RoutingModule(nn.Module):
     """
-    Predicts dynamic chunk boundaries by comparing adjacent hidden states (t-1, t)
-    via cosine similarity after learned Q and K projections.
+    Predicts dynamic chunk boundaries where a boundary at index t (b_t = 1) means
+    the current chunk ENDS at position t ("ends here", matching Cartesia's new H-Net).
+    Position t=0 is not forced to be a boundary; instead it is compared against a
+    learned initial state `bos_embed` (x_{-1}).
     """
 
     def __init__(self, d_model: int):
@@ -209,17 +210,18 @@ class RoutingModule(nn.Module):
         self.d_model = d_model
         self.q_proj = nn.Linear(d_model, d_model, bias=False)
         self.k_proj = nn.Linear(d_model, d_model, bias=False)
+        self.bos_embed = nn.Parameter(torch.empty(d_model))
         with torch.no_grad():
             nn.init.eye_(self.q_proj.weight)
             nn.init.eye_(self.k_proj.weight)
+            nn.init.normal_(self.bos_embed, mean=0.0, std=0.02)
         self.q_proj.weight._no_reinit = True
         self.k_proj.weight._no_reinit = True
+        self.bos_embed._no_reinit = True
 
     def init_state(self, batch_size: int, device: torch.device, dtype: torch.dtype) -> RoutingState:
-        return RoutingState(
-            has_seen_tokens=torch.zeros(batch_size, device=device, dtype=torch.bool),
-            last_hidden_state=torch.zeros(batch_size, self.d_model, device=device, dtype=dtype),
-        )
+        bos = self.bos_embed.to(device=device, dtype=dtype).unsqueeze(0).expand(batch_size, -1).clone()
+        return RoutingState(last_hidden_state=bos)
 
     def forward(self, hidden_states: torch.Tensor, mask: torch.Tensor) -> RoutingOutput:
         """
@@ -227,20 +229,27 @@ class RoutingModule(nn.Module):
             hidden_states: (B, L, D)
             mask: (B, L) bool mask of valid positions
         """
-        q = F.normalize(self.q_proj(hidden_states[:, :-1]), dim=-1)
-        k = F.normalize(self.k_proj(hidden_states[:, 1:]), dim=-1)
+        B, L, D = hidden_states.shape
+        bos = self.bos_embed.to(dtype=hidden_states.dtype).view(1, 1, D).expand(B, 1, D)
+        prev_states = torch.cat([bos, hidden_states[:, :-1]], dim=1)
+
+        q = F.normalize(self.q_proj(prev_states), dim=-1)
+        k = F.normalize(self.k_proj(hidden_states), dim=-1)
 
         cos_sim = torch.einsum("bld,bld->bl", q, k)
         p_boundary = torch.clamp((1.0 - cos_sim) / 2.0, min=0.0, max=1.0)
 
-        # First token in every sequence is forced to be a boundary (p_0 = 1.0)
-        p_boundary = F.pad(p_boundary, (1, 0), value=1.0)
-
         boundary_prob = torch.stack([1.0 - p_boundary, p_boundary], dim=-1)  # (B, L, 2)
         selected_idx = torch.argmax(boundary_prob, dim=-1)                   # (B, L)
         boundary_mask = (selected_idx == 1) & mask
-        # Guarantee at least position 0 is a boundary for every batch row
-        boundary_mask[:, 0] = True
+
+        # Safety fallback: if a sequence row has zero boundaries, mark its highest-p valid token
+        no_boundary = ~boundary_mask.any(dim=-1)
+        if no_boundary.any():
+            masked_p = p_boundary.masked_fill(~mask, -1.0)
+            best_pos = masked_p.argmax(dim=-1)
+            boundary_mask = boundary_mask.clone()
+            boundary_mask[no_boundary, best_pos[no_boundary]] = True
 
         selected_probs = boundary_prob.gather(dim=-1, index=selected_idx.unsqueeze(-1))
 
@@ -261,12 +270,7 @@ class RoutingModule(nn.Module):
         cos_sim = torch.einsum("bd,bd->b", q, k)
         p_boundary = torch.clamp((1.0 - cos_sim) / 2.0, min=0.0, max=1.0)
 
-        # First token is always a boundary
-        p_boundary = torch.where(
-            state.has_seen_tokens, p_boundary, torch.ones_like(p_boundary)
-        )
         state.last_hidden_state.copy_(h)
-        state.has_seen_tokens.fill_(True)
 
         boundary_prob = torch.stack([1.0 - p_boundary, p_boundary], dim=-1)  # (B, 2)
         boundary_mask = boundary_prob[..., 1] > 0.5                          # (B,)
@@ -309,19 +313,25 @@ class ChunkLayer(nn.Module):
 
 class DeChunkLayer(nn.Module):
     """
-    1. Smooths compressed chunk vectors via confidence-weighted EMA:
+    End-of-chunk (`ends: true`) Dechunker:
+    1. Smooths compressed chunk vectors via confidence-weighted EMA seeded with `init_chunk` (z_tilde_{-1}):
          z_tilde_k = p_k * z_k + (1 - p_k) * z_tilde_{k-1}
-    2. Causally broadcasts each chunk vector across all positions up to the next boundary.
+    2. Causally broadcasts each completed chunk k (which ended at t_k) to positions [t_k .. t_{k+1}-1]
+       (used by the Decoder to predict bytes [t_k+1 .. t_{k+1}] of chunk k+1).
+       Positions before the first boundary (t < t_0, cumsum == 0) receive `init_chunk` (z_tilde_{-1}).
     """
 
     def __init__(self, d_model: int):
         super().__init__()
         self.d_model = d_model
+        self.init_chunk = nn.Parameter(torch.empty(d_model))
+        with torch.no_grad():
+            nn.init.normal_(self.init_chunk, mean=0.0, std=0.02)
+        self.init_chunk._no_reinit = True
 
     def init_state(self, batch_size: int, device: torch.device, dtype: torch.dtype) -> DeChunkState:
-        return DeChunkState(
-            last_value=torch.zeros(batch_size, self.d_model, device=device, dtype=dtype)
-        )
+        init_val = self.init_chunk.to(device=device, dtype=dtype).unsqueeze(0).expand(batch_size, -1).clone()
+        return DeChunkState(last_value=init_val)
 
     def forward(
         self,
@@ -338,11 +348,18 @@ class DeChunkLayer(nn.Module):
         p_all = torch.clamp(boundary_prob[..., 1].float(), min=1e-4, max=1.0 - 1e-4)
         p_chunk = torch.gather(p_all, dim=1, index=sorted_indices).unsqueeze(-1)  # (B, M, 1)
 
-        # Parallel associative EMA scan over the M chunks
-        smoothed = parallel_ema_scan(chunk_states.float(), p_chunk).to(orig_dtype)  # (B, M, D)
+        # Prepend learned `init_chunk` (z_tilde_{-1}) at index 0 with p=1.0 so:
+        #   smoothed[:, 0]   = init_chunk (active for t < t_0 where cumsum == 0)
+        #   smoothed[:, k+1] = EMA state after chunk k ends at t_k (active for t_k <= t < t_{k+1})
+        init_c = self.init_chunk.float().view(1, 1, D).expand(B, 1, D)
+        init_p = torch.ones(B, 1, 1, device=chunk_states.device, dtype=torch.float32)
+        z_ext = torch.cat([init_c, chunk_states.float()], dim=1)  # (B, M + 1, D)
+        p_ext = torch.cat([init_p, p_chunk], dim=1)               # (B, M + 1, 1)
 
-        # Plug back into original length L via cumulative sum of boundary_mask
-        plug_back_idx = torch.clamp(torch.cumsum(boundary_mask.long(), dim=1) - 1, min=0, max=M - 1)
+        smoothed = parallel_ema_scan(z_ext, p_ext).to(orig_dtype)  # (B, M + 1, D)
+
+        # cumsum is 0 before the first boundary t_0, and k+1 on [t_k .. t_{k+1}-1]
+        plug_back_idx = torch.clamp(torch.cumsum(boundary_mask.long(), dim=1), min=0, max=M)
         dechunked = torch.gather(
             smoothed,
             dim=1,
@@ -387,6 +404,8 @@ def ratio_loss(
 ) -> torch.Tensor:
     """
     Switch-Transformer-style auxiliary loss driving the boundary rate toward 1 / N.
+    Its gradient w.r.t. p_t is spatially uniform across all positions t, acting as a pure
+    Lagrange multiplier on the compression ratio while letting CE loss determine boundary locations.
     Achieves its global minimum of 1.0 when true_ratio == avg_prob == 1 / N.
     """
     valid = mask.float()

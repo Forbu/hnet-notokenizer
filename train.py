@@ -60,7 +60,7 @@ def main():
     parser.add_argument("--max-steps", type=int, default=5000, help="Total optimizer steps")
     parser.add_argument("--warmup-steps", type=int, default=200, help="LR warmup steps")
     parser.add_argument("--lr", type=float, default=3e-4, help="Base learning rate (scaled per stage)")
-    parser.add_argument("--aux-weight", type=float, default=0.10, help="Auxiliary compression ratio loss weight")
+    parser.add_argument("--aux-weight", type=float, default=0.20, help="Auxiliary compression ratio loss weight")
     parser.add_argument("--weight-decay", type=float, default=0.1)
     parser.add_argument("--eval-every", type=int, default=200, help="Print sample generation + chunk boundaries every N steps")
     parser.add_argument("--prompt", type=str, default="In computer science and artificial intelligence, ", help="Prompt for live sample generation")

@@ -62,6 +62,48 @@ def test_end_to_end_gradients_and_generation():
     print(f"[PASS] Autoregressive step() generation verified: {chunks!r} ({stats['bytes_per_chunk']:.2f} B/chunk)")
 
 
+def test_forward_matches_step():
+    torch.manual_seed(7)
+    cfg = HNetConfig(
+        d_model=[64, 96],
+        encoder_layout=["m2"],
+        decoder_layout=["m2"],
+        main_layout="T2",
+        head_dim=[32, 32],
+        rotary_emb_dim=[16, 16],
+        window_size=[63, -1],
+        target_compression=[4.0],
+    )
+    model = ByteHNetLM(cfg).eval()
+    x = torch.randint(0, 256, (1, 32))
+
+    with torch.no_grad():
+        fwd_out = model(x)
+        fwd_logits = fwd_out["logits"]
+        fwd_bmask = fwd_out["routes"][0][0].boundary_mask[0]
+
+        # Ensure at least one natural boundary (p > 0.5) occurred so fallback wasn't triggered
+        assert fwd_bmask.any(), "Expected at least one boundary in test sequence"
+
+        state = model.backbone.init_state(batch_size=1, device=x.device, dtype=torch.float32)
+        step_logits = []
+        step_bmask = []
+        for t in range(x.shape[1]):
+            emb = model.byte_embedding(x[:, t : t + 1])
+            h_t, routes = model.backbone.step(emb, state)
+            step_logits.append(model.lm_head(h_t))
+            step_bmask.append(routes[0].boundary_mask[0])
+
+        step_logits = torch.cat(step_logits, dim=1)
+        step_bmask = torch.stack(step_bmask, dim=0)
+
+    assert torch.equal(fwd_bmask, step_bmask), f"Boundary mask mismatch: {fwd_bmask} vs {step_bmask}"
+    max_logit_err = (fwd_logits - step_logits).abs().max().item()
+    assert max_logit_err < 1e-4, f"Forward vs step logit mismatch: {max_logit_err}"
+    print(f"[PASS] Parallel forward() matches recurrent step() (max logit diff = {max_logit_err:.2e})")
+
+
 if __name__ == "__main__":
     test_parallel_ema_matches_sequential()
     test_end_to_end_gradients_and_generation()
+    test_forward_matches_step()
