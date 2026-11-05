@@ -201,54 +201,86 @@ python train.py \
 | :--- | :---: | :---: | :---: | :---: |
 | **Original 2025 `LH-Net` (`131 KB/step`, `grad_accum=1`)** | `5.24 GB` (Step 40,000) | `14.42 GB` (Step 110,000) | `1.0076` EMA / `0.9118` Batch | Drifts `3.50x–4.40x` |
 | **New `ends: true` H-Net (`131 KB/step`, `grad_accum=1`)** | `2.76 GB` (Step 21,000) | **`6.24 GB` (Step 47,600)** | **`0.9625` EMA / `0.8405` Batch** | `3.85x–4.35x` |
-| **New `ends: true` H-Net (`1.05 MB/step`, `grad_accum=8`)** | **`3.15 GB` (Step 3,000)** | *In progress* | *In progress* | **Locked `4.03x–4.19x`** |
+| **New `ends: true` H-Net (`1.05 MB/step`, `grad_accum=8`)** | **`3.15 GB` (Step 3,000)** | **`6.80 GB` (Step 6,500)** | **`0.9919` EMA / `0.9475` (`1.05 MB` Batch)** | **Locked `4.03x–4.35x`** |
+
+#### Full 10-Hour `grad_accum = 8` Scaling Curve (`logs/train_10h_ga8.log`, `10,500` Steps / `11.01B` Bytes)
+
+| Step | Raw Text Processed | `1.05 MB` Batch BPB | Smoothed EMA BPB | Cross-Entropy (nats) | Empirical Compression | Learning Rate |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **1** | 1.05 MB | `8.0698` | `8.0698` | `5.5935` | `2.09 B/chunk` | `9.00e-07` |
+| **500** | 0.52 GB | `1.8040` | `1.8514` | `1.2504` | `4.51 B/chunk` | `4.50e-04` |
+| **1,000** | 1.05 GB | `1.5804` | `1.5612` | `1.0954` | `4.38 B/chunk` | `4.47e-04` |
+| **2,000** | 2.10 GB | `1.2921` | `1.2823` | `0.8956` | `4.05 B/chunk` | `4.28e-04` |
+| **3,000** | 3.15 GB | `1.1763` | `1.1759` | `0.8154` | `4.14 B/chunk` | `3.91e-04` |
+| **4,000** | 4.19 GB | `1.1721` | `1.1480` | `0.8124` | `3.99 B/chunk` | `3.39e-04` |
+| **5,000** | 5.24 GB | `1.1306` | `1.1280` | `0.7836` | `4.14 B/chunk` | `2.76e-04` |
+| **6,000** | 6.29 GB | `1.0653` | `1.0689` | `0.7384` | `4.13 B/chunk` | `2.10e-04` |
+| **7,000** | 7.34 GB | `1.0157` | `1.0372` | `0.7040` | `4.28 B/chunk` | `1.47e-04` |
+| **8,000** | 8.39 GB | `1.0766` | `1.0423` | `0.7462` | `4.08 B/chunk` | `9.45e-05` |
+| **9,490** | 9.95 GB | **`0.9475`** *(min)* | `1.0020` | `0.6568` | `4.31 B/chunk` | `5.53e-05` |
+| **10,150** | 10.64 GB | `0.9712` | **`0.9919`** *(min)* | `0.6732` | `4.29 B/chunk` | `4.63e-05` |
+| **10,500** | **11.01 GB** | **`1.0605`** | **`1.0449`** | `0.7351` | **`4.04 B/chunk`** | `4.50e-05` |
 
 ---
 
-### 3. Chunking Quality at Only `3.15B` Bytes with `grad_accum = 8` (`Step 3,000`)
+### 3. Chunking Evolution & Final Results (`grad_accum = 8`, `Step 10,500` / `11.01B` Bytes)
 
-Averaging the router gradients over `1.05 MB/step` (`grad_accum = 8`) produces dramatically cleaner word and morpheme boundaries at just **`3.15B` bytes** (`Step 3,000`, <30% into the 10-hour run):
+#### A. Direct Comparison on Cartesia's Figure 9 Abstract (`Step 2,000` $\rightarrow$ `Step 10,500`)
+Compare our **151M 1-stage** model (`grad_accum = 8`) against Cartesia's **3.67B 2-stage** model Stage 0 (`14.0B` bytes, $24\times$ more parameters):
 
-#### A. Direct Comparison on Cartesia's Figure 9 Abstract
-Compare our **151M 1-stage** model (`grad_accum = 8` @ `3.15B` bytes) against Cartesia's **3.67B 2-stage** model Stage 0 (`14.0B` bytes, $4.4\times$ more data and $24\times$ more parameters):
-
-* **Our 151M Model (`grad_accum = 8`, Step 3,000 — `3.15B` bytes, `4.92 B/chunk`):**
+* **Our 151M Model @ Step 2,000 (`2.10B` bytes, `4.92 B/chunk`, `52 chunks`):**
   ```text
   Maj|or |progress |on |language |models |(|L|M|s|)| |in |recent |years |has |largely |resulted |from |moving |away |from |specialized |models |designed |for |specific |ta|sks, |to| general |models |based |on |powerful |arc|hitectures |(|e.|g. |the |T|rans|former)| |that |learn |every|thing |from |raw |data.
+  ```
+* **Our 151M Model @ Step 6,000 (`6.29B` bytes) through Step 10,500 (`11.01B` bytes, `5.12 B/chunk`, `50 chunks`):**
+  ```text
+  Major |progress |on |language |models |(|L|M|s)| |in |recent |years |has |largely |resulted |from |moving |away |from |specialized |models |designed |for |specific |ta|sks, |to| general |models |based |on |powerful |arc|hitectures |(|e.|g. |the |T|rans|former)| |that |learn |every|thing |from |raw |data.
   ```
 * **Cartesia 3.67B Model Stage 0 (Figure 9, Step 1,494 — `14.0B` bytes, `5.70 B/chunk`):**
   ```text
   Major |progress |on |language| |models |(LMs) |in |recent |year|s |has| |largely resulted |from| |moving |away |from| |specialized |models |designed |for| |specific |task|s, |to |general |models |based |on |power|ful| |architectures |(e.g. |the| |Transformer) |that| |learn |every|thing| |from| |raw |data.
   ```
   *Notice:*
-  * **15 consecutive exact 1-word chunks:** `|in |recent |years |has |largely |resulted |from |moving |away |from |specialized |models |designed |for |specific |`.
-  * **Whole words on `language ` and `powerful `:** `|progress |on |language |models |` and `|to| general |models |based |on |powerful |`.
-  * **Acronyms & Morphemes:** `|(|L|M|s|)| |`, `|(|e.|g. |the |T|rans|former)| |`, and `|that |learn |every|thing |from |raw |data.`.
+  * By Step 6,000 (`6.29B` bytes), even the opening word `Maj|or ` merges into `Major |`, and the chunking remains **100% invariant** through `best.pt` (`Step 9,500`) and `step_10500.pt` (`Step 10,500`).
+  * **32 out of 35 non-parenthetical words** in the abstract are exact 1-word chunks (`Major |progress |on |language |models |`, `|in |recent |years |has |largely |resulted |from |moving |away |from |specialized |models |designed |for |specific |`, `|to| general |models |based |on |powerful |`, `|that |learn |... |from |raw |data.`), and the remaining 3 are clean morphological/stem splits (`ta|sks, `, `arc|hitectures `, `every|thing `).
 
-#### B. Generated Samples at Step 3,000 (`3.15B` Bytes, `grad_accum = 8`, `EMA BPB: 1.1759`)
+#### B. Final Generated Samples at Step 10,500 (`11.01B` Bytes, `grad_accum = 8`, `EMA BPB: 1.0449`)
 
-1. **Computer Science & AI (`5.85 B/chunk` — Main Transformer skipped on `82.9%` of bytes):**
-   ```text
-   In |computer |science |and |arti|ficial |intelligence, |and |are |able |to| produce |a |strong |creation |with |mu|lti|ple |programs.|
-   I|n |some |cases |the |application |of |these |programs |may |involve |several |programs |from |any |organization, |and |not |all |programs |do |the |same |thing.| How|ever, it |is
-   ```
-   *21 consecutive exact 1-word chunks in the second sentence (`|some |cases |the |application |of |these |programs |may |involve |several |programs |from |any |organization, |and |not |all |programs |do |the |same |thing.|`), followed by the exact compound split `How|ever, `.*
+1. **Computer Science & AI (`6.15 B/chunk` — Main Transformer skipped on `83.7%` of bytes):**
+   * **Generated Text:**
+     > `In computer science and artificial intelligence, as well as the development of creative organizations, enterprises, and the professional sector as a whole, to ensure an environment in which innovation and creativity can flourish. The reduction in the waste of energy and energy and the rem`
+   * **Learned Dynamic Chunks (`|`):**
+     ```text
+     In |computer |science |and |arti|ficial |intelligence, |as |well |as |the |development |of |creative |organizations, |enterprises, |and |the |professional |sector |as |a |whole, |to| ensure |an |environment |in |which |inn|ovation |and |creativity |can |flo|urish.| The |reduction |in |the |waste |of |energy |and |energy |and |the |rem
+     ```
+     *22 consecutive single-word chunks (`|intelligence, |as |well |as |the |development |of |creative |organizations, |enterprises, |and |the |professional |sector |as |a |whole, |to| ensure |an |environment |in |which |`) — including multi-syllable words like `development `, `creative `, `organizations, `, `enterprises, `, `professional `, and `environment `.*
 
-2. **Computer Imagery Sample (`6.33 B/chunk` — Main Transformer skipped on `84.2%` of bytes):**
-   ```text
-   In |computer |science |and |arti|ficial |intelligence, |and |are |providing |concrete |and |computer |systems |with |the |capa|bilities |and |ability |to| design |and |interp|ret |computer |imagery |in |an |un|derstandable |and |highly| resou
-   ```
-   *Every single boundary across all 209 bytes is either a complete word or an exact morphological stem (`arti|ficial `, `capa|bilities `, `interp|ret `, `un|derstandable `) — zero mid-character splits.*
+2. **History (`5.40 B/chunk` — Main Transformer skipped on `81.5%` of bytes):**
+   * **Generated Text:**
+     > `During the Industrial Revolution, the invention of the steam engine and the experimental interface for the production of computers and the distribution of business made possible the evolution of the steam engine and the steam engine to the great powers of man and the progress of the modern mind to the great`
+   * **Learned Dynamic Chunks (`|`):**
+     ```text
+     Du|ring |the |I|ndustrial |Revolution, |the |invention |of |the |ste|am |engine |and |the |experimental |interf|ace |for |the |production |of |computers |and |the |distribution |of |business |made |possible |the |evolution |of |the |ste|am |engine |and |the |ste|am |engine |to| the |great |powers |of |man |and |the |progress |of |the |modern |mind |to| the |great
+     ```
+     *Two 16-word streaks of exact single-word chunks (`|for |the |production |of |computers |and |the |distribution |of |business |made |possible |the |evolution |of |the |` and `|to| the |great |powers |of |man |and |the |progress |of |the |modern |mind |to| the |great`).*
 
-3. **Molecular Biology — Acronym (`D|N|A|`) vs. 16-Word Streak (`4.55 B/chunk` — `78.0%` skipped):**
-   ```text
-   In |molecular |bi|ology, |D|N|A| |replication |is |the |process |by |which |proteins |are |formed |and |replaced |by |complex |molecules, |such |as |am|i|no |acids.| The |D|N|A| |is |then |trans|ferred |to| the |molecular |cells |by |met|a|bolism |and |reproduces |on |cell |surfaces |and |interc|epts.| This |process |is |known |as |D|N|A| |re
-   ```
-   *16 consecutive whole-word chunks (`|replication |is |the |process |by |which |proteins |are |formed |and |replaced |by |complex |molecules, |such |as |`), while `|D|N|A| |` is split character-by-character all three times it occurs.*
+3. **Molecular Biology — Acronym (`D|N|A|`) & Rare Greek Medical Terms (`cho|n|dro|cy|tes,`) vs. Common Words (`4.19 B/chunk`):**
+   * **Generated Text:**
+     > `In molecular biology, DNA replication is the process by which cells germinate and expand from a single cell to form an embryo. Here we report one of the first steps in this process. The chondrocytes, a type of white blood cell that carries oxygen to the tissues, form a line of cells that contain a sin`
+   * **Learned Dynamic Chunks (`|`):**
+     ```text
+     In |molecular |bi|ology, |D|N|A| |repl|ication |is |the |process |by |which |cells |ger|minate |and |expand |from |a |single |cell |to| form |an |emb|ryo.| Here| |we |report |one |of |the |first |ste|ps |in |this |process.| The |cho|n|dro|cy|tes, |a |type |of |whit|e |blood |cell |that |car|ries |ox|y|gen |to| the |tissues, |form |a |line |of |cells |that |contain |a |sin
+     ```
+     *Adaptive compute allocation in action: splits the acronym `|D|N|A| |` character-by-character, decomposes the rare Greek medical term `|cho|n|dro|cy|tes, |` and `|ox|y|gen |` into their exact Greek syllables, and immediately chunks common English words (`|to| the |tissues, |form |a |line |of |cells |that |contain |a |`) as whole words.*
 
-4. **History — Hyphenated Compounds & Whole Words (`5.54 B/chunk` — `81.9%` skipped):**
-   ```text
-   Du|ring |the |I|ndustrial |Revolution, |the |invention |of |the |ste|am |engine |was |not |in |controversy.| This |meant |that |ai|rc|raft |were |considered |as |the |mos|t efficient |and |du|rable |and |cost-|effective |means |of |power |production.| With |the |increase |in |technology |and |the |increase |in |the |range |of |trans|porta
-   ```
+4. **Unseen Snake-Case Identifier (`hyper_flux_capacitor_v2` $\rightarrow$ `v1`, `4.29 B/chunk`):**
+   * **Generated Text:**
+     > `When configuring the hyper_flux_capacitor_v2, engineers noticed that computer models were failing and they started to work with flat parameters. The company also implemented a flux capacitor circuit that can be used to control the flux that is delivered to the hyper_flux_capacitor v1.`
+     > `The flux capacitor v2 c`
+   * **Learned Dynamic Chunks (`|`):**
+     ```text
+     When |conf|iguring |the |hy|per|_|flu|x_|capa|citor_|v2|, |engineers |noticed |that |computer |models |were |failing |and |they |started |to| work |with |fla|t |para|meters.| The |company |also |implemented |a |flu|x |capa|citor |cir|cuit |that |can |be |used |to| control |the |flu|x |that |is |del|ivered |to| the |hy|per|_|flu|x_|capa|citor |v1|.|
+     The |flu|x |capa|citor |v2| |c
+     ```
 
 
