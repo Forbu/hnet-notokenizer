@@ -1,0 +1,185 @@
+================================================================================
+ByteHNetLM (hnet_1stage_l12) | Stages: 1 | Total Params: 151.24M
+Dimensions: [512, 896] | Target Compression: [4.57]
+Device: cuda | Mixed Precision: True (torch.bfloat16)
+================================================================================
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Step      1/5000 | BPB: 8.1525 (EMA: 8.1525) | CE: 5.6509 | Aux: 1.3924 | Chunks: [S0:2.15x => 2.15B/chunk] | LR: 3.00e-06 | Speed: 27.5 KB/s
+Step     20/5000 | BPB: 4.5523 (EMA: 6.6335) | CE: 3.1554 | Aux: 0.8408 | Chunks: [S0:11.12x => 11.12B/chunk] | LR: 6.00e-05 | Speed: 349.2 KB/s
+[W1104 15:25:01.083089786 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 463470592 bytes (free: 10354688, total: 101974081536).
+Step     40/5000 | BPB: 3.3589 (EMA: 4.7189) | CE: 2.3282 | Aux: 0.9450 | Chunks: [S0:6.06x => 6.06B/chunk] | LR: 1.20e-04 | Speed: 295.8 KB/s
+Step     60/5000 | BPB: 2.7535 (EMA: 3.5941) | CE: 1.9086 | Aux: 0.9938 | Chunks: [S0:4.68x => 4.68B/chunk] | LR: 1.80e-04 | Speed: 348.1 KB/s
+Step     80/5000 | BPB: 2.5137 (EMA: 2.9531) | CE: 1.7424 | Aux: 0.9849 | Chunks: [S0:4.88x => 4.88B/chunk] | LR: 2.40e-04 | Speed: 353.4 KB/s
+Step    100/5000 | BPB: 2.2840 (EMA: 2.6483) | CE: 1.5832 | Aux: 1.0279 | Chunks: [S0:4.10x => 4.10B/chunk] | LR: 3.00e-04 | Speed: 347.6 KB/s
+Step    120/5000 | BPB: 2.2212 (EMA: 2.4350) | CE: 1.5396 | Aux: 0.9939 | Chunks: [S0:4.70x => 4.70B/chunk] | LR: 3.00e-04 | Speed: 350.5 KB/s
+Step    140/5000 | BPB: 2.3016 (EMA: 2.3162) | CE: 1.5954 | Aux: 1.0108 | Chunks: [S0:4.37x => 4.37B/chunk] | LR: 3.00e-04 | Speed: 348.3 KB/s
+Step    160/5000 | BPB: 2.2291 (EMA: 2.2544) | CE: 1.5451 | Aux: 1.0137 | Chunks: [S0:4.31x => 4.31B/chunk] | LR: 3.00e-04 | Speed: 349.3 KB/s
+Step    180/5000 | BPB: 2.1106 (EMA: 2.1884) | CE: 1.4629 | Aux: 1.0132 | Chunks: [S0:4.30x => 4.30B/chunk] | LR: 3.00e-04 | Speed: 349.4 KB/s
+Step    200/5000 | BPB: 2.0449 (EMA: 2.1733) | CE: 1.4174 | Aux: 1.0005 | Chunks: [S0:4.56x => 4.56B/chunk] | LR: 3.00e-04 | Speed: 353.3 KB/s
+Step    220/5000 | BPB: 2.1656 (EMA: 2.1488) | CE: 1.5011 | Aux: 1.0145 | Chunks: [S0:4.27x => 4.27B/chunk] | LR: 3.00e-04 | Speed: 356.6 KB/s
+Step    240/5000 | BPB: 2.0577 (EMA: 2.1122) | CE: 1.4263 | Aux: 1.0056 | Chunks: [S0:4.45x => 4.45B/chunk] | LR: 2.99e-04 | Speed: 354.9 KB/s
+--------------------------------------------------------------------------------
+[Sample @ Step 250] (EMA BPB: 2.0796 | Core Compression: 4.18 B/chunk | Core Transformer Skipped: 76.1% of bytes)
+Text   : 'In computer science and artificial intelligence, to the basically depression, the olday lifetime managed with laborate the Dance sermon can ensuler in 1869, the finance is that the United Requiry if the Army f'
+Chunks :
+In| com|puter |science |and arti|f|i|cial |intelli|g|enc|e,| to the basi|cally |depression,| the olday |lifeti|me| |manag|ed |wit|h| labor|ate |the Dance |sermon |can e|nsu|le|r |i|n 1|869,| the finan|ce |i|s that| the U|n|i|te|d| Re|qui|r|y| |i|f the Army |f
+--------------------------------------------------------------------------------
+Step    260/5000 | BPB: 2.1193 (EMA: 2.0893) | CE: 1.4690 | Aux: 1.0063 | Chunks: [S0:4.43x => 4.43B/chunk] | LR: 2.99e-04 | Speed: 238.7 KB/s
+Step    280/5000 | BPB: 1.9774 (EMA: 2.0656) | CE: 1.3707 | Aux: 1.0032 | Chunks: [S0:4.50x => 4.50B/chunk] | LR: 2.99e-04 | Speed: 351.9 KB/s
+Step    300/5000 | BPB: 2.0179 (EMA: 2.0399) | CE: 1.3987 | Aux: 1.0163 | Chunks: [S0:4.23x => 4.23B/chunk] | LR: 2.99e-04 | Speed: 348.9 KB/s
+Step    320/5000 | BPB: 2.0494 (EMA: 2.0313) | CE: 1.4205 | Aux: 0.9778 | Chunks: [S0:5.27x => 5.27B/chunk] | LR: 2.99e-04 | Speed: 354.9 KB/s
+Step    340/5000 | BPB: 2.0960 (EMA: 2.0317) | CE: 1.4528 | Aux: 0.9965 | Chunks: [S0:4.65x => 4.65B/chunk] | LR: 2.98e-04 | Speed: 352.0 KB/s
+Step    360/5000 | BPB: 1.9529 (EMA: 2.0184) | CE: 1.3537 | Aux: 0.9973 | Chunks: [S0:4.63x => 4.63B/chunk] | LR: 2.98e-04 | Speed: 355.2 KB/s
+Step    380/5000 | BPB: 1.9239 (EMA: 1.9883) | CE: 1.3335 | Aux: 1.0062 | Chunks: [S0:4.43x => 4.43B/chunk] | LR: 2.98e-04 | Speed: 353.4 KB/s
+Step    400/5000 | BPB: 1.9442 (EMA: 1.9779) | CE: 1.3476 | Aux: 1.0068 | Chunks: [S0:4.42x => 4.42B/chunk] | LR: 2.98e-04 | Speed: 354.7 KB/s
+Step    420/5000 | BPB: 2.0099 (EMA: 1.9830) | CE: 1.3932 | Aux: 1.0005 | Chunks: [S0:4.56x => 4.56B/chunk] | LR: 2.97e-04 | Speed: 353.1 KB/s
+Step    440/5000 | BPB: 1.9235 (EMA: 1.9558) | CE: 1.3333 | Aux: 1.0080 | Chunks: [S0:4.39x => 4.39B/chunk] | LR: 2.97e-04 | Speed: 356.3 KB/s
+Step    460/5000 | BPB: 1.9691 (EMA: 1.9651) | CE: 1.3648 | Aux: 1.0003 | Chunks: [S0:4.56x => 4.56B/chunk] | LR: 2.96e-04 | Speed: 356.9 KB/s
+Step    480/5000 | BPB: 1.8987 (EMA: 1.9442) | CE: 1.3161 | Aux: 1.0032 | Chunks: [S0:4.50x => 4.50B/chunk] | LR: 2.96e-04 | Speed: 358.0 KB/s
+Step    500/5000 | BPB: 1.9577 (EMA: 1.9269) | CE: 1.3570 | Aux: 0.9999 | Chunks: [S0:4.57x => 4.57B/chunk] | LR: 2.96e-04 | Speed: 356.0 KB/s
+--------------------------------------------------------------------------------
+[Sample @ Step 500] (EMA BPB: 1.9269 | Core Compression: 4.64 B/chunk | Core Transformer Skipped: 78.5% of bytes)
+Text   : 'In computer science and artificial intelligence, personal medications or public perspectives and for the electronic species (MPRH) was readily concerned above the eastern states to share the research still exp'
+Chunks :
+In |com|pu|ter |science |and arti|f|i|c|ial |i|ntell|i|g|ence, per|sona|l |med|i|cations |o|r publi|c |persp|ectives |and for the ele|c|t|roni|c spec|i|es |(MPRH)| |was re|adily con|cerned above |the ea|ste|rn states |to| shar|e the resea|rch |s|till exp
+--------------------------------------------------------------------------------
+Step    520/5000 | BPB: 1.9603 (EMA: 1.9391) | CE: 1.3588 | Aux: 0.9950 | Chunks: [S0:4.69x => 4.69B/chunk] | LR: 2.95e-04 | Speed: 231.7 KB/s
+Step    540/5000 | BPB: 1.9289 (EMA: 1.9140) | CE: 1.3370 | Aux: 0.9977 | Chunks: [S0:4.63x => 4.63B/chunk] | LR: 2.95e-04 | Speed: 355.7 KB/s
+Step    560/5000 | BPB: 1.8670 (EMA: 1.8944) | CE: 1.2941 | Aux: 0.9977 | Chunks: [S0:4.63x => 4.63B/chunk] | LR: 2.94e-04 | Speed: 352.8 KB/s
+Step    580/5000 | BPB: 1.9112 (EMA: 1.9178) | CE: 1.3247 | Aux: 1.0010 | Chunks: [S0:4.55x => 4.55B/chunk] | LR: 2.94e-04 | Speed: 345.8 KB/s
+Step    600/5000 | BPB: 1.9710 (EMA: 1.9106) | CE: 1.3662 | Aux: 1.0085 | Chunks: [S0:4.38x => 4.38B/chunk] | LR: 2.93e-04 | Speed: 352.3 KB/s
+Step    620/5000 | BPB: 1.9153 (EMA: 1.9134) | CE: 1.3276 | Aux: 1.0034 | Chunks: [S0:4.49x => 4.49B/chunk] | LR: 2.93e-04 | Speed: 347.9 KB/s
+Step    640/5000 | BPB: 1.8621 (EMA: 1.8895) | CE: 1.2907 | Aux: 1.0002 | Chunks: [S0:4.57x => 4.57B/chunk] | LR: 2.92e-04 | Speed: 354.3 KB/s
+Step    660/5000 | BPB: 1.8624 (EMA: 1.8879) | CE: 1.2909 | Aux: 0.9965 | Chunks: [S0:4.65x => 4.65B/chunk] | LR: 2.91e-04 | Speed: 347.3 KB/s
+Step    680/5000 | BPB: 1.8130 (EMA: 1.8634) | CE: 1.2566 | Aux: 0.9953 | Chunks: [S0:4.68x => 4.68B/chunk] | LR: 2.91e-04 | Speed: 351.8 KB/s
+Step    700/5000 | BPB: 1.9521 (EMA: 1.9145) | CE: 1.3531 | Aux: 1.0028 | Chunks: [S0:4.51x => 4.51B/chunk] | LR: 2.90e-04 | Speed: 354.0 KB/s
+Step    720/5000 | BPB: 1.7001 (EMA: 1.8617) | CE: 1.1784 | Aux: 1.0287 | Chunks: [S0:4.04x => 4.04B/chunk] | LR: 2.90e-04 | Speed: 352.0 KB/s
+Step    740/5000 | BPB: 1.8347 (EMA: 1.8712) | CE: 1.2717 | Aux: 1.0048 | Chunks: [S0:4.47x => 4.47B/chunk] | LR: 2.89e-04 | Speed: 352.0 KB/s
+--------------------------------------------------------------------------------
+[Sample @ Step 750] (EMA BPB: 1.8611 | Core Compression: 5.65 B/chunk | Core Transformer Skipped: 82.3% of bytes)
+Text   : 'In computer science and artificial intelligence, but corn safety and the difference of the purpose of the San as soon as in Korean was in, it’s possible. In fact, such as regular respiratory different to the'
+Chunks :
+In |com|puter |science |and arti|f|icial i|ntell|i|g|ence, b|ut| corn sa|fety |and the differen|ce |of the purp|o|se |of the Sa|n |as| soo|n as i|n Korean |was i|n,| i|t|’s possib|l|e.| |I|n fact, such| as| regular respiratory differen|t to the
+--------------------------------------------------------------------------------
+Step    760/5000 | BPB: 1.9181 (EMA: 1.8988) | CE: 1.3295 | Aux: 0.9990 | Chunks: [S0:4.59x => 4.59B/chunk] | LR: 2.88e-04 | Speed: 227.0 KB/s
+Step    780/5000 | BPB: 1.7966 (EMA: 1.8677) | CE: 1.2453 | Aux: 1.0015 | Chunks: [S0:4.54x => 4.54B/chunk] | LR: 2.87e-04 | Speed: 350.5 KB/s
+Step    800/5000 | BPB: 1.7808 (EMA: 1.8995) | CE: 1.2344 | Aux: 0.9966 | Chunks: [S0:4.65x => 4.65B/chunk] | LR: 2.87e-04 | Speed: 348.6 KB/s
+Step    820/5000 | BPB: 1.7957 (EMA: 1.8637) | CE: 1.2447 | Aux: 1.0011 | Chunks: [S0:4.54x => 4.54B/chunk] | LR: 2.86e-04 | Speed: 352.0 KB/s
+Step    840/5000 | BPB: 1.8377 (EMA: 1.8483) | CE: 1.2738 | Aux: 1.0047 | Chunks: [S0:4.47x => 4.47B/chunk] | LR: 2.85e-04 | Speed: 348.0 KB/s
+Step    860/5000 | BPB: 1.8535 (EMA: 1.8267) | CE: 1.2848 | Aux: 0.9990 | Chunks: [S0:4.59x => 4.59B/chunk] | LR: 2.84e-04 | Speed: 342.9 KB/s
+Step    880/5000 | BPB: 1.7789 (EMA: 1.8458) | CE: 1.2331 | Aux: 1.0037 | Chunks: [S0:4.49x => 4.49B/chunk] | LR: 2.84e-04 | Speed: 336.0 KB/s
+Step    900/5000 | BPB: 2.0552 (EMA: 1.8618) | CE: 1.4246 | Aux: 1.0011 | Chunks: [S0:4.55x => 4.55B/chunk] | LR: 2.83e-04 | Speed: 350.6 KB/s
+Step    920/5000 | BPB: 1.8485 (EMA: 1.8826) | CE: 1.2813 | Aux: 1.0011 | Chunks: [S0:4.54x => 4.54B/chunk] | LR: 2.82e-04 | Speed: 343.5 KB/s
+Step    940/5000 | BPB: 1.9628 (EMA: 1.8752) | CE: 1.3605 | Aux: 1.0057 | Chunks: [S0:4.45x => 4.45B/chunk] | LR: 2.81e-04 | Speed: 347.8 KB/s
+Step    960/5000 | BPB: 1.8579 (EMA: 1.8706) | CE: 1.2878 | Aux: 1.0035 | Chunks: [S0:4.49x => 4.49B/chunk] | LR: 2.80e-04 | Speed: 348.7 KB/s
+Step    980/5000 | BPB: 1.8616 (EMA: 1.8626) | CE: 1.2903 | Aux: 1.0044 | Chunks: [S0:4.47x => 4.47B/chunk] | LR: 2.79e-04 | Speed: 347.6 KB/s
+Step   1000/5000 | BPB: 1.9512 (EMA: 1.9072) | CE: 1.3525 | Aux: 1.0134 | Chunks: [S0:4.29x => 4.29B/chunk] | LR: 2.78e-04 | Speed: 339.9 KB/s
+--------------------------------------------------------------------------------
+[Sample @ Step 1000] (EMA BPB: 1.9072 | Core Compression: 4.45 B/chunk | Core Transformer Skipped: 77.5% of bytes)
+Text   : 'In computer science and artificial intelligence, and his odds of this angle of a superseas. Soldiers large the Chinese Professor and their canthus, the English impact in the Society of the Congress of the New '
+Chunks :
+In |computer |science |and arti|f|icial i|ntell|ig|ence, and his| o|d|ds |of t|his| angle |of a super|se|as.| |So|ldi|ers |large |t|he C|hine|s|e Professor |and their| canthus, the E|ng|lis|h i|m|pact |i|n t|he So|ci|ety |o|f t|he Congr|e|ss |o|f t|he New 
+--------------------------------------------------------------------------------
+Step   1020/5000 | BPB: 1.7805 (EMA: 1.8638) | CE: 1.2342 | Aux: 0.9978 | Chunks: [S0:4.62x => 4.62B/chunk] | LR: 2.77e-04 | Speed: 252.4 KB/s
+Step   1040/5000 | BPB: 1.8412 (EMA: 1.8570) | CE: 1.2762 | Aux: 0.9891 | Chunks: [S0:4.84x => 4.84B/chunk] | LR: 2.76e-04 | Speed: 348.3 KB/s
+Step   1060/5000 | BPB: 1.8484 (EMA: 1.8368) | CE: 1.2812 | Aux: 1.0028 | Chunks: [S0:4.51x => 4.51B/chunk] | LR: 2.75e-04 | Speed: 336.0 KB/s
+Step   1080/5000 | BPB: 1.8644 (EMA: 1.8481) | CE: 1.2923 | Aux: 1.0006 | Chunks: [S0:4.56x => 4.56B/chunk] | LR: 2.74e-04 | Speed: 347.5 KB/s
+Step   1100/5000 | BPB: 1.8452 (EMA: 1.8387) | CE: 1.2790 | Aux: 1.0031 | Chunks: [S0:4.50x => 4.50B/chunk] | LR: 2.73e-04 | Speed: 348.9 KB/s
+Step   1120/5000 | BPB: 1.8223 (EMA: 1.8312) | CE: 1.2631 | Aux: 1.0047 | Chunks: [S0:4.47x => 4.47B/chunk] | LR: 2.72e-04 | Speed: 343.5 KB/s
+Step   1140/5000 | BPB: 1.8060 (EMA: 1.8357) | CE: 1.2518 | Aux: 0.9986 | Chunks: [S0:4.60x => 4.60B/chunk] | LR: 2.71e-04 | Speed: 341.4 KB/s
+Step   1160/5000 | BPB: 1.9027 (EMA: 1.8595) | CE: 1.3188 | Aux: 1.0011 | Chunks: [S0:4.54x => 4.54B/chunk] | LR: 2.70e-04 | Speed: 350.8 KB/s
+Step   1180/5000 | BPB: 1.8580 (EMA: 1.8296) | CE: 1.2879 | Aux: 1.0016 | Chunks: [S0:4.53x => 4.53B/chunk] | LR: 2.69e-04 | Speed: 340.0 KB/s
+Step   1200/5000 | BPB: 1.7532 (EMA: 1.8030) | CE: 1.2152 | Aux: 1.0037 | Chunks: [S0:4.49x => 4.49B/chunk] | LR: 2.68e-04 | Speed: 343.6 KB/s
+Step   1220/5000 | BPB: 1.7912 (EMA: 1.7945) | CE: 1.2416 | Aux: 1.0009 | Chunks: [S0:4.55x => 4.55B/chunk] | LR: 2.67e-04 | Speed: 345.6 KB/s
+Step   1240/5000 | BPB: 1.8289 (EMA: 1.8201) | CE: 1.2677 | Aux: 0.9939 | Chunks: [S0:4.72x => 4.72B/chunk] | LR: 2.66e-04 | Speed: 347.3 KB/s
+--------------------------------------------------------------------------------
+[Sample @ Step 1250] (EMA BPB: 1.7991 | Core Compression: 5.10 B/chunk | Core Transformer Skipped: 80.4% of bytes)
+Text   : 'In computer science and artificial intelligence, and how to schedule to access them to ecclesize them about their developments and make themselves and start with several pure in phase for their research.\nThe S'
+Chunks :
+In |computer |science |and arti|f|i|cial intell|ig|ence, and how| to| sche|dule |to| ac|ces|s |t|hem| |to| e|cclesiz|e |them| |about| their| developments |and ma|ke them|selves |and start |with| severa|l pure |i|n phase |for their| research.|
+|The S
+--------------------------------------------------------------------------------
+Step   1260/5000 | BPB: 1.8845 (EMA: 1.7968) | CE: 1.3063 | Aux: 0.9978 | Chunks: [S0:4.62x => 4.62B/chunk] | LR: 2.64e-04 | Speed: 228.5 KB/s
+Step   1280/5000 | BPB: 1.7132 (EMA: 1.7915) | CE: 1.1875 | Aux: 1.0012 | Chunks: [S0:4.54x => 4.54B/chunk] | LR: 2.63e-04 | Speed: 347.3 KB/s
+Step   1300/5000 | BPB: 1.8634 (EMA: 1.7813) | CE: 1.2916 | Aux: 1.0055 | Chunks: [S0:4.45x => 4.45B/chunk] | LR: 2.62e-04 | Speed: 337.1 KB/s
+Step   1320/5000 | BPB: 1.8501 (EMA: 1.8140) | CE: 1.2824 | Aux: 0.9987 | Chunks: [S0:4.60x => 4.60B/chunk] | LR: 2.61e-04 | Speed: 344.9 KB/s
+Step   1340/5000 | BPB: 1.9143 (EMA: 1.8137) | CE: 1.3269 | Aux: 1.0191 | Chunks: [S0:4.18x => 4.18B/chunk] | LR: 2.60e-04 | Speed: 346.1 KB/s
+Step   1360/5000 | BPB: 1.7781 (EMA: 1.7905) | CE: 1.2325 | Aux: 1.0030 | Chunks: [S0:4.50x => 4.50B/chunk] | LR: 2.58e-04 | Speed: 344.3 KB/s
+Step   1380/5000 | BPB: 1.7234 (EMA: 1.7574) | CE: 1.1945 | Aux: 1.0001 | Chunks: [S0:4.57x => 4.57B/chunk] | LR: 2.57e-04 | Speed: 341.6 KB/s
+Step   1400/5000 | BPB: 1.7803 (EMA: 1.7545) | CE: 1.2340 | Aux: 1.0002 | Chunks: [S0:4.56x => 4.56B/chunk] | LR: 2.56e-04 | Speed: 342.2 KB/s
+Step   1420/5000 | BPB: 1.7306 (EMA: 1.7645) | CE: 1.1995 | Aux: 0.9997 | Chunks: [S0:4.58x => 4.58B/chunk] | LR: 2.55e-04 | Speed: 346.3 KB/s
+Step   1440/5000 | BPB: 1.7961 (EMA: 1.7465) | CE: 1.2450 | Aux: 1.0046 | Chunks: [S0:4.47x => 4.47B/chunk] | LR: 2.53e-04 | Speed: 345.5 KB/s
+Step   1460/5000 | BPB: 1.9556 (EMA: 1.7429) | CE: 1.3555 | Aux: 1.0130 | Chunks: [S0:4.29x => 4.29B/chunk] | LR: 2.52e-04 | Speed: 343.2 KB/s
+Step   1480/5000 | BPB: 1.6998 (EMA: 1.7418) | CE: 1.1782 | Aux: 0.9981 | Chunks: [S0:4.62x => 4.62B/chunk] | LR: 2.51e-04 | Speed: 340.6 KB/s
+Step   1500/5000 | BPB: 1.7323 (EMA: 1.7464) | CE: 1.2007 | Aux: 1.0037 | Chunks: [S0:4.48x => 4.48B/chunk] | LR: 2.49e-04 | Speed: 342.7 KB/s
+--------------------------------------------------------------------------------
+[Sample @ Step 1500] (EMA BPB: 1.7464 | Core Compression: 5.81 B/chunk | Core Transformer Skipped: 82.8% of bytes)
+Text   : 'In computer science and artificial intelligence, companies and continuing to explain some techniques and clinical tools.\nExaminer a powerful team to study students to measure the gaps that find out the worldwi'
+Chunks :
+In computer |science |and artifi|cial intellig|ence, com|panies |and continui|ng |to explain |so|me| tec|hn|iques |and clinical| too|ls.|
+|E|xa|miner |a |pow|e|rf|ul team |to stu|dy |students |to measure |the gaps |that| find o|u|t |the worldwi
+--------------------------------------------------------------------------------
+Step   1520/5000 | BPB: 1.6774 (EMA: 1.7396) | CE: 1.1627 | Aux: 1.0009 | Chunks: [S0:4.55x => 4.55B/chunk] | LR: 2.48e-04 | Speed: 223.3 KB/s
+Step   1540/5000 | BPB: 1.7940 (EMA: 1.7320) | CE: 1.2435 | Aux: 0.9994 | Chunks: [S0:4.58x => 4.58B/chunk] | LR: 2.47e-04 | Speed: 342.7 KB/s
+Step   1560/5000 | BPB: 1.7798 (EMA: 1.7445) | CE: 1.2337 | Aux: 1.0042 | Chunks: [S0:4.47x => 4.47B/chunk] | LR: 2.45e-04 | Speed: 340.5 KB/s
+Step   1580/5000 | BPB: 1.6989 (EMA: 1.7175) | CE: 1.1776 | Aux: 0.9997 | Chunks: [S0:4.58x => 4.58B/chunk] | LR: 2.44e-04 | Speed: 346.6 KB/s
+Step   1600/5000 | BPB: 1.7128 (EMA: 1.7222) | CE: 1.1872 | Aux: 0.9970 | Chunks: [S0:4.64x => 4.64B/chunk] | LR: 2.42e-04 | Speed: 339.5 KB/s
+Step   1620/5000 | BPB: 1.7847 (EMA: 1.7099) | CE: 1.2371 | Aux: 1.0044 | Chunks: [S0:4.47x => 4.47B/chunk] | LR: 2.41e-04 | Speed: 338.3 KB/s
+[W1104 15:35:32.229935966 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 589299712 bytes (free: 496893952, total: 101974081536).
+Step   1640/5000 | BPB: 1.6269 (EMA: 1.7132) | CE: 1.1277 | Aux: 1.0001 | Chunks: [S0:4.57x => 4.57B/chunk] | LR: 2.39e-04 | Speed: 319.1 KB/s
+Step   1660/5000 | BPB: 1.6610 (EMA: 1.7209) | CE: 1.1513 | Aux: 1.0009 | Chunks: [S0:4.55x => 4.55B/chunk] | LR: 2.38e-04 | Speed: 326.7 KB/s
+Step   1680/5000 | BPB: 1.6070 (EMA: 1.6992) | CE: 1.1139 | Aux: 1.0057 | Chunks: [S0:4.44x => 4.44B/chunk] | LR: 2.37e-04 | Speed: 341.0 KB/s
+Step   1700/5000 | BPB: 1.5992 (EMA: 1.6938) | CE: 1.1085 | Aux: 1.0038 | Chunks: [S0:4.48x => 4.48B/chunk] | LR: 2.35e-04 | Speed: 340.3 KB/s
+Step   1720/5000 | BPB: 1.7171 (EMA: 1.6990) | CE: 1.1902 | Aux: 1.0058 | Chunks: [S0:4.44x => 4.44B/chunk] | LR: 2.34e-04 | Speed: 338.8 KB/s
+Step   1740/5000 | BPB: 1.7344 (EMA: 1.6977) | CE: 1.2022 | Aux: 1.0051 | Chunks: [S0:4.45x => 4.45B/chunk] | LR: 2.32e-04 | Speed: 337.0 KB/s
+--------------------------------------------------------------------------------
+[Sample @ Step 1750] (EMA BPB: 1.6881 | Core Compression: 5.81 B/chunk | Core Transformer Skipped: 82.8% of bytes)
+Text   : 'In computer science and artificial intelligence, and a gas servant contacts into a web topical data.\nDysfunctioning solutions are free to control responses as you can also help with a mating card to ensure tha'
+Chunks :
+In computer |science |and artif|icial intelligence, and a ga|s |servant |contacts |into| a web| top|i|cal data.|
+|Dy|sfu|nctioning |so|lutions |are| free |to| control |responses |as| yo|u can also| help |with| a ma|t|i|ng |card |to| ensur|e |tha
+--------------------------------------------------------------------------------
+Step   1760/5000 | BPB: 1.8618 (EMA: 1.6882) | CE: 1.2905 | Aux: 1.0142 | Chunks: [S0:4.26x => 4.26B/chunk] | LR: 2.31e-04 | Speed: 217.7 KB/s
+Step   1780/5000 | BPB: 1.7623 (EMA: 1.7236) | CE: 1.2215 | Aux: 0.9977 | Chunks: [S0:4.63x => 4.63B/chunk] | LR: 2.29e-04 | Speed: 333.9 KB/s
+Step   1800/5000 | BPB: 1.6829 (EMA: 1.7306) | CE: 1.1665 | Aux: 0.9921 | Chunks: [S0:4.79x => 4.79B/chunk] | LR: 2.28e-04 | Speed: 333.5 KB/s
+Step   1820/5000 | BPB: 1.7499 (EMA: 1.7844) | CE: 1.2130 | Aux: 1.0010 | Chunks: [S0:4.55x => 4.55B/chunk] | LR: 2.26e-04 | Speed: 334.1 KB/s
+Step   1840/5000 | BPB: 1.7951 (EMA: 1.7912) | CE: 1.2443 | Aux: 0.9992 | Chunks: [S0:4.59x => 4.59B/chunk] | LR: 2.24e-04 | Speed: 333.3 KB/s
+Step   1860/5000 | BPB: 1.8096 (EMA: 1.7634) | CE: 1.2543 | Aux: 1.0081 | Chunks: [S0:4.38x => 4.38B/chunk] | LR: 2.23e-04 | Speed: 338.5 KB/s
+Step   1880/5000 | BPB: 1.7463 (EMA: 1.7612) | CE: 1.2104 | Aux: 1.0029 | Chunks: [S0:4.50x => 4.50B/chunk] | LR: 2.21e-04 | Speed: 329.9 KB/s
+Step   1900/5000 | BPB: 1.7681 (EMA: 1.7465) | CE: 1.2256 | Aux: 1.0078 | Chunks: [S0:4.38x => 4.38B/chunk] | LR: 2.20e-04 | Speed: 341.1 KB/s
+Step   1920/5000 | BPB: 1.6840 (EMA: 1.7417) | CE: 1.1673 | Aux: 0.9980 | Chunks: [S0:4.63x => 4.63B/chunk] | LR: 2.18e-04 | Speed: 329.9 KB/s
+Step   1940/5000 | BPB: 1.6552 (EMA: 1.7213) | CE: 1.1473 | Aux: 0.9998 | Chunks: [S0:4.58x => 4.58B/chunk] | LR: 2.17e-04 | Speed: 334.7 KB/s
+Step   1960/5000 | BPB: 1.6745 (EMA: 1.7099) | CE: 1.1606 | Aux: 1.0054 | Chunks: [S0:4.44x => 4.44B/chunk] | LR: 2.15e-04 | Speed: 333.3 KB/s
+Step   1980/5000 | BPB: 1.6779 (EMA: 1.7136) | CE: 1.1630 | Aux: 0.9982 | Chunks: [S0:4.62x => 4.62B/chunk] | LR: 2.13e-04 | Speed: 343.1 KB/s
+[W1104 15:37:52.090942372 CUDACachingAllocator.cpp:3934] memory allocation failed with OOM on device 0 while trying to allocate 455081984 bytes (free: 1966080, total: 101974081536).
+Step   2000/5000 | BPB: 1.7125 (EMA: 1.7021) | CE: 1.1870 | Aux: 0.9972 | Chunks: [S0:4.64x => 4.64B/chunk] | LR: 2.12e-04 | Speed: 317.2 KB/s
+--------------------------------------------------------------------------------
+[Sample @ Step 2000] (EMA BPB: 1.7021 | Core Compression: 5.50 B/chunk | Core Transformer Skipped: 81.8% of bytes)
+Text   : 'In computer science and artificial intelligence, or to describe dialogue from a summary of this project.\nWhen Selected Parties have found an important security classmates, there is an equal effort to make sele'
+Chunks :
+In |computer |science |and art|if|icial intelligence, o|r to| describe |dialogue |from| a sum|m|ar|y |of this| project.|
+|When| Selected |Parties |have| found |an |i|mpo|rta|nt security |clas|smates, ther|e| is an e|qual effort |to| ma|ke |s|e|l|e
+--------------------------------------------------------------------------------
+Step   2020/5000 | BPB: 1.7703 (EMA: 1.7333) | CE: 1.2271 | Aux: 1.0020 | Chunks: [S0:4.52x => 4.52B/chunk] | LR: 2.10e-04 | Speed: 256.9 KB/s
+Step   2040/5000 | BPB: 1.6948 (EMA: 1.7145) | CE: 1.1747 | Aux: 0.9992 | Chunks: [S0:4.59x => 4.59B/chunk] | LR: 2.08e-04 | Speed: 331.8 KB/s
+Step   2060/5000 | BPB: 1.6972 (EMA: 1.7086) | CE: 1.1764 | Aux: 1.0007 | Chunks: [S0:4.55x => 4.55B/chunk] | LR: 2.07e-04 | Speed: 330.8 KB/s
+Step   2080/5000 | BPB: 1.8081 (EMA: 1.7075) | CE: 1.2533 | Aux: 1.0049 | Chunks: [S0:4.45x => 4.45B/chunk] | LR: 2.05e-04 | Speed: 336.6 KB/s
+Step   2100/5000 | BPB: 1.6746 (EMA: 1.7139) | CE: 1.1607 | Aux: 1.0000 | Chunks: [S0:4.57x => 4.57B/chunk] | LR: 2.03e-04 | Speed: 326.3 KB/s
+Step   2120/5000 | BPB: 1.7836 (EMA: 1.7020) | CE: 1.2363 | Aux: 1.0140 | Chunks: [S0:4.24x => 4.24B/chunk] | LR: 2.02e-04 | Speed: 330.8 KB/s
+Step   2140/5000 | BPB: 1.7232 (EMA: 1.6928) | CE: 1.1944 | Aux: 1.0098 | Chunks: [S0:4.34x => 4.34B/chunk] | LR: 2.00e-04 | Speed: 337.0 KB/s
+Step   2160/5000 | BPB: 1.6271 (EMA: 1.6871) | CE: 1.1278 | Aux: 1.0005 | Chunks: [S0:4.56x => 4.56B/chunk] | LR: 1.98e-04 | Speed: 339.6 KB/s
+Step   2180/5000 | BPB: 1.7626 (EMA: 1.7078) | CE: 1.2217 | Aux: 1.0022 | Chunks: [S0:4.51x => 4.51B/chunk] | LR: 1.97e-04 | Speed: 337.8 KB/s
+Step   2200/5000 | BPB: 1.6858 (EMA: 1.6919) | CE: 1.1685 | Aux: 1.0089 | Chunks: [S0:4.35x => 4.35B/chunk] | LR: 1.95e-04 | Speed: 331.5 KB/s
+Step   2220/5000 | BPB: 1.6064 (EMA: 1.6810) | CE: 1.1134 | Aux: 0.9974 | Chunks: [S0:4.64x => 4.64B/chunk] | LR: 1.93e-04 | Speed: 333.5 KB/s
+Step   2240/5000 | BPB: 1.7853 (EMA: 1.6680) | CE: 1.2375 | Aux: 1.0141 | Chunks: [S0:4.24x => 4.24B/chunk] | LR: 1.92e-04 | Speed: 337.7 KB/s
+--------------------------------------------------------------------------------
+[Sample @ Step 2250] (EMA BPB: 1.6730 | Core Compression: 6.74 B/chunk | Core Transformer Skipped: 85.2% of bytes)
+Text   : 'In computer science and artificial intelligence, company professional content, access documentation and research into focusing on conversion in school safety benefits. The authors say their research because mo'
+Chunks :
+In computer |science |and artif|icial intelligence, co|m|pa|ny |professional |content, acce|s|s |doc|umentation |and research |into| focusing |on conversion |in sch|ool |sa|fety |benefits.| |The authors |sa|y| |their| research |becau|se| mo
+--------------------------------------------------------------------------------
+Step   2260/5000 | BPB: 1.6006 (EMA: 1.6768) | CE: 1.1095 | Aux: 1.0017 | Chunks: [S0:4.52x => 4.52B/chunk] | LR: 1.90e-04 | Speed: 218.4 KB/s
+Step   2280/5000 | BPB: 1.6016 (EMA: 1.6709) | CE: 1.1102 | Aux: 1.0004 | Chunks: [S0:4.56x => 4.56B/chunk] | LR: 1.88e-04 | Speed: 338.6 KB/s
+Step   2300/5000 | BPB: 1.6311 (EMA: 1.6640) | CE: 1.1306 | Aux: 0.9975 | Chunks: [S0:4.64x => 4.64B/chunk] | LR: 1.87e-04 | Speed: 338.7 KB/s
+Step   2320/5000 | BPB: 1.8615 (EMA: 1.6825) | CE: 1.2903 | Aux: 1.0195 | Chunks: [S0:4.12x => 4.12B/chunk] | LR: 1.85e-04 | Speed: 332.7 KB/s
+Step   2340/5000 | BPB: 1.6626 (EMA: 1.6690) | CE: 1.1524 | Aux: 1.0030 | Chunks: [S0:4.49x => 4.49B/chunk] | LR: 1.83e-04 | Speed: 339.9 KB/s

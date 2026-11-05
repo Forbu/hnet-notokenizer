@@ -205,6 +205,12 @@ python train.py \
 
 #### Full 10-Hour `grad_accum = 8` Scaling Curve (`logs/train_10h_ga8.log`, `10,500` Steps / `11.01B` Bytes)
 
+* **Saved Logs:** `logs/train_10h_ga8.log` (`grad_accum=8`, `10,500` steps) and `logs/train_110k_new.log` (`grad_accum=1`, `79,728` steps)
+* **Exported Local `bfloat16` Inference Checkpoints (`289 MB` each):**
+  * `checkpoints/export_ga8_step10500_ema1.04.pt` (`grad_accum=8`, `Step 10,500`, `11.01B` bytes, `EMA BPB: 1.0449`)
+  * `checkpoints/export_ga8_best_step9500_ema1.00.pt` (`grad_accum=8`, `Step 9,500`, `9.96B` bytes, `EMA BPB: 1.0003`)
+  * `checkpoints/export_v2_best_step66000_ema0.98.pt` (`grad_accum=1`, `Step 66,000`, `8.65B` bytes, `EMA BPB: 0.9814`)
+
 | Step | Raw Text Processed | `1.05 MB` Batch BPB | Smoothed EMA BPB | Cross-Entropy (nats) | Empirical Compression | Learning Rate |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **1** | 1.05 MB | `8.0698` | `8.0698` | `5.5935` | `2.09 B/chunk` | `9.00e-07` |
