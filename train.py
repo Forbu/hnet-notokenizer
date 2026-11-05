@@ -165,7 +165,8 @@ def main():
         accum_aux = 0.0
         comp_ratios = [0.0] * config.num_stages
 
-        for _ in range(args.grad_accum):
+        micro_step = 0
+        while micro_step < args.grad_accum:
             try:
                 x, y = next(train_iter)
             except StopIteration:
@@ -174,25 +175,34 @@ def main():
 
             x = x.to(device, non_blocking=torch.cuda.is_available())
             y = y.to(device, non_blocking=torch.cuda.is_available())
+
+            try:
+                if use_amp:
+                    with torch.amp.autocast(device_type="cuda", dtype=amp_dtype):
+                        out = model(x, targets=y)
+                        loss = out["loss"] / args.grad_accum
+                else:
+                    out = model(x, targets=y)
+                    loss = out["loss"] / args.grad_accum
+
+                loss.backward()
+            except torch.OutOfMemoryError:
+                print(f"[Warning @ Step {step}] Caught CUDA OOM on outlier micro-batch; clearing cache and retrying with fresh batch...")
+                del x, y
+                if torch.cuda.is_available():
+                    torch.cuda.empty_cache()
+                continue
+
             n_bytes = x.numel()
             bytes_processed += n_bytes
             total_bytes_trained += n_bytes
-
-            if use_amp:
-                with torch.amp.autocast(device_type="cuda", dtype=amp_dtype):
-                    out = model(x, targets=y)
-                    loss = out["loss"] / args.grad_accum
-            else:
-                out = model(x, targets=y)
-                loss = out["loss"] / args.grad_accum
-
-            loss.backward()
             accum_loss += out["ce_loss"].item() / args.grad_accum
             accum_bpb += out["bpb"].item() / args.grad_accum
             accum_aux += out["aux_loss"].item() / args.grad_accum
             for i, r in enumerate(out["compression_ratios"]):
                 comp_ratios[i] += r / args.grad_accum
             del out, loss
+            micro_step += 1
 
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
         optimizer.step()
@@ -237,7 +247,8 @@ def main():
             if ema_bpb < best_bpb:
                 best_bpb = ema_bpb
                 torch.save(ckpt, os.path.join(args.save_dir, "best.pt"))
-            if step % 10000 == 0:
+            milestone_interval = 2000 if args.max_steps <= 20000 else 10000
+            if step % milestone_interval == 0 or step == args.max_steps:
                 torch.save(ckpt, os.path.join(args.save_dir, f"step_{step}.pt"))
             del ckpt
             if torch.cuda.is_available():
