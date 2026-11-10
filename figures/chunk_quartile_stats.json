@@ -1,0 +1,26 @@
+{
+  "Q1_Flat_Background": {
+    "mean_p_boundary": 0.1744200736284256,
+    "boundary_rate": 0.176239013671875,
+    "effective_compression": 5.674112554112554,
+    "mean_chunk_size_patches": 8.484794616699219
+  },
+  "Q2_Smooth_Shading": {
+    "mean_p_boundary": 0.18023259937763214,
+    "boundary_rate": 0.19647216796875,
+    "effective_compression": 5.089779434607021,
+    "mean_chunk_size_patches": 7.224617004394531
+  },
+  "Q3_Moderate_Texture": {
+    "mean_p_boundary": 0.22389352321624756,
+    "boundary_rate": 0.25125885009765625,
+    "effective_compression": 3.979959311329062,
+    "mean_chunk_size_patches": 6.204750061035156
+  },
+  "Q4_Sharp_Edges_Detail": {
+    "mean_p_boundary": 0.349368155002594,
+    "boundary_rate": 0.41365814208984375,
+    "effective_compression": 2.417455135653553,
+    "mean_chunk_size_patches": 4.869514465332031
+  }
+}

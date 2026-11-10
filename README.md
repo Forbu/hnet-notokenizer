@@ -285,8 +285,85 @@ Compare our **151M 1-stage** model (`grad_accum = 8`) against Cartesia's **3.67B
      > `The flux capacitor v2 c`
    * **Learned Dynamic Chunks (`|`):**
      ```text
-     When |conf|iguring |the |hy|per|_|flu|x_|capa|citor_|v2|, |engineers |noticed |that |computer |models |were |failing |and |they |started |to| work |with |fla|t |para|meters.| The |company |also |implemented |a |flu|x |capa|citor |cir|cuit |that |can |be |used |to| control |the |flu|x |that |is |del|ivered |to| the |hy|per|_|flu|x_|capa|citor |v1|.|
+     When |conf|iguring |the |hy|per|_|flu|x_|capa|citor_|v2|, |engineers |noticed |that |computer |models |were |failing |and |they |started |to| work |with |fla|t |para|meters.| The |company |also |implemented |a |flu|x |capa|citor |cir|cuit |that |can |be |used |to| control |the |flu|x |that |is |del|ivered |to| the |hy|per|_|flu|x_|capa|citor |v1|.| 
      The |flu|x |capa|citor |v2| |c
      ```
+
+---
+
+## v3: 2D Image Generation — Bidirectional 2D H-Net-DiT with Rectified Flow (ImageNet-64)
+
+We extended H-Net Dynamic Chunking from 1D text bytes to **2D image generation** using **Design C: Bidirectional 2D H-Net-DiT**, trained with **Rectified Flow** ($x$-prediction parameterization) on `Forbu14/imagenet-64` (all `30` shards = `1,281,167` train images).
+
+### Architecture (`hnet/dit2d.py`)
+1. **$2\times2$ Micro-Patches:** Each $64\times64$ RGB image is patchified into a $32\times32$ grid of $2\times2$ micro-patches ($L = 1,024$ sequence length).
+2. **2D Hilbert Ordering (`hnet/hilbert.py`):** The $32\times32$ grid is flattened along a 2D Hilbert space-filling curve, guaranteeing that every 1D interval $[t_{k-1}+1 \dots t_k]$ is a **compact 4-connected 2D superpixel**.
+3. **Bidirectional Outer Encoder/Decoder (`m4`):** 2D-Conv patch embeddings + bidirectional Mamba-style SSM blocks at full patch resolution.
+4. **Dynamic 2D Chunking (`RoutingModule2D` + `ChunkLayer2D`):** Cosine-dissimilarity router over Hilbert-adjacent patches with STE boundary sampling and Switch-Transformer ratio loss (target compression $N = 4.0 \implies M \approx 256$ chunks/image).
+5. **Main DiT (`T12`) on Chunks:** Bidirectional DiT blocks operating only on the $\sim256$ chunk tokens, with **2D Continuous Axial Partial RoPE** (`ContinuousAxialRotary2D`): each chunk's exact 2D centroid $(\bar{x}_k, \bar{y}_k)$ rotates 25% of head channels by $\bar{x}_k$ and 25% by $\bar{y}_k$, preserving true 2D spatial alignment regardless of variable chunk counts per row.
+6. **DeChunking with Sub-Chunk Offsets (`DeChunkLayer2D`):** Each chunk is broadcast back to its constituent patches, plus a zero-initialized MLP projection of the exact offset $(\mathbf{pos}_t - \mathbf{c}_k)$ inside large merged superpixels.
+7. **Rectified Flow ($x$-prediction):** The network predicts the clean image $\hat{x}_1$ with a **damped velocity loss** $v_{\text{pred}} = (\hat{x}_1 - x_t) / (2\sqrt{(1-t)^2 + 0.1})$ to avoid $1/(1-t)^2$ gradient explosions near $t \to 1$.
+
+> **Key difference vs. 1D text:** adjacent 2D image patches are strongly correlated, so identity-initialized router projections collapse to $15\times$ over-compression at Step 0. `q_proj`/`k_proj` are initialized as **independent orthogonal matrices** to start boundary probability at $p_t \approx 0.50$ and smoothly lock onto the $4.0\times$ target.
+
+### 10-Hour Training Run (`Step 43,500` / `6.55` Epochs of ImageNet-64)
+
+* **Model:** `dit2d_base` — **`138.56M` parameters**.
+* **Batch Size:** `96 × grad_accum 2 = 192` images/step (`~196.6k` micro-patches/step).
+* **Throughput:** **`322.3 img/s`** steady on 1× RTX PRO 6000 Blackwell (`98 GB`, `98%` GPU utilization).
+* **Total Horizon:** 43,500 steps in `6.95h`, processing **`8.40M` images** (`6.55` epochs), cosine LR `3e-4 → 3e-5`, EMA decay `0.999`, `aux_loss_weight = 0.20`.
+* **Logs:** `figures/train_dit2d_10h.log` and `figures/metrics.json`; checkpoints saved remotely every `5,000` steps (`step_005000_ema.pt` … `step_043500_ema.pt`).
+
+| Step | Images Seen | Epochs | EMA val_flow_loss | EMA val_x1_mse | Compression | Learning Rate |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **1,500** | 0.29M | 0.22 | `0.0186` | `0.0322` | `3.94x` | `2.95e-04` |
+| **7,000** | 1.34M | 1.05 | `0.0171` | `0.0304` | `4.00x` | `2.72e-04` |
+| **13,000** | 2.49M | 1.95 | `0.0167` | `0.0298` | `4.04x` | `2.48e-04` |
+| **21,000** | 4.03M | 3.15 | `0.0164` | `0.0295` | `4.02x` | `1.75e-04` |
+| **31,000** | 5.94M | 4.64 | `0.0163` | `0.0293` | `4.06x` | `8.17e-05` |
+| **43,500** | **8.40M** | **6.55** | **`0.0162`** | **`0.0292`** | **`4.02x`** | `3.00e-05` |
+
+### Emergent 2D Adaptive Compute Allocation (Final Quartile Statistics)
+
+The router develops a **`2.34×` dynamic range** in boundary density between flat regions and sharp edges, strictly monotonic across local 2D detail quartiles:
+
+| Local 2D Detail Quartile | Boundary Rate | Effective Compression | Mean Chunk Size |
+| :--- | :---: | :---: | :---: |
+| Q1 Flat Background | `17.62%` | **`5.67x`** | `8.48` patches |
+| Q2 Smooth Shading | `19.65%` | **`5.09x`** | `7.22` patches |
+| Q3 Moderate Texture | `25.13%` | **`3.98x`** | `6.20` patches |
+| Q4 Sharp Edges / Detail | `41.37%` | **`2.42x`** | `4.87` patches |
+
+### Generated Samples @ Step 43,500 (EMA Weights)
+
+Below are unconditional Rectified Flow ODE samples (Euler, 50 steps) from the final `best_ema.pt`, with the learned dynamic 2D chunk borders overlaid in red. The router merges flat regions (grass, sky, water) into large Hilbert superpixels while spending dense $2\times2$ micro-patches on semantic detail (dog fur, butterfly wings, castle rooflines):
+
+![Generated ODE samples with dynamic 2D chunk borders at Step 43,500](figures/ode_samples_step_043500.png)
+
+Notice per-image adaptive compression: the castle under a clear blue sky (`cls 483`) merges the entire sky into a handful of large superpixels (`5.63x`), while the butterfly on flowers (`cls 323`) stays fine-grained (`3.76x`) — yet the population average remains locked at the `4.0x` target.
+
+The router also learns **timestep-adaptive granularity** during sampling: compression is coarser early in the ODE trajectory and finer late (`4.1x` at $t=0 \to 4.8x$ at $t=0.98$), spending compute on detail refinement as the sample sharpens:
+
+![ODE trajectory with evolving chunk delimitations](figures/dit2d_ode_trajectory_chunks.png)
+
+Full validation reconstruction analysis (ground truth vs. $\hat{x}_1$ at $t=0.75$, router probability maps, chunk borders, and 2D Hilbert superpixels) is in `figures/dit2d_val_chunk_analysis.png`, and per-step progression from Step 2,000 → 43,500 is preserved in `figures/val_chunks_step_*.png` / `figures/ode_samples_step_*.png`.
+
+### Reproduce
+
+```bash
+# Train (resumes automatically with --resume)
+python train_dit2d.py \
+  --preset dit2d_base --patch-size 2 --routing dynamic \
+  --target-compression 4.0 --aux-loss-weight 0.20 \
+  --max-train-shards 30 --batch-size 96 --grad-accum 2 \
+  --max-steps 43500 --max-hours 10.0 \
+  --warmup-steps 500 --lr 3e-4 --min-lr 3e-5 --ema-decay 0.999 \
+  --save-dir checkpoints_dit2d_10h
+
+# Analyze learned chunk delimitations on the final checkpoint
+python analyze_dit2d_chunks.py \
+  --checkpoint checkpoints_dit2d_10h/best_ema.pt \
+  --out-dir figures_analysis
+```
 
 
